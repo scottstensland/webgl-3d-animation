@@ -1,0 +1,29 @@
+{
+  "name": "webgl-3d-animation",
+  "version": "0.0.0",
+  "description": "Interactive 3D animation using WebGL showing a 2D predator prey ecology on a grid which is real-time mapped onto the surface of a 3D torus. node.js server side gives access to WAV format files which are rendered using Web Audio API",
+  "main": "src/node_nodejs-websocket_server.js",
+  "scripts": {
+    "test": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scottstensland/webgl-3d-animation.git"
+  },
+  "keywords": [
+    "webgl",
+    "audio",
+    "webaudio",
+    "animation",
+    "predator-prey",
+    "torus",
+    "3D",
+    "interactive"
+  ],
+  "author": "Scott Stensland <scottstensland@gmail.com> (http://catfoodnation.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottstensland/webgl-3d-animation/issues"
+  },
+  "homepage": "https://github.com/scottstensland/webgl-3d-animation"
+}

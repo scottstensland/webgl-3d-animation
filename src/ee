@@ -1,0 +1,34 @@
+
+chosen_port_listening  8801
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/glMatrix-0.9.5.min.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/common.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/vec3.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/webgl-utils.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/Common_Utils.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+ERROR - failed to find file :  /home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/communication_sockets.js
+{ [Error: ENOENT, open '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html']
+  errno: 34,
+  code: 'ENOENT',
+  path: '/home/stens/Dropbox/Documents/code/github/webgl-3d-animation/src/404.html' }
+
+

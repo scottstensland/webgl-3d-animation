@@ -1,3 +1,4 @@
+#!/usr/bin/env node 
 
 
 //   HTTPD server from scratch
