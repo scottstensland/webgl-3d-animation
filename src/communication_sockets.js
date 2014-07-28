@@ -45,6 +45,8 @@ function connect_client_socket() {
         var serviceUrl = 'ws://localhost:' + chosen_port_client + '/';
         var protocol = 'Chat-1.0';
 
+        // http://webgl-3d-animation.jit.su/
+
         console.log('serviceUrl ', serviceUrl);
 
         // var socket = new WebSocket(serviceUrl, protocol);
