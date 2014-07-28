@@ -6,8 +6,9 @@ var httpd = require('http');
 var path = require('path');
 var fs = require('fs');
 
+var APP_FOG_PORT = 1337;
 
-var jdataview = require('jdataview');
+// var jdataview = require('jdataview');
 
 // var events = require('events');
 
@@ -123,6 +124,7 @@ function get_good_timestamp() {
     return (new Date().yyyymmdd());
 }
 
+/*
 function write_filetype_specified() {
 
     // var fs = require('fs');
@@ -151,6 +153,7 @@ function write_filetype_specified() {
         }
     });
 }
+*/
 
 // ---
 
@@ -708,19 +711,6 @@ function write_wav(wav_file_obj) {
 
 // ---
 
-// if (typeof jdataview == 'undefined') {
-
-//     console.log("ERROR - jdataview is NOT defined ");
-//     console.log("ERROR - jdataview is NOT defined ");
-//     console.log("ERROR - jdataview is NOT defined ");
-
-// } else {
-
-//     console.log("OK jdataview is cool");
-// }
-
-// var Buffer = require('buffer').Buffer;   // not necessary as appears by default
-
 var received_data_arraybuffer;
 
 function process_my_data(given_data) {
@@ -1160,7 +1150,8 @@ function send_answer_back_to_browser(audio_obj, given_socket_conn) {
 
     output_16_bit_audio_obj.filename = "/tmp/genetic_synth_01_output.wav";
 
-    write_wav(output_16_bit_audio_obj);
+    console.log("WARNING - stubbed out writing WAV output file");
+    // write_wav(output_16_bit_audio_obj);
 
     console.log("AAAAAA bout to send binary from server to client browser");
 
@@ -1450,7 +1441,8 @@ function process_received_msg(audio_file_obj, given_socket_conn) {
 
             // show_buffer(wav_file_obj.buffer, wav_file_obj.buffer.length, 100);
 
-            write_wav(output_16_bit_audio_obj);
+            console.log("WARNING - stubbed out writing output WAV file : " + output_16_bit_audio_obj.filename);
+            // write_wav(output_16_bit_audio_obj);
 
             // ---
 
@@ -1653,6 +1645,8 @@ function socket_server() {
 
                 process_received_msg(audio_file_obj);
 
+                console.log("WARNING - stubbed out for now");
+
                 // genetic_synthesis
 
                 // process_my_data(data);   // stens TODO put this back its OK
@@ -1667,7 +1661,8 @@ function socket_server() {
     }).listen(chosen_port_listening);
 
     console.log('chosen_port_listening ', chosen_port_listening);
-}
+
+};      //      socket_server
 
 // ---
  
@@ -1700,7 +1695,8 @@ socket_server();
 
 // https://stackoverflow.com/questions/16573668/best-practices-when-running-node-js-with-port-80-ubuntu-linode
 
+console.log("\npoint your browser at http://localhost:" + APP_FOG_PORT);
 
-httpd.createServer(requestHandler).listen(process.env.VMC_APP_PORT || 1337, null);
+httpd.createServer(requestHandler).listen(process.env.VMC_APP_PORT || APP_FOG_PORT, null);
 
 
