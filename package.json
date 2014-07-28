@@ -1,11 +1,15 @@
 {
   "name": "webgl-3d-animation",
-  "version": "0.0.19",
+  "subdomain" : "webgl-3d-animation",
+  "version": "0.0.20",
   "description": "Interactive 3D animation using WebGL showing a 2D predator prey ecology on a grid which is real-time mapped onto the surface of a 3D torus. node.js server side gives access to WAV format files which are rendered using Web Audio API",
   "main": "src/app.js",
   "scripts": {
     "start" : "node src/app.js",
     "test": "make"
+  },
+  "engines" : {
+    "node" : "0.10.x"
   },
   "repository": {
     "type": "git",
