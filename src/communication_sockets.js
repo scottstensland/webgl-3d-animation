@@ -45,7 +45,7 @@ function connect_client_socket() {
 
         // if (process.env.NODE_ENV && process.env.NODE_ENV == "production") {
 
-        	serviceUrl = "http://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
+        	serviceUrl = "ws://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
 
    //      } else {
 
