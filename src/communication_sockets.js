@@ -40,9 +40,21 @@ function connect_client_socket() {
 
         var chosen_port_client = 8801;
         // var chosen_port_client = 8888;
+
+        var serviceUrl;
+
+        // if (process.env.NODE_ENV && process.env.NODE_ENV == "production") {
+
+        	serviceUrl = "http://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
+
+   //      } else {
+
+			// serviceUrl = 'ws://localhost:' + chosen_port_client + '/';
+   //      }
  
         // var serviceUrl = 'ws://localhost:8800/';
-        var serviceUrl = 'ws://localhost:' + chosen_port_client + '/';
+        // var serviceUrl = 'ws://localhost:' + chosen_port_client + '/';
+
         var protocol = 'Chat-1.0';
 
         // http://webgl-3d-animation.jit.su/
