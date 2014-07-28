@@ -1,0 +1,11 @@
+{
+  "name": "webgl-3d-animation",
+  "version": "0.0.17",
+  "dependencies": {
+    "nodejs-websocket": {
+      "version": "0.1.5",
+      "from": "nodejs-websocket@0.1.x",
+      "resolved": "https://registry.npmjs.org/nodejs-websocket/-/nodejs-websocket-0.1.5.tgz"
+    }
+  }
+}
