@@ -1,16 +1,14 @@
 
-
 //   HTTPD server from scratch
-
-
-// see
-// http://blog.kevinchisholm.com/javascript/node-js/making-a-simple-http-server-with-node-js-part-iii/
-
 
 //step 1) require the modules we need
 var httpd = require('http');
 var path = require('path');
 var fs = require('fs');
+
+
+var jdataview = require('jdataview');
+
 // var events = require('events');
 
 
@@ -20,9 +18,9 @@ var fs = require('fs');
 
 //  // ---
 
- var gene_mach = require('./genetic_machinery_server.js')
-  , inherits     = require('util').inherits
-  ;
+ // var gene_mach = require('./genetic_machinery_server.js')
+ //  , inherits     = require('util').inherits
+ //  ;
 
 // ---
 
@@ -236,38 +234,7 @@ function write_buffer_to_file(data_to_persist) {
     }
 
     write_stream.end();
-
-
-    /*
-    fs.writeFile(outputFilename, JSON.stringify(data_to_persist, null, 4), function(err) {
-
-        if(err) {
-          console.log(err);
-        } else {
-          console.log("JSON saved to " + outputFilename);
-        }
-    }); 
-    */
 }
-
-
-
-/*
-
-/home/stens/workspace_kepler/cpp_openal_opengl_dna_16/src/cpp_openal_opengl_dna.cpp
-
-    read_binary_audio->parse_wav_header_adaptive(
-            & ptr_struct_input_file_read_pop_buffer->sample_rate,
-            & ptr_struct_input_file_read_pop_buffer->bits_per_samp,
-            & ptr_struct_input_file_read_pop_buffer->source_buffer_size,
-            & ptr_struct_input_file_read_pop_buffer->num_channels);
-
-
-http://typedarray.org/from-microphone-to-wav-with-getusermedia-and-web-audio/
-
-
-*/
-
 
 function writeUTFBytes(view, offset, string) {
 
@@ -739,29 +706,18 @@ function write_wav(wav_file_obj) {
 
 }       //      write_wav
 
-
 // ---
 
-// var jDataView = require('jDataView').jDataView;
-// var jdataview = require('jdataview').jdataview;
-// var jDataView = require('jdataview').jDataView;
+// if (typeof jdataview == 'undefined') {
 
-// var jDataView = require('jdataview');
-var jdataview = require('jdataview');
+//     console.log("ERROR - jdataview is NOT defined ");
+//     console.log("ERROR - jdataview is NOT defined ");
+//     console.log("ERROR - jdataview is NOT defined ");
 
+// } else {
 
-
-
-if (typeof jdataview == 'undefined') {
-
-    console.log("ERROR - jdataview is NOT defined ");
-    console.log("ERROR - jdataview is NOT defined ");
-    console.log("ERROR - jdataview is NOT defined ");
-
-} else {
-
-    console.log("OK jdataview is cool");
-}
+//     console.log("OK jdataview is cool");
+// }
 
 // var Buffer = require('buffer').Buffer;   // not necessary as appears by default
 
@@ -797,14 +753,6 @@ function process_my_data(given_data) {
         write_json_serialized(received_data_arraybuffer);
 
     } else if (given_datatype == 'float') {
-
-        /*
-        received_data_arraybuffer = new Float32Array(given_data, 0, Float32Array.BYTES_PER_ELEMENT);
-        // received_data_arraybuffer = new Float32Array(given_data, 0, Uint8Array.BYTES_PER_ELEMENT);
-
-        // received_data_arraybuffer = new Float32Array(3);
-        // received_data_arraybuffer.set(given_data);
-        */
 
         received_data_arraybuffer = new Uint8Array(given_data, 0, Uint8Array.BYTES_PER_ELEMENT);
 
@@ -848,26 +796,6 @@ function process_my_data(given_data) {
         // write_json_serialized(big_binary_float);
         write_buffer_to_file(big_binary_float);
     }
-
-    // var size_buff = received_data_arraybuffer.length;
-
-    /*
-    for (var index = 0; index < size_buff/4; index++) {
-
-        // if (index % 200000 == 0) {
-
-            console.log('binary element ', index, big_binary_float[index]);
-        // }
-    }
-    */
-
-    // write_filetype_specified();
-
-    // write_nonblocking_async(received_data_arraybuffer);
-
-    // write_json_serialized(received_data_arraybuffer);
-    // write_json_serialized(big_binary_float);
-
 }       //      process_my_data
 
 // ---
@@ -887,19 +815,6 @@ function show_buffer(given_audio_buffer, given_buffer_size, limit_to_see) {
 }
 
 // ---
-
-/*
-Type              Size  Description                             Equivalent C type
-Int8Array           1   8-bit twos complement signed integer    signed char
-Uint8Array          1   8-bit unsigned integer                  unsigned char
-Uint8ClampedArray   1   8-bit unsigned integer                  unsigned char
-Int16Array          2   16-bit twos complement signed integer   short
-Uint16Array         2   16-bit unsigned integer                 unsigned short
-Int32Array          4   32-bit twos complement signed integer   int
-Uint32Array         4   32-bit unsigned integer                 unsigned int
-Float32Array        4   32-bit IEEE floating point number       float
-Float64Array        8   64-bit IEEE floating point number       double
-*/
 
 function write_8_bit_buffer_to_32_bit_output_file(input_data, output_data) {
 
@@ -941,12 +856,6 @@ function write_8_bit_buffer_to_32_bit_output_file(input_data, output_data) {
         output_data.buffer[index_float++] = number_float;
         
     }
-
-    // write_json_serialized(big_binary_float);
-    // write_buffer_to_file(big_binary_float);
-    // write_buffer_to_file(output_data.buffer);
-
-
 }       //      write_8_bit_buffer_to_32_bit_output_file
 
 // ---
@@ -998,15 +907,8 @@ function write_8_bit_buffer_to_16_bit_output_file(input_data, output_data) {
             console.log(index, ' binary number_16bit_int ', number_16bit_int);
         }
 
-        output_data.buffer[index_16bit_int++] = number_16bit_int;
-        
+        output_data.buffer[index_16bit_int++] = number_16bit_int;   
     }
-
-    // write_json_serialized(big_binary_float);
-    // write_buffer_to_file(big_binary_float);
-    // write_buffer_to_file(output_data.buffer);
-
-
 }       //      write_8_bit_buffer_to_16_bit_output_file
 
 // ---
@@ -1086,20 +988,6 @@ function convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(input_data, output
 }       //      convert_8_bit_buffer_from_32_bit_float_to_16_bit_int
 
 // ---
-
-/*
-channel.on('do_genetic_synth', function (audio_obj) {
-
-    console.log("inside do_genetic_synth callback |||||||||||||||");
-
-    for (var property in audio_obj) {
-
-        console.log("aaaaaaaaa do_genetic_synth property ", property, audio_obj[property]);
-    }
-
-});
-
-*/
 
 function show_object_with_buffer(given_obj, given_label) {
 
@@ -1431,19 +1319,6 @@ function convert_32_bit_floats_into_16_bit_ints(input_32_bit_float_audio_obj, ou
 
 }       //      convert_32_bit_floats_into_16_bit_ints
 
-/*
-        Type              Size  Description                             Equivalent C type
-        Int8Array           1   8-bit twos complement signed integer    signed char
-        Uint8Array          1   8-bit unsigned integer                  unsigned char
-        Uint8ClampedArray   1   8-bit unsigned integer                  unsigned char
-        Int16Array          2   16-bit twos complement signed integer   short
-        Uint16Array         2   16-bit unsigned integer                 unsigned short
-        Int32Array          4   32-bit twos complement signed integer   int
-        Uint32Array         4   32-bit unsigned integer                 unsigned int
-        Float32Array        4   32-bit IEEE floating point number       float
-        Float64Array        8   64-bit IEEE floating point number       double
-*/
-
 function convert_8_bit_ints_into_16_bit_ints(input_8_bit_ints_obj, output_16_bit_ints_obj) {
 
     // convert Uint8Array into signed 16 bit ints
@@ -1525,7 +1400,9 @@ function process_received_msg(audio_file_obj, given_socket_conn) {
                 console.log("sssssss genetic_synthesis property ", property, audio_file_obj[property]);
             }
 
-            gene_mach.genetic_main(audio_file_obj, given_socket_conn, send_answer_back_to_browser);
+            console.log("commented out this for now ...");
+
+            // gene_mach.genetic_main(audio_file_obj, given_socket_conn, send_answer_back_to_browser);
 
             break;
         }
@@ -1596,14 +1473,6 @@ var count_num_connections = 0;
 
 function socket_server() {
 
-    // https://stackoverflow.com/questions/14366981/reuse-javascript-typedarray-e-g-uint32array
-    // http://granular.cs.umu.se/browserphysics/?p=865
-    // nodejs websocket server typedarray
-    // https://stackoverflow.com/questions/13028604/sending-a-javascript-object-through-websockets-with
-    // https://www.npmjs.org/package/nodejs-websocket
-    // http://cjihrig.com/blog/websockets-in-node-js-0-8-6-for-windows-7/
-    // http://codular.com/node-web-sockets
-
     var chosen_port_listening = 8801;
     // var chosen_port_listening = 8888;
     // var chosen_port_sending   = 8800;
@@ -1614,49 +1483,6 @@ function socket_server() {
 
     var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
-/*
-    // var websocket_server = require('ws').Server, wss = new WebSocketServer({port: 8080});
-    var websocket_server = require('ws').Server;
-    var wss = new websocket_server({port: chosen_port_listening});
-
-
-    wss.on('connection', function(ws) {
-        ws.on('message', function(message) {
-            console.log('received: %s', message);
-        });
-        ws.send('something');
-    });
-*/
-
-
-
-    // var WebSocketServer = require('websocket').server;
-    // var ws = require('websocket').server;
-
-
-    /*
-    // var WebSocketServer = require('ws').Server
-    WebSocketServer = require('ws').Server
-
-    var wss = new WebSocketServer({port: chosen_port_sending});
-    var http = require("http");
-    var sys = require("sys");
-
-    var server = http.createServer(function(request,response){
-      response.writeHeader(200, {"Content-Type": "text/plain"});
-      response.write("Hello");
-      if (request.url == "/"){
-        for (var i = 0; i < wss.client.length; i++) {
-          var ws = wss.clients[i];
-          sys.puts("sent msg");
-          ws.send("photo plox");w
-        }
-      }
-      response.end();
-    }).listen(chosen_port_listening);
-    */
-
-    // Scream server example: "hi" -> "HI!!!"
 
     var server = ws.createServer(function (connection_request) {
 
@@ -1834,73 +1660,14 @@ function socket_server() {
             });
         });
 
-
-/*
-        // Listen for binary event
-        connection_request.on("binary", function (inStream) {
-
-            // Collect all the data in a buffer
-            // var data = new Buffer(0);
-            var data = new Float32Array(0);
-
-            
-
-
-            // Get all frames of binary data and add to the buffer
-            inStream.on("readable", function () {
-
-                var newData = inStream.read();
-
-                if (newData) {
-
-                    console.log('binary newData length this callback cycle is ', newData.length);
-
-                    data = Buffer.concat([data, newData], data.length+newData.length)
-                }
-            });
-
-            // Done, process the big data
-            inStream.on("end", function () {
-
-                process_my_data(data);
-            });
-        });
-*/
-
-
-
-
-/*
-        connection_request.on('message', function(message) {
-
-            if (message.type === 'utf8') {
-                console.log('received text message: ' + message.utf8Data);
-                connection_request.sendUTF(message.utf8Data);
-            }
-            else if (message.type === 'binary') {
-                console.log('received binary message of ' + message.binaryData.length + ' bytes');
-                connection_request.sendBytes(message.binaryData);
-            } else {
-
-                console.log('received who knows what type as its NOT utf8 text NOR binary :')
-            }
-
-        });
-
-*/
-
-
         connection_request.on("close", function (code, reason) {
             console.log("Connection closed");
         });
 
     }).listen(chosen_port_listening);
 
-
-
     console.log('chosen_port_listening ', chosen_port_listening);
 }
-
 
 // ---
  
