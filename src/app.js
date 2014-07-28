@@ -5,6 +5,7 @@
 var httpd = require('http');
 var path = require('path');
 var fs = require('fs');
+var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
 var APP_FOG_PORT = 1337;
 
@@ -1473,7 +1474,7 @@ function socket_server() {
     console.log('TOP of socket_server    tuesday   1122  ');
 
 
-    var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
+    // var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
 
     var server = ws.createServer(function (connection_request) {
