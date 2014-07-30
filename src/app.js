@@ -7,8 +7,6 @@ var path = require('path');
 var fs = require('fs');
 var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
-var APP_FOG_PORT = 1337;
-
 // var jdataview = require('jdataview');
 
 // var events = require('events');
@@ -1466,12 +1464,10 @@ var count_num_connections = 0;
 
 function socket_server() {
 
-    var chosen_port_listening = 8801;
+    var chosen_port_listening = 80;     // change for nodejitsu
+    // var chosen_port_listening = 8801;    // OK prior to nodejitsu
     // var chosen_port_listening = 8888;
     // var chosen_port_sending   = 8800;
-
-
-    console.log('TOP of socket_server    tuesday   1122  ');
 
 
     // var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
@@ -1699,6 +1695,8 @@ var servicePort;
 
 if (process.env.NODE_ENV == "production") {
 
+    if (process.env.SUBDOMAIN )
+
     serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
     servicePort = 80;
 
@@ -1708,7 +1706,7 @@ if (process.env.NODE_ENV == "production") {
     servicePort = 8888;
 };
 
-console.log("\nPoint your browser at ", serviceUrl + servicePort, "\n");
+console.log("\nPoint your browser at \n\n\t\t", serviceUrl + servicePort, "\n");
 
 httpd.createServer(requestHandler).listen(servicePort, null);
 
