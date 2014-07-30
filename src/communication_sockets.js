@@ -43,11 +43,19 @@ function connect_client_socket() {
         // var chosen_port_client = 8800;
 
 
+
+		console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
+		console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
+		console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
+
+
+
         var serviceUrl;
 
         // if (process.env.NODE_ENV && process.env.NODE_ENV == "production") {
 
-        	serviceUrl = "ws://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
+        	// serviceUrl = "ws://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
+        	serviceUrl = "ws://gentle-cliffs-8200.herokuapp.com:" + chosen_port_client + '/';
 
    //      } else {
 
