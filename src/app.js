@@ -1695,11 +1695,7 @@ console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
 console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 
-console.log("version: 0.0.25   ");
-
-   
-
-
+console.log("version: 0.0.26   ");
 
 var serviceUrl;
 var servicePort;
@@ -1709,7 +1705,8 @@ if (process.env.HOSTING_VENDOR == "heroku") {
     serviceUrl = "http://gentle-cliffs-8200.herokuapp.com:";
                // http://gentle-cliffs-8200.herokuapp.com
 
-    servicePort = 80;
+    servicePort = process.env.PORT || 3000;
+    // servicePort = 80;
 
 } else if (process.env.NODE_ENV == "production" && process.env.SUBDOMAIN == "webgl-3d-animation") {
 
