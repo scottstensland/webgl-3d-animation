@@ -1690,16 +1690,24 @@ socket_server();
 // httpd.createServer(requestHandler).listen(8888); // OK pre appfog
 // https://stackoverflow.com/questions/16573668/best-practices-when-running-node-js-with-port-80-ubuntu-linode
 
+
+console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
+console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
+console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
+
+
 var serviceUrl;
 var servicePort;
 
-if (process.env.NODE_ENV == "production") {
+if (process.env.HOSTING_VENDOR == "heroku") {
 
-    // if (process.env.SUBDOMAIN )
+    serviceUrl = "http://gentle-cliffs-8200.herokuapp.com/";
+
+    servicePort = 80;
+
+} else if (process.env.NODE_ENV == "production" && process.env.SUBDOMAIN == "webgl-3d-animation") {
 
     serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
-
-    // serviceUrl = "http://gentle-cliffs-8200.herokuapp.com/";
 
     servicePort = 80;
 
