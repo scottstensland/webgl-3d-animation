@@ -1702,6 +1702,7 @@ var servicePort;
 if (process.env.HOSTING_VENDOR == "heroku") {
 
     serviceUrl = "http://gentle-cliffs-8200.herokuapp.com/";
+               // http://gentle-cliffs-8200.herokuapp.com/
 
     servicePort = 80;
 
