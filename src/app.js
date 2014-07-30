@@ -1694,8 +1694,9 @@ socket_server();
 console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
 console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
+console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.26   ");
+console.log("version: 0.0.27   ");
 
 var serviceUrl;
 var servicePort;
@@ -1712,7 +1713,9 @@ if (process.env.HOSTING_VENDOR == "heroku") {
 
     serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
 
-    servicePort = 80;
+    // servicePort = 80;
+
+    servicePort = process.env.PORT || 3000;
 
 } else {
 
