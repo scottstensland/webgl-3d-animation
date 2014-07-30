@@ -1695,9 +1695,12 @@ var servicePort;
 
 if (process.env.NODE_ENV == "production") {
 
-    if (process.env.SUBDOMAIN )
+    // if (process.env.SUBDOMAIN )
 
     serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
+
+    // serviceUrl = "http://gentle-cliffs-8200.herokuapp.com/";
+
     servicePort = 80;
 
 } else {
