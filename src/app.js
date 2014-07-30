@@ -1695,6 +1695,11 @@ console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
 console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 
+console.log("version: 0.0.24 ");
+
+   
+
+
 
 var serviceUrl;
 var servicePort;
