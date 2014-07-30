@@ -1464,8 +1464,8 @@ var count_num_connections = 0;
 
 function socket_server() {
 
-    var chosen_port_listening = 80;     // change for nodejitsu
-    // var chosen_port_listening = 8801;    // OK prior to nodejitsu
+    // var chosen_port_listening = 80;     // change for nodejitsu
+    var chosen_port_listening = 8801;    // OK prior to nodejitsu
     // var chosen_port_listening = 8888;
     // var chosen_port_sending   = 8800;
 
