@@ -1696,7 +1696,7 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.30   ");
+console.log("version: 0.0.31   ");
 
 var serviceUrl;
 var servicePort;
