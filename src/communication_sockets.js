@@ -36,28 +36,31 @@ function connect_client_socket() {
  
         console.log('client in browser says ... WebSocket is supported by your browser.');
 
-        return; // stens TODO - remove this when live 20140729
+        // return; // stens TODO - remove this when live 20140729
+
+        var chosen_port_client = process.env.PORT;	// OK prior to nodejitsu
 
         // var chosen_port_client = 80; // change for nodejitsu
-        var chosen_port_client = 8801;	// OK prior to nodejitsu
+        // var chosen_port_client = 8801;	// OK prior to nodejitsu
         // var chosen_port_client = 8888;
 
         // var chosen_port_client = 8800;
 
 
-
 		console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
 		console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 		console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
+		console.log("process.env.PORT ", process.env.PORT);
+		console.log("chosen_port_client ", chosen_port_client);
 
-
+		console.log("version: 0.0.27   ");
 
         var serviceUrl;
 
         // if (process.env.NODE_ENV && process.env.NODE_ENV == "production") {
 
-        	// serviceUrl = "ws://webgl-3d-animation.jit.su/" + chosen_port_client + '/';
-        	serviceUrl = "ws://gentle-cliffs-8200.herokuapp.com:" + chosen_port_client + '/';
+        	serviceUrl = "ws://webgl-3d-animation.jit.su:" + chosen_port_client + '/';
+        	// serviceUrl = "ws://gentle-cliffs-8200.herokuapp.com:" + chosen_port_client + '/';
 
    //      } else {
 
