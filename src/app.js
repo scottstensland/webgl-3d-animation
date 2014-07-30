@@ -1657,7 +1657,7 @@ function socket_server() {
 
     }).listen(chosen_port_listening);
 
-    console.log('chosen_port_listening ', chosen_port_listening);
+    // console.log('chosen_port_listening ', chosen_port_listening);
 
 };      //      socket_server
 
