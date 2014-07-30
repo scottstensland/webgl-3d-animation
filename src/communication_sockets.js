@@ -36,6 +36,8 @@ function connect_client_socket() {
  
         console.log('client in browser says ... WebSocket is supported by your browser.');
 
+        return; // stens TODO - remove this when live 20140729
+
         // var chosen_port_client = 80; // change for nodejitsu
         var chosen_port_client = 8801;	// OK prior to nodejitsu
         // var chosen_port_client = 8888;
