@@ -1692,17 +1692,24 @@ socket_server();
 // ---
 
 // httpd.createServer(requestHandler).listen(8888); // OK pre appfog
-
-
 // https://stackoverflow.com/questions/16573668/best-practices-when-running-node-js-with-port-80-ubuntu-linode
 
-// console.log("\npoint your browser at http://localhost:" + APP_FOG_PORT);
+var serviceUrl;
+var servicePort;
 
-console.log("\npoint your browser at http://webgl-3d-animation.jit.su/");
+if (process.env.NODE_ENV == "production") {
 
-// httpd.createServer(requestHandler).listen(process.env.VMC_APP_PORT || APP_FOG_PORT, null);
+    serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
+    servicePort = 80;
 
-httpd.createServer(requestHandler).listen(80, null);
+} else {
+
+    serviceUrl = "http://localhost:";
+    servicePort = 8888;
+};
+
+console.log("\nPoint your browser at ", serviceUrl + servicePort, "\n");
+
+httpd.createServer(requestHandler).listen(servicePort, null);
 
 
-            // serviceUrl = "http://webgl-3d-animation.jit.su/";
