@@ -27,7 +27,7 @@ var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-
 //helper function handles file verification
 function getFile(filePath,res,page404) {
 
-    // console.log('TOP getFile filePath ', filePath);  // stens TODO this prints files needed
+    console.log('TOP getFile filePath ', filePath);  // stens TODO this prints files needed
 
     //does the requested file exist?
     fs.exists(filePath,function(exists){
@@ -1666,11 +1666,40 @@ function socket_server() {
 //a helper function to handle HTTP requests
 function requestHandler(req, res) {
 
-    // var fileName = path.basename(req.url) || 'index.html';
-    var fileName = path.basename(req.url) || 'combo.html';
+    console.log("------------- TOP requestHandler -----------------");
 
     // var localFolder = __dirname + '/public/';
     var localFolder = __dirname + '/';
+
+    // console.log('localFolder ', localFolder);
+
+    console.log('req.url ', req.url);
+
+/*
+    var fileName;
+    if (req.url == "/") {
+
+        // fileName = path.join(req.url + 'combo.html');
+        fileName = "combo.html";
+
+    } else {
+
+        // fileName = path.join(req.url);
+        fileName = req.url;
+    }
+*/
+    var fileName = (req.url == "/") ? "combo.html" : req.url;
+
+    // var fileName = path.basename(req.url) || 'index.html';
+    // var fileName = req.url || 'combo.html';
+    // var fileName = path.basename(req.url) || 'combo.html';
+
+
+    var full_path_file = path.join(localFolder, fileName);
+    // var full_path_file = fileName;
+
+    console.log('full_path_file ', full_path_file);
+
 
     var page404 = localFolder + '404.html';
  
@@ -1678,7 +1707,8 @@ function requestHandler(req, res) {
     //pass in the path to the file we want,
     //the response object, and the 404 page path
     //in case the requestd file is not found
-    getFile((localFolder + fileName),res,page404);
+    // getFile((localFolder + fileName),res,page404);
+    getFile(full_path_file, res, page404);
 };
 
 // ---
@@ -1696,7 +1726,7 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.37   ");
+console.log("version: 0.0.38   ");
 
 var serviceUrl;
 var servicePort;
