@@ -64,6 +64,9 @@ function getFile(filePath,res,page404) {
                     else if (extension === 'jpeg') res.writeHeader(200, {"Content-Type": 'image/jpeg'});
                     else if (extension === 'ico') res.writeHeader(200, {'Content-Type': 'image/x-icon'});
                     else if (extension === 'wav') res.writeHeader(200, {'Content-Type': 'audio/x-wav'});
+                    else if (extension === 'ogg') res.writeHeader(200, {'Content-Type': 'audio/ogg'});
+
+
 
                     else { console.log("ERROR - NO CORRECT EXTENSION")};
 
@@ -1726,7 +1729,7 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.38   ");
+console.log("version: 0.0.39   ");
 
 var serviceUrl;
 var servicePort;
