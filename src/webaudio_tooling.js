@@ -672,7 +672,9 @@ function inner_play_tune_jam(once_playback_starts_callback, given_mode, stop_cal
 
     // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8.wav";
     // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8.ogg";
-    var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono.wav";
+    // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono.wav";
+    var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono_8000_16.wav";
+
 
 
 
