@@ -27,7 +27,7 @@ var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-
 //helper function handles file verification
 function getFile(filePath,res,page404) {
 
-    console.log('TOP getFile filePath ', filePath);  // stens TODO this prints files needed
+    // console.log('TOP getFile filePath ', filePath);
 
     //does the requested file exist?
     fs.exists(filePath,function(exists){
@@ -1671,10 +1671,14 @@ function requestHandler(req, res) {
 
     console.log("------------- TOP requestHandler -----------------");
 
+    console.log('   __dirname   ', __dirname);
+
+
     // var localFolder = __dirname + '/public/';
     var localFolder = __dirname + '/';
+    // var localFolder = __dirname + '/../';
 
-    // console.log('localFolder ', localFolder);
+    console.log('localFolder ', localFolder);
 
     console.log('req.url ', req.url);
 
@@ -1691,7 +1695,11 @@ function requestHandler(req, res) {
         fileName = req.url;
     }
 */
+    // var fileName = (req.url == "/") ? "src/combo.html" : req.url;
     var fileName = (req.url == "/") ? "combo.html" : req.url;
+
+    console.log('fileName ', fileName);
+
 
     // var fileName = path.basename(req.url) || 'index.html';
     // var fileName = req.url || 'combo.html';
@@ -1704,7 +1712,7 @@ function requestHandler(req, res) {
     console.log('full_path_file ', full_path_file);
 
 
-    var page404 = localFolder + '404.html';
+    var page404 = localFolder + '404.html'; // stens TODO - deal with using something for this file
  
     //call our helper function
     //pass in the path to the file we want,
@@ -1729,7 +1737,7 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.42   ");
+console.log("version: 0.0.43   ");
 
 var serviceUrl;
 var servicePort;

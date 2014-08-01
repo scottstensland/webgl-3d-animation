@@ -132,7 +132,7 @@ function load_sound(url, once_playback_starts_callback, given_mode, stop_callbac
 
             // ---
 
-        }, on_error);
+        }, on_error); // stens TODO - chase down why getting null error when attemping to decode filetype ogg / wav OK
     }
     request.send();
 
@@ -667,11 +667,14 @@ function inner_play_tune_jam(once_playback_starts_callback, given_mode, stop_cal
 
     // var chosen_audio_file = "Elephant_sounds_rgUFu_hVhlk_roar_mono_clip01.wav";
     // var chosen_audio_file = "Ida_Corr_Fedde_Le_Grand_Let_Me_Think_About_It-19WUwZYM7bM.wav";
-    var chosen_audio_file = "Justice_Genesis_chewy_chocolate_cookies_gtZunGHG0ls_mono.ogg";
-
-
-
+    // var chosen_audio_file = "Justice_Genesis_chewy_chocolate_cookies_gtZunGHG0ls_mono.ogg";
     // var chosen_audio_file = "../media/Ida_Corr_Fedde_Le_Grand_Let_Me_Think_About_It-19WUwZYM7bM.wav";
+
+    // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8.wav";
+    // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8.ogg";
+    var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono.wav";
+
+
 
 
 
