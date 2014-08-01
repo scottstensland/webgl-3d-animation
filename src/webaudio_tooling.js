@@ -114,13 +114,17 @@ function load_sound(url, once_playback_starts_callback, given_mode, stop_callbac
     request.open('GET', url, true);
     request.responseType = 'arraybuffer';
 
+    // var file_suffix = url.substr(url.lastIndexOf('.') + 1); //  get just the :  wav
+    var file_name = url.substr(url.lastIndexOf('/') + 1);
+
     // When loaded decode the data
     request.onload = function () {
 
         // decode the data
         audio_context.decodeAudioData(request.response, function (buffer) {
 
-            console.log('mp3 ... buffer.length ', buffer.length);
+            // console.log('mp3 ... buffer.length ', buffer.length);
+            console.log(file_name, ' ... buffer.length ', buffer.length);
 
             // ---
 
