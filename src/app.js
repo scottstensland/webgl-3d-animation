@@ -1,11 +1,10 @@
-
 //   HTTPD server from scratch
 
 //step 1) require the modules we need
 var httpd = require('http');
 var path = require('path');
 var fs = require('fs');
-var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
+var ws = require("nodejs-websocket"); // https://www.npmjs.org/package/nodejs-websocket
 
 // var jdataview = require('jdataview');
 
@@ -18,32 +17,32 @@ var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-
 
 //  // ---
 
- // var gene_mach = require('./genetic_machinery_server.js')
- //  , inherits     = require('util').inherits
- //  ;
+// var gene_mach = require('./genetic_machinery_server.js')
+//  , inherits     = require('util').inherits
+//  ;
 
 // ---
 
 //helper function handles file verification
-function getFile(filePath,res,page404) {
+function getFile(filePath, res, page404) {
 
     // console.log('TOP getFile filePath ', filePath);
 
     //does the requested file exist?
-    fs.exists(filePath,function(exists){
+    fs.exists(filePath, function(exists) {
         //if it does...
-        if(exists){
+        if (exists) {
             //read the fiule, run the anonymous function
-            fs.readFile(filePath,function(err,contents){
+            fs.readFile(filePath, function(err, contents) {
 
                 // console.log('filePath   ', filePath);
 
-                if(!err){
+                if (!err) {
                     //if there was no error
                     //send the contents with the default 200/ok header
 
-                    var tmp  = filePath.lastIndexOf(".");
-                    var extension  = filePath.substring((tmp + 1));
+                    var tmp = filePath.lastIndexOf(".");
+                    var extension = filePath.substring((tmp + 1));
 
                     // if (extension === 'js') {
 
@@ -55,20 +54,42 @@ function getFile(filePath,res,page404) {
                     // https://gist.github.com/rrobe53/976610
 
                     // set content type
-                    if (extension === 'html') res.writeHeader(200, {"Content-Type": 'text/html'});
-                    else if (extension === 'htm') res.writeHeader(200, {"Content-Type": 'text/html'});
-                    else if (extension === 'css') res.writeHeader(200, {"Content-Type": 'text/css'});
-                    else if (extension === 'js') res.writeHeader(200, {"Content-Type": 'text/javascript'});
-                    else if (extension === 'png') res.writeHeader(200, {"Content-Type": 'image/png'});
-                    else if (extension === 'jpg') res.writeHeader(200, {"Content-Type": 'image/jpg'});
-                    else if (extension === 'jpeg') res.writeHeader(200, {"Content-Type": 'image/jpeg'});
-                    else if (extension === 'ico') res.writeHeader(200, {'Content-Type': 'image/x-icon'});
-                    else if (extension === 'wav') res.writeHeader(200, {'Content-Type': 'audio/x-wav'});
-                    else if (extension === 'ogg') res.writeHeader(200, {'Content-Type': 'audio/ogg'});
+                    if (extension === 'html') res.writeHeader(200, {
+                        "Content-Type": 'text/html'
+                    });
+                    else if (extension === 'htm') res.writeHeader(200, {
+                        "Content-Type": 'text/html'
+                    });
+                    else if (extension === 'css') res.writeHeader(200, {
+                        "Content-Type": 'text/css'
+                    });
+                    else if (extension === 'js') res.writeHeader(200, {
+                        "Content-Type": 'text/javascript'
+                    });
+                    else if (extension === 'png') res.writeHeader(200, {
+                        "Content-Type": 'image/png'
+                    });
+                    else if (extension === 'jpg') res.writeHeader(200, {
+                        "Content-Type": 'image/jpg'
+                    });
+                    else if (extension === 'jpeg') res.writeHeader(200, {
+                        "Content-Type": 'image/jpeg'
+                    });
+                    else if (extension === 'ico') res.writeHeader(200, {
+                        'Content-Type': 'image/x-icon'
+                    });
+                    else if (extension === 'wav') res.writeHeader(200, {
+                        'Content-Type': 'audio/x-wav'
+                    });
+                    else if (extension === 'ogg') res.writeHeader(200, {
+                        'Content-Type': 'audio/ogg'
+                    });
 
 
 
-                    else { console.log("ERROR - NO CORRECT EXTENSION")};
+                    else {
+                        console.log("ERROR - NO CORRECT EXTENSION")
+                    };
 
                     res.end(contents);
 
@@ -80,11 +101,13 @@ function getFile(filePath,res,page404) {
         } else {
             //if the requested file was not found
             //serve-up our custom 404 page
-            fs.readFile(page404,function(err,contents){
+            fs.readFile(page404, function(err, contents) {
                 //if there was no error
-                if(!err){
+                if (!err) {
                     //send the contents with a 404/not found header 
-                    res.writeHead(404, {'Content-Type': 'text/html'});
+                    res.writeHead(404, {
+                        'Content-Type': 'text/html'
+                    });
                     // res.writeHead(404, {"Content-Type": "text/plain"});
                     res.write("404 Not Found\n");
                     res.write(contents);
@@ -105,23 +128,23 @@ function getFile(filePath,res,page404) {
 
 
 function is_origin_allowed(origin) {
-  // put logic here to detect whether the specified origin is allowed.
-  return true;
+    // put logic here to detect whether the specified origin is allowed.
+    return true;
 }
 
 // ---
 
 function get_good_timestamp() {
 
-     Date.prototype.yyyymmdd = function() {
-       var yyyy = this.getFullYear().toString();
-       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-       var dd  = this.getDate().toString();
-       var time  = this.getTime().toString();
+    Date.prototype.yyyymmdd = function() {
+        var yyyy = this.getFullYear().toString();
+        var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+        var dd = this.getDate().toString();
+        var time = this.getTime().toString();
 
-       // return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]) + time; // padding
-       return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]) + '_' + time; // padding
-      };
+        // return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]) + time; // padding
+        return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0]) + '_' + time; // padding
+    };
 
     return (new Date().yyyymmdd());
 }
@@ -169,9 +192,9 @@ function write_nonblocking_async(data_to_persist) {
     var stream = fs.createWriteStream("/tmp/test_nodejs_friday_april_4_1247_NON_blocking.txt");
 
     stream.once('open', function(fd) {
-      stream.write("My first row\n");
-      stream.write("My second row\n");
-      stream.end();
+        stream.write("My first row\n");
+        stream.write("My second row\n");
+        stream.end();
     });
 }
 
@@ -190,12 +213,12 @@ function write_json_serialized(data_to_persist) {
 
     fs.writeFile(outputFilename, JSON.stringify(data_to_persist, null, 4), function(err) {
 
-        if(err) {
-          console.log(err);
+        if (err) {
+            console.log(err);
         } else {
-          console.log("JSON saved to " + outputFilename);
+            console.log("JSON saved to " + outputFilename);
         }
-    }); 
+    });
 }
 
 // ---
@@ -243,45 +266,45 @@ function write_buffer_to_file(data_to_persist) {
 
 function writeUTFBytes(view, offset, string) {
 
-  var lng = string.length;
-  for (var i = 0; i < lng; i++){
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
+    var lng = string.length;
+    for (var i = 0; i < lng; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+    }
 }
 
 
 
-function mergeBuffers(channelBuffer, recordingLength){
+function mergeBuffers(channelBuffer, recordingLength) {
 
-  var result = new Float32Array(recordingLength);
-  var offset = 0;
-  var lng = channelBuffer.length;
-  for (var i = 0; i < lng; i++){
-    var buffer = channelBuffer[i];
-    result.set(buffer, offset);
-    offset += buffer.length;
-  }
-  return result;
+    var result = new Float32Array(recordingLength);
+    var offset = 0;
+    var lng = channelBuffer.length;
+    for (var i = 0; i < lng; i++) {
+        var buffer = channelBuffer[i];
+        result.set(buffer, offset);
+        offset += buffer.length;
+    }
+    return result;
 }
 
 
-function interleave(leftChannel, rightChannel){
-  var length = leftChannel.length + rightChannel.length;
-  var result = new Float32Array(length);
- 
-  var inputIndex = 0;
- 
-  for (var index = 0; index < length; ){
-    result[index++] = leftChannel[inputIndex];
-    result[index++] = rightChannel[inputIndex];
-    inputIndex++;
-  }
-  return result;
+function interleave(leftChannel, rightChannel) {
+    var length = leftChannel.length + rightChannel.length;
+    var result = new Float32Array(length);
+
+    var inputIndex = 0;
+
+    for (var index = 0; index < length;) {
+        result[index++] = leftChannel[inputIndex];
+        result[index++] = rightChannel[inputIndex];
+        inputIndex++;
+    }
+    return result;
 }
 
 
 
-function checkEndian(){
+function checkEndian() {
 
     // https://stackoverflow.com/questions/7869752/javascript-typed-arrays-and-endianness
 
@@ -292,9 +315,9 @@ function checkEndian(){
     b[1] = 0xb2;
     b[2] = 0xc3;
     b[3] = 0xd4;
-    if(c[0] == 0xd4c3b2a1) return "little endian";
-    if(c[0] == 0xa1b2c3d4) return "big endian";
-    else throw new Error("Something crazy just happened"); 
+    if (c[0] == 0xd4c3b2a1) return "little endian";
+    if (c[0] == 0xa1b2c3d4) return "big endian";
+    else throw new Error("Something crazy just happened");
 }
 
 function parse_wav(wav_input_file_obj) {
@@ -302,20 +325,20 @@ function parse_wav(wav_input_file_obj) {
     // http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
     // http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Samples.html
 
-    var raw_buffer = wav_input_file_obj.raw_buffer;   // entire contents of input file which is parsed 
+    var raw_buffer = wav_input_file_obj.raw_buffer; // entire contents of input file which is parsed 
 
     console.log("top of parse_wav +++++++++++++++++++++  raw_buffer.length ", raw_buffer.length);
 
     var size_header = 44;
     var offset = 0;
 
-    var RIFF = new Buffer(4);   // these MUST remain size 4
+    var RIFF = new Buffer(4); // these MUST remain size 4
     var WAVE = new Buffer(4);
-    var fmt  = new Buffer(4);
+    var fmt = new Buffer(4);
     var data = new Buffer(4);
 
 
-    raw_buffer.copy(RIFF, 0, offset, RIFF.length);  //  chunckID 0 offset 4 bytes
+    raw_buffer.copy(RIFF, 0, offset, RIFF.length); //  chunckID 0 offset 4 bytes
     offset += 4;
 
     // console.log("is this RIFF or what ",RIFF.toString('ascii',0,RIFF.length)," RIFF.length ",RIFF.length);
@@ -325,13 +348,13 @@ function parse_wav(wav_input_file_obj) {
         var err_msg = "ERROR - failed to see RIFF at top of input WAV file parse";
         console.log(err_msg);
 
-        return new Error(err_msg);  // stens TODO - this require caller to handle this error
+        return new Error(err_msg); // stens TODO - this require caller to handle this error
 
         // https://stackoverflow.com/questions/7310521/node-js-best-practice-exception-handling
     }
 
     var chunckSize;
-    chunckSize = raw_buffer.readUInt32LE(offset);   //  chunckSize 4 offset 4 bytes
+    chunckSize = raw_buffer.readUInt32LE(offset); //  chunckSize 4 offset 4 bytes
     offset += 4;
     console.log("on read ... chunckSize ", chunckSize);
 
@@ -343,13 +366,13 @@ function parse_wav(wav_input_file_obj) {
 
 
 
-    raw_buffer.copy(fmt, 0, offset, offset + fmt.length);// subchunk1ID  12 offset 4 bytes
+    raw_buffer.copy(fmt, 0, offset, offset + fmt.length); // subchunk1ID  12 offset 4 bytes
     offset += 4;
     console.log("on read ... fmt is what  ", fmt.toString('ascii', 0, fmt.length), " fmt.length ", fmt.length);
 
 
 
-    wav_input_file_obj.pcm_format = raw_buffer.readUInt32LE(offset);   //  subchunk1Size 16 offset 4 bytes
+    wav_input_file_obj.pcm_format = raw_buffer.readUInt32LE(offset); //  subchunk1Size 16 offset 4 bytes
     offset += 4;
     console.log("on read ... pcm_format ", wav_input_file_obj.pcm_format);
     // valid values of Chunk size :   16 or 18 or 40
@@ -357,43 +380,43 @@ function parse_wav(wav_input_file_obj) {
 
 
 
-    wav_input_file_obj.audio_format = raw_buffer.readUInt16LE(offset);   //  audioFormat 20 offset 2 bytes
+    wav_input_file_obj.audio_format = raw_buffer.readUInt16LE(offset); //  audioFormat 20 offset 2 bytes
     offset += 2;
     console.log('on read ... audio_format ', wav_input_file_obj.audio_format);
 
 
-    wav_input_file_obj.num_channels = raw_buffer.readUInt16LE(offset);   //  numChannels 22 offset 2 bytes
+    wav_input_file_obj.num_channels = raw_buffer.readUInt16LE(offset); //  numChannels 22 offset 2 bytes
     offset += 2;
     console.log('on read ... num_channels ', wav_input_file_obj.num_channels);
     //  Number of interleaved channels
 
 
 
-    wav_input_file_obj.sample_rate = raw_buffer.readUInt32LE(offset);   //  sampleRate 24 offset 4 bytes
+    wav_input_file_obj.sample_rate = raw_buffer.readUInt32LE(offset); //  sampleRate 24 offset 4 bytes
     offset += 4;
     console.log('on read ... sample_rate ', wav_input_file_obj.sample_rate);
     // blocks per second
 
 
-    wav_input_file_obj.byte_rate = raw_buffer.readUInt32LE(offset);   //  byteRate 28 offset 4 bytes
+    wav_input_file_obj.byte_rate = raw_buffer.readUInt32LE(offset); //  byteRate 28 offset 4 bytes
     offset += 4;
     console.log("on read ... byte_rate ", wav_input_file_obj.byte_rate);
     // byteRate = sampleRate * numChannels * bitDepth / 8;
-    wav_input_file_obj.bit_depth = (wav_input_file_obj.byte_rate * 8.0) / 
-                                    (wav_input_file_obj.sample_rate * wav_input_file_obj.num_channels);
+    wav_input_file_obj.bit_depth = (wav_input_file_obj.byte_rate * 8.0) /
+        (wav_input_file_obj.sample_rate * wav_input_file_obj.num_channels);
     console.log("on read ... bit_depth    ", wav_input_file_obj.bit_depth);
     // average bytes per second - data rate
 
 
 
 
-    wav_input_file_obj.block_align = raw_buffer.readUInt16LE(offset);   //  blockAlign 32 offset 2 bytes
+    wav_input_file_obj.block_align = raw_buffer.readUInt16LE(offset); //  blockAlign 32 offset 2 bytes
     offset += 2;
     console.log("on read .... block_align ", wav_input_file_obj.block_align);
     // data block size in bytes
 
 
-    wav_input_file_obj.bits_per_sample = raw_buffer.readUInt16LE(offset);   //  bitsPerSample 34 offset 2 bytes
+    wav_input_file_obj.bits_per_sample = raw_buffer.readUInt16LE(offset); //  bitsPerSample 34 offset 2 bytes
     offset += 2;
     console.log("on read ... bits_per_sample ", wav_input_file_obj.bits_per_sample);
     // bits per sample
@@ -408,15 +431,15 @@ function parse_wav(wav_input_file_obj) {
 
 
     var subchunk2Size;
-    subchunk2Size = raw_buffer.readUInt32LE(offset);   //  subchunk1Size 16 offset 4 bytes
+    subchunk2Size = raw_buffer.readUInt32LE(offset); //  subchunk1Size 16 offset 4 bytes
     offset += 4;
     console.log("subchunk2Size ", subchunk2Size);
 
 
-    if (! (size_header == offset)) {
+    if (!(size_header == offset)) {
 
-        var err_msg = "ERROR - input file header must contain " + size_header + 
-                            " bytes it incorrectly contains : " + offset;
+        var err_msg = "ERROR - input file header must contain " + size_header +
+            " bytes it incorrectly contains : " + offset;
 
         console.log(err_msg);
     }
@@ -429,10 +452,10 @@ function parse_wav(wav_input_file_obj) {
     wav_input_file_obj.buffer = new Buffer(size_buffer);
 
     raw_buffer.copy(wav_input_file_obj.buffer, 0, offset, offset + size_buffer);
-    
+
     console.log("end of read payload buffer size  ", wav_input_file_obj.buffer.length);
 
-}       //      parse_wav
+} //      parse_wav
 
 function read_file_into_buffer(input_file_obj, callback) {
 
@@ -456,7 +479,7 @@ function read_file_into_buffer(input_file_obj, callback) {
                 console.log('CCCCCC binary newData length this callback cycle is ', newData.length);
             }
 
-            input_file_obj.raw_buffer = Buffer.concat([input_file_obj.raw_buffer, newData], input_file_obj.raw_buffer.length+newData.length);
+            input_file_obj.raw_buffer = Buffer.concat([input_file_obj.raw_buffer, newData], input_file_obj.raw_buffer.length + newData.length);
 
             if (curr_print_count < max_print_count) {
 
@@ -468,27 +491,27 @@ function read_file_into_buffer(input_file_obj, callback) {
 
 
     // Done, process the big data
-    input_read_stream.on("error", function (error) {
+    input_read_stream.on("error", function(error) {
 
         console.log("ERROR - failure when attempting to read ", input_file_obj.filename, error);
     });
 
 
     // Done, process the big data
-    input_read_stream.on("end", function () {
+    input_read_stream.on("end", function() {
 
         console.log('ENNNNNNNNNNDDDD input_file_obj.raw_buffer length ', input_file_obj.raw_buffer.length);
 
-        callback(input_file_obj);   // do something with data read from file - parse_wav
+        callback(input_file_obj); // do something with data read from file - parse_wav
 
         // ---
 
-        delete input_file_obj["raw_buffer"];    // no longer need raw pre parse buffer
+        delete input_file_obj["raw_buffer"]; // no longer need raw pre parse buffer
 
         console.log("post callback to parse_wav with property iteration of input_file_obj");
     });
 
-}       //      read_file_into_buffer
+} //      read_file_into_buffer
 
 function write_wav(wav_file_obj) {
 
@@ -501,10 +524,10 @@ function write_wav(wav_file_obj) {
     // var audio_format = 1; // raw PCM
 
 
-    var sample_rate  = 44100;    // defaults to be overridden in below switch statement
-    var bit_depth    = 16;
+    var sample_rate = 44100; // defaults to be overridden in below switch statement
+    var bit_depth = 16;
     var num_channels = 1;
-    var pcm_format = 16;   // valid values of Chunk size :   16 or 18 or 40
+    var pcm_format = 16; // valid values of Chunk size :   16 or 18 or 40
     var audio_format = 1; // raw PCM
 
     show_object_with_buffer(wav_file_obj, "in write_wav");
@@ -515,29 +538,32 @@ function write_wav(wav_file_obj) {
 
         switch (property) {
 
-            case "sample_rate" : {
+            case "sample_rate":
+                {
 
-                sample_rate = wav_file_obj[property];
+                    sample_rate = wav_file_obj[property];
+                    break;
+                }
+
+            case "bit_depth":
+                {
+
+                    bit_depth = wav_file_obj[property];
+                    break;
+                }
+
+            case "num_channels":
+                {
+
+                    num_channels = wav_file_obj[property];
+                    break;
+                }
+
+                // --- default - catch all if not identifed above
+
+                console.log("ignore this ... seeing property NOT on authorized list : ", property,
+                    " value ", wav_file_obj[property]);
                 break;
-            }
-
-            case "bit_depth" : {
-
-                bit_depth = wav_file_obj[property];
-                break;
-            }
-
-            case "num_channels" : {
-
-                num_channels = wav_file_obj[property];
-                break;
-            }
-
-            // --- default - catch all if not identifed above
-
-            console.log("ignore this ... seeing property NOT on authorized list : ", property, 
-                            " value ", wav_file_obj[property]);
-            break;
         }
     }
 
@@ -548,11 +574,11 @@ function write_wav(wav_file_obj) {
 
     // ---
 
-    var size_header = 44;   // constant number of bytes in WAV header as per spec
+    var size_header = 44; // constant number of bytes in WAV header as per spec
 
-    var RIFF = new Buffer('RIFF');  // each of these constant MUST remain 4 bytes in size
+    var RIFF = new Buffer('RIFF'); // each of these constant MUST remain 4 bytes in size
     var WAVE = new Buffer('WAVE');
-    var fmt  = new Buffer('fmt ');
+    var fmt = new Buffer('fmt ');
     var data = new Buffer('data');
 
     // ---
@@ -560,7 +586,7 @@ function write_wav(wav_file_obj) {
     var path = wav_file_obj.filename;
 
     console.log("/////////// about to write wav output file path ", path);
-    console.log("size buffer to write  ", wav_file_obj.buffer.length);  // deal with 1 channel for now
+    console.log("size buffer to write  ", wav_file_obj.buffer.length); // deal with 1 channel for now
 
     console.log(checkEndian());
 
@@ -578,24 +604,24 @@ function write_wav(wav_file_obj) {
     var offset = 0;
 
     // write the "RIFF" identifier
-    RIFF.copy(header, offset);  //  chunckID 0 offset  4 bytes
+    RIFF.copy(header, offset); //  chunckID 0 offset  4 bytes
     offset += 4;
 
 
     var chunckSize = entire_size_file - 8;
     // write the file size minus the identifier and this 32-bit int
     // header['writeUInt32' + this.endianness](entire_size_file - 8, offset);
-    header.writeUInt32LE(chunckSize, offset);   //  chunckSize 4 offset 4 bytes
+    header.writeUInt32LE(chunckSize, offset); //  chunckSize 4 offset 4 bytes
     offset += 4;
-    
+
 
     // write the "WAVE" identifier
-    WAVE.copy(header, offset);                  // format   8 offset 4 bytes
+    WAVE.copy(header, offset); // format   8 offset 4 bytes
     offset += 4;
 
 
     // write the "fmt " sub-chunk identifier
-    fmt.copy(header, offset);                   //  subchunk1ID 12 offset 4 bytes
+    fmt.copy(header, offset); //  subchunk1ID 12 offset 4 bytes
     offset += 4;
 
 
@@ -604,7 +630,7 @@ function write_wav(wav_file_obj) {
     // different size.
     // header['writeUInt32' + this.endianness](16, offset);
     // var pcm_format = 16;
-    header.writeUInt32LE(pcm_format, offset);   //  subchunk1Size 16 offset 4 bytes
+    header.writeUInt32LE(pcm_format, offset); //  subchunk1Size 16 offset 4 bytes
     offset += 4;
     console.log('write pcm_format ', pcm_format, " post incr offset ", offset);
     // valid values of Chunk size :   16 or 18 or 40
@@ -614,7 +640,7 @@ function write_wav(wav_file_obj) {
     // write the audio format code
     // header['writeUInt16' + this.endianness](this.format, offset);
     // var audio_format = 1; // raw PCM
-    header.writeUInt16LE(audio_format, offset);   //  audioFormat  20 offset 2 bytes    
+    header.writeUInt16LE(audio_format, offset); //  audioFormat  20 offset 2 bytes    
     offset += 2;
     console.log('write audio_format ', audio_format, " post incr offset ", offset);
 
@@ -622,7 +648,7 @@ function write_wav(wav_file_obj) {
     // write the number of channels
     // var num_channels = 1;
     // header['writeUInt16' + this.endianness](this.channels, offset);
-    header.writeUInt16LE(num_channels, offset);   //  num_channels  22 offset 2 bytes     
+    header.writeUInt16LE(num_channels, offset); //  num_channels  22 offset 2 bytes     
     offset += 2;
 
     console.log('write num_channels ', num_channels, " post incr offset ", offset);
@@ -630,7 +656,7 @@ function write_wav(wav_file_obj) {
     // write the sample rate
     // var sampleRate = 44100;
     // header['writeUInt32' + this.endianness](this.sampleRate, offset);
-    header.writeUInt32LE(sample_rate, offset);   //  sampleRate  24 offset 4 bytes     
+    header.writeUInt32LE(sample_rate, offset); //  sampleRate  24 offset 4 bytes     
     offset += 4;
     console.log('write sample_rate ', sample_rate, " post incr offset ", offset);
 
@@ -645,7 +671,7 @@ function write_wav(wav_file_obj) {
         console.log("on write byteRate was null so post calculation its ", byteRate);
     }
     // header['writeUInt32' + this.endianness](byteRate, offset);
-    header.writeUInt32LE(byteRate, offset);   //  byteRate  28 offset 4 bytes
+    header.writeUInt32LE(byteRate, offset); //  byteRate  28 offset 4 bytes
     offset += 4;
     console.log("on write ... byteRate ", byteRate);
     console.log("on write ... sample_rate ", sample_rate);
@@ -659,10 +685,10 @@ function write_wav(wav_file_obj) {
     // write the block align
     var blockAlign = this.blockAlign;
     if (null == blockAlign) {
-    blockAlign = num_channels * bit_depth / 8;
+        blockAlign = num_channels * bit_depth / 8;
     }
     // header['writeUInt16' + this.endianness](blockAlign, offset);
-    header.writeUInt16LE(blockAlign, offset);   //  blockAlign  32 offset 2 bytes     
+    header.writeUInt16LE(blockAlign, offset); //  blockAlign  32 offset 2 bytes     
     offset += 2;
     console.log("on write ... blockAlign ", blockAlign);
 
@@ -670,25 +696,25 @@ function write_wav(wav_file_obj) {
     // write the bits per sample
     var bitsPerSample = bit_depth;
     // header['writeUInt16' + this.endianness](this.bitDepth, offset);
-    header.writeUInt16LE(bitsPerSample, offset);    //  bitsPerSample  34 offset 2 bytes     
+    header.writeUInt16LE(bitsPerSample, offset); //  bitsPerSample  34 offset 2 bytes     
     offset += 2;
 
     // offset += 2;                                    // filler_01  36 offset 2 bytes - just ignore
 
     // write the "data" sub-chunk ID
-    data.copy(header, offset);                      // subchunk2ID  36 offset 4 bytes
+    data.copy(header, offset); // subchunk2ID  36 offset 4 bytes
     offset += 4;
 
     // write the remaining length of the rest of the data
     // header['writeUInt32' + this.endianness](dataLength, offset);
     var subchunk2Size = data_length;
-    header.writeUInt32LE(data_length, offset);   //  subchunk2Size  40 offset 4 bytes
+    header.writeUInt32LE(data_length, offset); //  subchunk2Size  40 offset 4 bytes
     offset += 4;
 
-    if (! (44 == offset)) {
+    if (!(44 == offset)) {
 
-        var err_msg = "ERROR - input file header must contain " + size_header + 
-                            " bytes it incorrectly contains : " + offset;
+        var err_msg = "ERROR - input file header must contain " + size_header +
+            " bytes it incorrectly contains : " + offset;
 
         console.log(err_msg);
     }
@@ -709,7 +735,7 @@ function write_wav(wav_file_obj) {
 
     console.log("write_wav is complete");
 
-}       //      write_wav
+} //      write_wav
 
 // ---
 
@@ -735,7 +761,7 @@ function process_my_data(given_data) {
 
     var index_float = 0;
 
-    var big_binary_float = new Float32Array(size_buff/4);// stens TODO assure it divides evenly
+    var big_binary_float = new Float32Array(size_buff / 4); // stens TODO assure it divides evenly
 
     if (given_datatype == 'int') {
 
@@ -752,19 +778,19 @@ function process_my_data(given_data) {
         console.log('float received_data_arraybuffer size ', received_data_arraybuffer.length);
 
 
-        var buffer_single_byte_sized = new Buffer(4);   // holds enough to populate a single float
+        var buffer_single_byte_sized = new Buffer(4); // holds enough to populate a single float
         var number_float;
 
         var index_int = 0;
 
         for (var index = 0; index < size_buff; index += 4) {
-        // for (var index = 0; index < size_buff; index++) {
+            // for (var index = 0; index < size_buff; index++) {
 
             // console.log('raw ', index, given_data[index]);
 
-            
+
             // for (var inneri = 0; inneri < 4; inneri++) { // take float sized gulps endian
-            for (var inneri = 3; inneri >= 0; inneri--) {  // take float sized gulps other endian
+            for (var inneri = 3; inneri >= 0; inneri--) { // take float sized gulps other endian
 
                 buffer_single_byte_sized[inneri] = given_data[index_int++];
 
@@ -774,7 +800,7 @@ function process_my_data(given_data) {
             // var view = new jDataView(buffer_single_byte_sized);
             var view = new jdataview(buffer_single_byte_sized);
 
-            
+
 
 
             number_float = view.getFloat32(0);
@@ -782,13 +808,13 @@ function process_my_data(given_data) {
             // console.log('binary number_float ', number_float);
 
             big_binary_float[index_float++] = number_float;
-            
+
         }
 
         // write_json_serialized(big_binary_float);
         write_buffer_to_file(big_binary_float);
     }
-}       //      process_my_data
+} //      process_my_data
 
 // ---
 
@@ -811,7 +837,7 @@ function show_buffer(given_audio_buffer, given_buffer_size, limit_to_see) {
 function write_8_bit_buffer_to_32_bit_output_file(input_data, output_data) {
 
     var index_float = 0;
-    var buffer_single_byte_sized = new Buffer(4);   // holds enough to populate a single float
+    var buffer_single_byte_sized = new Buffer(4); // holds enough to populate a single float
     var number_float;
 
     var size_buff = input_data.buffer.length;
@@ -820,10 +846,10 @@ function write_8_bit_buffer_to_32_bit_output_file(input_data, output_data) {
     console.log("size_buff ", size_buff);
 
     for (var index = 0; index < size_buff; index += 4) {
-    // for (var index = 0; index < size_buff; index++) {
-        
+        // for (var index = 0; index < size_buff; index++) {
+
         // for (var inneri = 0; inneri < 4; inneri++) { // take float sized gulps endian
-        for (var inneri = 3; inneri >= 0; inneri--) {  // take float sized gulps other endian
+        for (var inneri = 3; inneri >= 0; inneri--) { // take float sized gulps other endian
 
             buffer_single_byte_sized[inneri] = input_data.buffer[index_int++];
 
@@ -846,9 +872,9 @@ function write_8_bit_buffer_to_32_bit_output_file(input_data, output_data) {
         }
 
         output_data.buffer[index_float++] = number_float;
-        
+
     }
-}       //      write_8_bit_buffer_to_32_bit_output_file
+} //      write_8_bit_buffer_to_32_bit_output_file
 
 // ---
 
@@ -862,7 +888,7 @@ function write_8_bit_buffer_to_16_bit_output_file(input_data, output_data) {
     console.log("size_one_16_bit_in_bytes ", size_one_16_bit_in_bytes);
 
     var index_16bit_int = 0;
-    var buffer_one_16_bit_value = new Buffer(size_one_16_bit_in_bytes);// holds single 16 bit value
+    var buffer_one_16_bit_value = new Buffer(size_one_16_bit_in_bytes); // holds single 16 bit value
     var number_16bit_int;
 
     var size_buff = input_data.buffer.length;
@@ -871,11 +897,11 @@ function write_8_bit_buffer_to_16_bit_output_file(input_data, output_data) {
     console.log("size_buff ", size_buff);
 
     for (var index = 0; index < size_buff; index += size_one_16_bit_in_bytes) {
-    // for (var index = 0; index < size_buff; index++) {
-        
+        // for (var index = 0; index < size_buff; index++) {
+
         // for (var inneri = 0; inneri < 4; inneri++) { // take float sized gulps endian
         // for (var inneri = 3; inneri >= 0; inneri--) {  // take float sized gulps other endian
-        for (var inneri = (size_one_16_bit_in_bytes - 1); inneri >= 0; inneri--) {  // take 16bit sized gulps other endian
+        for (var inneri = (size_one_16_bit_in_bytes - 1); inneri >= 0; inneri--) { // take 16bit sized gulps other endian
 
             buffer_one_16_bit_value[inneri] = input_data.buffer[index_int++];
 
@@ -899,9 +925,9 @@ function write_8_bit_buffer_to_16_bit_output_file(input_data, output_data) {
             console.log(index, ' binary number_16bit_int ', number_16bit_int);
         }
 
-        output_data.buffer[index_16bit_int++] = number_16bit_int;   
+        output_data.buffer[index_16bit_int++] = number_16bit_int;
     }
-}       //      write_8_bit_buffer_to_16_bit_output_file
+} //      write_8_bit_buffer_to_16_bit_output_file
 
 // ---
 
@@ -921,7 +947,7 @@ function convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(input_data, output
 
     var offset = 0;
     var index_float = 0;
-    var buffer_single_byte_sized = new Buffer(4);   // holds enough to populate a single float
+    var buffer_single_byte_sized = new Buffer(4); // holds enough to populate a single float
     var number_float;
 
     // var buffer_single_16bit_sized = new Buffer(2);   // holds enough to populate a single 16 bit signed int
@@ -932,17 +958,17 @@ function convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(input_data, output
     console.log("size_buff ", size_buff);
 
     for (var index = 0; index < size_buff; index += 4) {
-    // for (var index = 0; index < size_buff; index++) {
-        
+        // for (var index = 0; index < size_buff; index++) {
+
         // for (var inneri = 0; inneri < 4; inneri++) { // take float sized gulps endian
-        for (var inneri = 3; inneri >= 0; inneri--) {  // take float sized gulps other endian
+        for (var inneri = 3; inneri >= 0; inneri--) { // take float sized gulps other endian
 
             buffer_single_byte_sized[inneri] = input_data.buffer[index_int];
 
             if (index < 100) {
 
                 console.log('rawrawraw ', index, inneri, buffer_single_byte_sized[inneri],
-                                input_data.buffer[index_int]);
+                    input_data.buffer[index_int]);
             }
 
             index_int++;
@@ -958,12 +984,12 @@ function convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(input_data, output
         // output_data.buffer[index_float++] = number_float;
 
         // var same_value_in_16_bit_signed_int = number_float * (32768 - 1)
-        var same_value_in_16_bit_signed_int = ~~(number_float * (32768 - 1));
+        var same_value_in_16_bit_signed_int = ~~ (number_float * (32768 - 1));
 
         if (index < 20) {
 
             console.log(index, ' binary number_float ', number_float, ' int ',
-                                same_value_in_16_bit_signed_int);
+                same_value_in_16_bit_signed_int);
         }
 
         output_data.buffer.writeInt16LE(same_value_in_16_bit_signed_int, offset);
@@ -977,7 +1003,7 @@ function convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(input_data, output
     // write_buffer_to_file(output_data.buffer);
 
 
-}       //      convert_8_bit_buffer_from_32_bit_float_to_16_bit_int
+} //      convert_8_bit_buffer_from_32_bit_float_to_16_bit_int
 
 // ---
 
@@ -1072,10 +1098,10 @@ function convert_32bit_float_typed_array_into_4_bytes_ints_typed_array(input_32_
 
         // if (index % 200000 == 0) {
 
-            // console.log(index, ' value ', big_monster_data[index]);
+        // console.log(index, ' value ', big_monster_data[index]);
         // }
     }
-}       //      convert_32bit_float_typed_array_into_4_bytes_ints_typed_array
+} //      convert_32bit_float_typed_array_into_4_bytes_ints_typed_array
 
 // ---
 
@@ -1109,20 +1135,20 @@ function send_answer_back_to_browser(audio_obj, given_socket_conn) {
 
     blob_8_bit_typed_array_for_socket.size_buffer = audio_obj.buffer.length * Float32Array.BYTES_PER_ELEMENT;
 
-    console.log("IN send_answer_back_to_browser blob_8_bit_typed_array_for_socket.size_buffer ", 
-                blob_8_bit_typed_array_for_socket.size_buffer);
+    console.log("IN send_answer_back_to_browser blob_8_bit_typed_array_for_socket.size_buffer ",
+        blob_8_bit_typed_array_for_socket.size_buffer);
 
     // blob_8_bit_typed_array_for_socket.buffer = new Uint8Array(audio_obj.buffer.length * Float32Array.BYTES_PER_ELEMENT);
     // blob_8_bit_typed_array_for_socket.buffer = new Uint8Array(blob_8_bit_typed_array_for_socket.size_buffer);
 
     // blob_8_bit_typed_array_for_socket.buffer = new Buffer(data_length / 2.0);// input buffer is 32 bit we want 16 bit so half it
-    blob_8_bit_typed_array_for_socket.buffer = new Buffer(blob_8_bit_typed_array_for_socket.size_buffer);// input buffer is 32 bit we want 16 bit so half it
+    blob_8_bit_typed_array_for_socket.buffer = new Buffer(blob_8_bit_typed_array_for_socket.size_buffer); // input buffer is 32 bit we want 16 bit so half it
 
     // below gives :     TypeError: Object #<Uint8Array> has no method 'copy'
     // blob_8_bit_typed_array_for_socket.buffer = new Uint8Array(blob_8_bit_typed_array_for_socket.size_buffer);// input buffer is 32 bit we want 16 bit so half it
 
 
-        // Uint8Array
+    // Uint8Array
 
 
     // convert_8_bit_buffer_from_32_bit_float_to_16_bit_int(blob_8_bit_typed_array_for_socket, audio_obj);
@@ -1132,7 +1158,7 @@ function send_answer_back_to_browser(audio_obj, given_socket_conn) {
 
     convert_32bit_float_typed_array_into_4_bytes_ints_typed_array(audio_obj, blob_8_bit_typed_array_for_socket);
 
-// bbb
+    // bbb
 
     console.log("about to call write_wav from callback done genetic synth for today");
 
@@ -1157,7 +1183,7 @@ function send_answer_back_to_browser(audio_obj, given_socket_conn) {
 
     console.log("AAAAAA bout to send binary from server to client browser");
 
-// bbb
+    // bbb
 
     console.log("AAAAAA typeof buffer is ", typeof blob_8_bit_typed_array_for_socket.buffer);
 
@@ -1188,7 +1214,7 @@ function send_answer_back_to_browser(audio_obj, given_socket_conn) {
 
     // given_socket_conn.send(blob_8_bit_typed_array_for_socket.buffer, done_sending_binary);
 
-}       //      send_answer_back_to_browser
+} //      send_answer_back_to_browser
 
 function copy_properties_across_objects(input_obj, output_obj) {
 
@@ -1206,8 +1232,8 @@ function convert_8_bit_ints_into_32_bit_float(input_8_bit_ints_obj, output_32_bi
 
     console.log("HHHHHH size ", input_8_bit_ints_obj.buffer.length);
 
-    var size_32_bit_float_buff = input_8_bit_ints_obj.buffer.length * 
-                                Uint8Array.BYTES_PER_ELEMENT / Float32Array.BYTES_PER_ELEMENT;
+    var size_32_bit_float_buff = input_8_bit_ints_obj.buffer.length *
+        Uint8Array.BYTES_PER_ELEMENT / Float32Array.BYTES_PER_ELEMENT;
 
     console.log("HHHHHH size_32_bit_float_buff ", size_32_bit_float_buff);
 
@@ -1217,7 +1243,7 @@ function convert_8_bit_ints_into_32_bit_float(input_8_bit_ints_obj, output_32_bi
     var number_float;
 
     output_32_bit_float_obj.size_buffer = size_32_bit_float_buff;
-    output_32_bit_float_obj.size        = size_32_bit_float_buff;
+    output_32_bit_float_obj.size = size_32_bit_float_buff;
 
     var size_8_bit_buff = input_8_bit_ints_obj.buffer.length;
 
@@ -1230,7 +1256,7 @@ function convert_8_bit_ints_into_32_bit_float(input_8_bit_ints_obj, output_32_bi
         // var four_byte_ints = new ArrayBuffer();
 
         // for (var index_int = 0; index_int < 4;) {   // big endian
-        for (var index_int = 3; index_int >= 0;) {  // little endian
+        for (var index_int = 3; index_int >= 0;) { // little endian
 
             one_float[index_int] = input_8_bit_ints_obj.buffer[index];
 
@@ -1246,7 +1272,7 @@ function convert_8_bit_ints_into_32_bit_float(input_8_bit_ints_obj, output_32_bi
         // var one_float = new Float32Array(four_byte_ints);
 
         var view = new jdataview(one_float);
-            
+
         number_float = view.getFloat32(0);
 
 
@@ -1256,7 +1282,7 @@ function convert_8_bit_ints_into_32_bit_float(input_8_bit_ints_obj, output_32_bi
 
         index_32_bit_float++;
     }
-}       //      convert_8_bit_ints_into_32_bit_float
+} //      convert_8_bit_ints_into_32_bit_float
 
 // ---
 
@@ -1266,8 +1292,8 @@ function convert_32_bit_floats_into_16_bit_ints(input_32_bit_float_audio_obj, ou
 
     console.log("size 32 bit float ", size_32_bit_float_buff);
 
-    var num_16_bit_chunks_per_32_bit_float = Float32Array.BYTES_PER_ELEMENT / 
-                                    Uint16Array.BYTES_PER_ELEMENT;
+    var num_16_bit_chunks_per_32_bit_float = Float32Array.BYTES_PER_ELEMENT /
+        Uint16Array.BYTES_PER_ELEMENT;
 
     console.log("num_16_bit_chunks_per_32_bit_float ", num_16_bit_chunks_per_32_bit_float);
 
@@ -1276,7 +1302,7 @@ function convert_32_bit_floats_into_16_bit_ints(input_32_bit_float_audio_obj, ou
 
     console.log("size 16 bit ints ", size_16_bit_int_buff); //  is OK
 
-    output_16_bit_audio_obj.buffer = new Buffer(size_16_bit_int_buff);// input buffer is 32 bit we want 16 bit so half it
+    output_16_bit_audio_obj.buffer = new Buffer(size_16_bit_int_buff); // input buffer is 32 bit we want 16 bit so half it
 
     var one_float = new Float32Array(1);
 
@@ -1295,7 +1321,7 @@ function convert_32_bit_floats_into_16_bit_ints(input_32_bit_float_audio_obj, ou
             console.log("one_float ", one_float[0]); // is OK            
         }
 
-        var same_value_in_16_bit_signed_int = ~~(one_float[0] * (32768 - 1));
+        var same_value_in_16_bit_signed_int = ~~ (one_float[0] * (32768 - 1));
 
         if (index_float < 20) {
 
@@ -1310,7 +1336,7 @@ function convert_32_bit_floats_into_16_bit_ints(input_32_bit_float_audio_obj, ou
 
     // process.exit(3);
 
-}       //      convert_32_bit_floats_into_16_bit_ints
+} //      convert_32_bit_floats_into_16_bit_ints
 
 function convert_8_bit_ints_into_16_bit_ints(input_8_bit_ints_obj, output_16_bit_ints_obj) {
 
@@ -1339,7 +1365,7 @@ function convert_8_bit_ints_into_16_bit_ints(input_8_bit_ints_obj, output_16_bit
     for (var index = 0; index < size_8_bit_buff;) {
 
         // for (var index_int = 0; index_int < 4;) {   // big endian
-        for (var index_int = 3; index_int >= 0;) {  // little endian
+        for (var index_int = 3; index_int >= 0;) { // little endian
 
             one_float[index_int] = input_8_bit_ints_obj.buffer[index];
 
@@ -1350,18 +1376,18 @@ function convert_8_bit_ints_into_16_bit_ints(input_8_bit_ints_obj, output_16_bit
         var view = new jdataview(one_float);
         number_float = view.getFloat32(0);
 
-        var same_value_in_16_bit_signed_int = ~~(number_float * (32768 - 1)); // OK
+        var same_value_in_16_bit_signed_int = ~~ (number_float * (32768 - 1)); // OK
 
         output_16_bit_ints_obj.buffer.writeInt16LE(same_value_in_16_bit_signed_int, offset); // OK works
         offset += 2; // OK works
     }
 
     output_16_bit_ints_obj.size_buffer = output_16_bit_ints_obj.buffer.length;
-    output_16_bit_ints_obj.size        = output_16_bit_ints_obj.buffer.length;
+    output_16_bit_ints_obj.size = output_16_bit_ints_obj.buffer.length;
 
     console.log("output buffer size (offset) ", offset, " size_buffer ", output_16_bit_ints_obj.size_buffer);
 
-}       //      convert_8_bit_ints_into_16_bit_ints
+} //      convert_8_bit_ints_into_16_bit_ints
 
 // ---
 
@@ -1377,88 +1403,90 @@ function process_received_msg(audio_file_obj, given_socket_conn) {
 
     } else {
 
-        given_flavor = audio_file_obj.flavor;                    
+        given_flavor = audio_file_obj.flavor;
     }
 
     console.log("process_received_msg  seeing flavor ", given_flavor);
 
     switch (given_flavor) {
 
-        case "genetic_synthesis" : {
+        case "genetic_synthesis":
+            {
 
-            console.log("... OK genetic_synthesis  ");
+                console.log("... OK genetic_synthesis  ");
 
-            for (var property in audio_file_obj) {
+                for (var property in audio_file_obj) {
 
-                console.log("sssssss genetic_synthesis property ", property, audio_file_obj[property]);
+                    console.log("sssssss genetic_synthesis property ", property, audio_file_obj[property]);
+                }
+
+                console.log("commented out this for now ...");
+
+                // gene_mach.genetic_main(audio_file_obj, given_socket_conn, send_answer_back_to_browser);
+
+                break;
             }
 
-            console.log("commented out this for now ...");
+        case "elephant_roar":
+            {
 
-            // gene_mach.genetic_main(audio_file_obj, given_socket_conn, send_answer_back_to_browser);
+                console.log("seeing elephant_roar RRRRRRRRRR");
 
-            break;
-        }
+                // ---
 
-        case "elephant_roar" : {
+                var wav_input_filename = "/tmp/elephant_roar_synthesized_02_input.wav";
+                var wav_output_filename = "/tmp/elephant_roar_synthesized_02_output.wav";
 
-            console.log("seeing elephant_roar RRRRRRRRRR");
+                var wav_file_input_obj = {}; // create stub object to which we attach .buffer
 
-            // ---
+                wav_file_input_obj.filename = wav_input_filename;
+                wav_file_input_obj.buffer = null;
 
-            var wav_input_filename = "/tmp/elephant_roar_synthesized_02_input.wav";
-            var wav_output_filename = "/tmp/elephant_roar_synthesized_02_output.wav";
+                wav_file_input_obj.raw_buffer = new Buffer(0);
 
-            var wav_file_input_obj = {};  // create stub object to which we attach .buffer
+                console.log('pppprrreeeeeeee read input file ');
 
-            wav_file_input_obj.filename = wav_input_filename;
-            wav_file_input_obj.buffer = null;
+                read_file_into_buffer(wav_file_input_obj, parse_wav); // populates field : raw_buffer with file data
 
-            wav_file_input_obj.raw_buffer = new Buffer(0);
+                console.log('PPPPPOOOOOOOOst read input file ');
 
-            console.log('pppprrreeeeeeee read input file ');
+                // ---
 
-            read_file_into_buffer(wav_file_input_obj, parse_wav); // populates field : raw_buffer with file data
+                for (var property in audio_file_obj) {
 
-            console.log('PPPPPOOOOOOOOst read input file ');
+                    console.log("server side socket sees ", property, "\t", audio_file_obj[property]);
+                }
 
-            // ---
+                // --- received over socket is 8 bit ints - we need 16 bit ints for WAV format
 
-            for (var property in audio_file_obj) {
+                var output_16_bit_audio_obj = {};
 
-                console.log("server side socket sees ", property, "\t", audio_file_obj[property]);
+                copy_properties_across_objects(audio_file_obj, output_16_bit_audio_obj);
+
+                convert_8_bit_ints_into_16_bit_ints(audio_file_obj, output_16_bit_audio_obj);
+
+                // ---
+
+                output_16_bit_audio_obj.filename = wav_output_filename;
+
+                // show_buffer(wav_file_obj.buffer, wav_file_obj.buffer.length, 100);
+
+                console.log("WARNING - stubbed out writing output WAV file : " + output_16_bit_audio_obj.filename);
+                // write_wav(output_16_bit_audio_obj);
+
+                // ---
+
+                break;
             }
 
-            // --- received over socket is 8 bit ints - we need 16 bit ints for WAV format
+            // --- default
 
-            var output_16_bit_audio_obj = {};
-
-            copy_properties_across_objects(audio_file_obj, output_16_bit_audio_obj);
-
-            convert_8_bit_ints_into_16_bit_ints(audio_file_obj, output_16_bit_audio_obj);
-
-            // ---
-
-            output_16_bit_audio_obj.filename = wav_output_filename;
-
-            // show_buffer(wav_file_obj.buffer, wav_file_obj.buffer.length, 100);
-
-            console.log("WARNING - stubbed out writing output WAV file : " + output_16_bit_audio_obj.filename);
-            // write_wav(output_16_bit_audio_obj);
-
-            // ---
+            console.log("ERROR - failed to find matching flavor in process_received_msg");
+            process.exit(1);
 
             break;
-        }
-
-        // --- default
-
-        console.log("ERROR - failed to find matching flavor in process_received_msg");
-        process.exit(1);
-
-        break;
     }
-}       //      process_received_msg
+} //      process_received_msg
 
 
 var received_data_arraybuffer;
@@ -1468,7 +1496,7 @@ var count_num_connections = 0;
 function socket_server() {
 
     // var chosen_port_listening = 80;     // change for nodejitsu
-    var chosen_port_listening = 8801;    // OK prior to nodejitsu
+    var chosen_port_listening = 8801; // OK prior to nodejitsu
     // var chosen_port_listening = 8888;
     // var chosen_port_sending   = 8800;
 
@@ -1476,28 +1504,28 @@ function socket_server() {
     // var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
 
-    var server = ws.createServer(function (connection_request) {
+    var server = ws.createServer(function(connection_request) {
 
         var number_received_properties = 0;
         var element_token, element_value;
         count_num_connections++;
 
-        var audio_file_obj = {};    // will pin up file properties like sample_rate
+        var audio_file_obj = {}; // will pin up file properties like sample_rate
 
         console.log("New connection          monday 447   count_num_connections ",
-                        count_num_connections);
+            count_num_connections);
 
         var request_flavor;
 
         if (!is_origin_allowed(connection_request.origin)) {
-          // Make sure we only accept requests from an allowed origin
-          connection_request.reject();
-          console.log((new Date()) + ' Connection from origin ' + connection_request.origin + ' rejected.');
-          return;
+            // Make sure we only accept requests from an allowed origin
+            connection_request.reject();
+            console.log((new Date()) + ' Connection from origin ' + connection_request.origin + ' rejected.');
+            return;
         }
 
 
-        connection_request.on("text", function (received_data) {
+        connection_request.on("text", function(received_data) {
 
             console.log("Received text format : " + received_data);
 
@@ -1528,7 +1556,7 @@ function socket_server() {
             console.log("parm token  ", element_token, "parm value  ", element_value);
 
             connection_request.sendText(received_data.toUpperCase() +
-                                    " was received on server side echo back");
+                " was received on server side echo back");
 
             // ---
 
@@ -1554,9 +1582,9 @@ function socket_server() {
 
                 if (element_value != number_received_properties) {
 
-                    var err_msg = "ERROR - number of TEXT properties received " + 
-                                    number_received_properties +
-                                    " fails to match value of manifest_count " + element_value;
+                    var err_msg = "ERROR - number of TEXT properties received " +
+                        number_received_properties +
+                        " fails to match value of manifest_count " + element_value;
                     console.log(err_msg);
                     return;
                 }
@@ -1575,7 +1603,7 @@ function socket_server() {
 
         // I booked ticket asking for advice on how to handle binary data
         // https://github.com/sitegui/nodejs-websocket/issues/4
-/*
+        /*
         connection_request.on("binary", function (received_data) {
 
             console.log("Received binary format of length ", received_data.length);
@@ -1615,29 +1643,29 @@ function socket_server() {
 
         // https://github.com/sitegui/nodejs-websocket/issues/5
 
-      // stens TODO - this works OK for int typed arrays following callback is attempt for floats
+        // stens TODO - this works OK for int typed arrays following callback is attempt for floats
         // Listen for binary event
-        connection_request.on("binary", function (inStream) {
+        connection_request.on("binary", function(inStream) {
 
             // Collect all the data in a buffer
             var data = new Buffer(0);
 
             // Get all frames of binary data and add to the buffer
-            inStream.on("readable", function () {
+            inStream.on("readable", function() {
 
                 var newData = inStream.read();
 
                 if (newData) {
 
-                    console.log('WWWWWWWWW  websocket binary newData length this callback cycle is ', 
-                                    newData.length);
+                    console.log('WWWWWWWWW  websocket binary newData length this callback cycle is ',
+                        newData.length);
 
-                    data = Buffer.concat([data, newData], data.length+newData.length)
+                    data = Buffer.concat([data, newData], data.length + newData.length)
                 }
             });
 
             // Done, process the big data
-            inStream.on("end", function () {
+            inStream.on("end", function() {
 
                 console.log("now doing binary end callback");
 
@@ -1654,7 +1682,7 @@ function socket_server() {
             });
         });
 
-        connection_request.on("close", function (code, reason) {
+        connection_request.on("close", function(code, reason) {
             console.log("Connection closed");
         });
 
@@ -1662,10 +1690,10 @@ function socket_server() {
 
     // console.log('chosen_port_listening ', chosen_port_listening);
 
-};      //      socket_server
+}; //      socket_server
 
 // ---
- 
+
 //a helper function to handle HTTP requests
 function requestHandler(req, res) {
 
@@ -1682,7 +1710,7 @@ function requestHandler(req, res) {
 
     console.log('req.url ', req.url);
 
-/*
+    /*
     var fileName;
     if (req.url == "/") {
 
@@ -1713,7 +1741,7 @@ function requestHandler(req, res) {
 
 
     var page404 = localFolder + '404.html'; // stens TODO - deal with using something for this file
- 
+
     //call our helper function
     //pass in the path to the file we want,
     //the response object, and the 404 page path
@@ -1737,7 +1765,7 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.46   ");
+console.log("version: 0.0.47   ");
 
 var serviceUrl;
 var servicePort;
@@ -1745,14 +1773,14 @@ var servicePort;
 if (process.env.HOSTING_VENDOR == "heroku") {
 
     serviceUrl = "http://gentle-cliffs-8200.herokuapp.com:";
-               // http://gentle-cliffs-8200.herokuapp.com
+    // http://gentle-cliffs-8200.herokuapp.com
 
     servicePort = process.env.PORT || 3000;
     // servicePort = 80;
 
 } else if (process.env.NODE_ENV == "production" && process.env.SUBDOMAIN == "webgl-3d-animation") {
 
-    serviceUrl = "http://webgl-3d-animation.jit.su:";   //   http://webgl-3d-animation.jit.su/
+    serviceUrl = "http://webgl-3d-animation.jit.su:"; //   http://webgl-3d-animation.jit.su/
 
     // servicePort = 80;
 
@@ -1767,5 +1795,3 @@ if (process.env.HOSTING_VENDOR == "heroku") {
 console.log("\nPoint your browser at \n\n\t\t", serviceUrl + servicePort, "\n");
 
 httpd.createServer(requestHandler).listen(servicePort, null);
-
-
