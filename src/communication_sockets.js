@@ -49,7 +49,7 @@ var communication_sockets_obj = function() {
             // console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
             // console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
             // console.log("process.env.PORT ", process.env.PORT);
-            console.log("chosen_port_client ", chosen_port_client);
+            // console.log("chosen_port_client ", chosen_port_client);
 
             console.log("version: 0.0.27   ");
 
