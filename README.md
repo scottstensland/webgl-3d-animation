@@ -40,4 +40,15 @@ Using a WebGL savvy browser, point it at URL :
 ```
 
 
+
+or ignore above and just see this WebGL app deployed live on heroku :
+
+```bash
+	http://webgl-3d-animation.herokuapp.com/
+```
+
+
+
+
+
 Feel free to contact me on twitter if you have any questions! :) [@scottstensland](http://twitter.com/scottstensland)
