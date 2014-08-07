@@ -39,14 +39,9 @@ Using a WebGL savvy browser, point it at URL :
 		 http://localhost:8888 
 ```
 
-
-
 or ignore above and just see this WebGL app deployed live on heroku :
 
 [http://webgl-3d-animation.herokuapp.com/](http://webgl-3d-animation.herokuapp.com/ "Scott Stensland's WebGL magic")
-
-
-<a href="http://webgl-3d-animation.herokuapp.com/" target="_blank">http://webgl-3d-animation.herokuapp.com/</a>
 
 
 Feel free to contact me on twitter if you have any questions! :) [@scottstensland](http://twitter.com/scottstensland)
