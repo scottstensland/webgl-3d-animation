@@ -1496,10 +1496,11 @@ var count_num_connections = 0;
 function socket_server() {
 
     // var chosen_port_listening = 80;     // change for nodejitsu
-    var chosen_port_listening = 8801; // OK prior to nodejitsu
+    // var chosen_port_listening = 8801; // OK prior to nodejitsu
     // var chosen_port_listening = 8888;
     // var chosen_port_sending   = 8800;
 
+    // var chosen_port_listening = process.env.PORT || 8888;
 
     // var ws = require("nodejs-websocket");   // https://www.npmjs.org/package/nodejs-websocket
 
@@ -1765,14 +1766,14 @@ console.log("process.env.NODE_ENV ", process.env.NODE_ENV);
 console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.52-3   ");
+console.log("version: 0.0.52-4   ");
 
 var serviceUrl;
 var servicePort;
 
 if (process.env.HOSTING_VENDOR == "heroku") {
 
-    serviceUrl = "http://gentle-cliffs-8200.herokuapp.com:";
+    serviceUrl = "http://webgl-3d-animation.herokuapp.com:";
     // http://gentle-cliffs-8200.herokuapp.com
 
     servicePort = process.env.PORT || 3000;
@@ -1789,6 +1790,7 @@ if (process.env.HOSTING_VENDOR == "heroku") {
 } else {
 
     serviceUrl = "http://localhost:";
+
     servicePort = 8888;
 };
 
