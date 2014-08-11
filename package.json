@@ -34,5 +34,5 @@
         "test": "make"
     },
     "subdomain": "webgl-3d-animation",
-    "version": "0.0.52-4"
+    "version": "0.0.52-5"
 }
