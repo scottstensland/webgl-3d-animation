@@ -18,7 +18,7 @@ var server = http.createServer(app);
 
 server.listen(port);
 
-console.log("http server listening on %d", port)
+console.log("http server listening on %d", port);
 
 var wss = new WebSocketServer({
     server: server
@@ -44,7 +44,7 @@ wss.on("connection", function(ws) {
     // ---
 
     ws.on("close", function() {
-        console.log("websocket connection close")
+        console.log("websocket connection close");
         // clearInterval(id)
         // clearInterval(wrap_stats.stats_id);
         // clearTimeout(ID_timeout);
@@ -52,7 +52,7 @@ wss.on("connection", function(ws) {
 });
 
 
-}; //      socket_server
+} //      socket_server
 
 // ---
 
@@ -89,7 +89,7 @@ if (process.env.HOSTING_VENDOR == "heroku") {
     serviceUrl = "http://localhost:";
 
     // servicePort = 8888;
-};
+}
 
 console.log("\nPoint your browser at \n\n\t\t", serviceUrl + port, "\n");
 

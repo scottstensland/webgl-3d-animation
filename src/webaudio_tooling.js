@@ -136,7 +136,7 @@ var webaudio_tooling_obj = function() {
                 // ---
 
             }, on_error); // stens TODO - chase down why getting null error when attemping to decode filetype ogg / wav OK
-        }
+        };
         request.send();
 
     } //      load_sound
@@ -221,14 +221,14 @@ var webaudio_tooling_obj = function() {
 
                 audio_display_obj.update_one_row(array);
             }
-        }
+        };
     }
 
     // ---
 
     function do_mute() {
 
-        gain_node.disconnect()
+        gain_node.disconnect();
     }
 
     function un_mute() {
@@ -484,7 +484,20 @@ function launch_synth() {
     // ---------------------------------  setup microphone ------------------------------------  //
 
 
-    // console.log('cw + ss tuesday 1131am');
+    function show_some_data(given_typed_array, num_row_to_display, label) {
+
+        var size_buffer = given_typed_array.length;
+        var index = 0;
+        var max_index = num_row_to_display;
+
+        console.log("__________ " + label);
+
+        for (; index < max_index && index < size_buffer; index += 1) {
+
+            console.log(given_typed_array[index]);
+        }
+    }
+
 
     var is_microphone_recording = false;
 
@@ -498,39 +511,33 @@ function launch_synth() {
             microphone_output_buffer.length, "providence_3");
     }
 
-    // console.log('cw + ss tuesday 2pm');
-
-
     function start_microphone() { // stens TODO - verify fft works for microphone
+
+        // setup js processor
+
+        microphone_data.microphone_stream = audio_context.createMediaStreamSource(microphone_data.media_stream);
+        microphone_data.microphone_stream.connect(gain_node);
+
+        microphone_data.script_processor_node = audio_context.createScriptProcessor(BUFF_SIZE, 1, 1);
+        microphone_data.script_processor_node.onaudioprocess = process_microphone_buffer;
+
+        microphone_data.microphone_stream.connect(microphone_data.script_processor_node);
+
+        // microphone_data.script_processor_node.connect(microphone_data.fft_analyzer);
+
+
+        // --- setup FFT
 
         microphone_data.script_processor_fft_node = audio_context.createScriptProcessor(2048, 1, 1);
         microphone_data.script_processor_fft_node.connect(gain_node);
 
         microphone_data.fft_analyzer = audio_context.createAnalyser();
         microphone_data.fft_analyzer.smoothingTimeConstant = 0;
-        microphone_data.fft_analyzer.fftSize = 1024;
-
+        microphone_data.fft_analyzer.fftSize = 2048;
 
         microphone_data.fft_analyzer.connect(microphone_data.script_processor_fft_node);
 
-
         // get input media stream
-
-        microphone_data.microphone_stream = audio_context.createMediaStreamSource(microphone_data.media_stream);
-
-        // setup js processor
-
-        microphone_data.script_processor_node = audio_context.createScriptProcessor(BUFF_SIZE, 1, 1);
-
-        microphone_data.script_processor_node.onaudioprocess = process_microphone_buffer;
-
-        microphone_data.microphone_stream.connect(microphone_data.script_processor_node);
-
-
-        microphone_data.script_processor_node.connect(microphone_data.fft_analyzer);
-
-        microphone_data.microphone_stream.connect(gain_node);
-
 
         console.log('OK microphone stream connected');
 
@@ -545,12 +552,14 @@ function launch_synth() {
 
             // draw the spectrogram of FFT data in frequency domain onto spinning cylinder
 
-            if (microphone_data.script_processor_node.playbackState ==
-                microphone_data.script_processor_node.PLAYING_STATE) {
+            if (microphone_data.microphone_stream.playbackState ==
+                microphone_data.microphone_stream.PLAYING_STATE) {
 
-                audio_display_obj.update_one_row(array);
+                show_some_data(array, 50, "from fft");
+
+                audio_display_obj.update_one_row(array); // show another row on FFT display
             }
-        }
+        };
 
         is_microphone_recording = true;
 
@@ -683,9 +692,7 @@ function launch_synth() {
         // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono.wav";
         // var chosen_audio_file = "Chopin_Fantasie_Impromptu_opus_66-APQ2RKECMW8_mono_8000_16.wav";
         var chosen_audio_file = "Justice_Genesis_mono-y6iHYTjEyKU.wav";
-
-
-
+        // var chosen_audio_file = "pyramid.ogg";
 
 
 
@@ -831,7 +838,7 @@ function launch_synth() {
 
         console.log('\n\ncw + ss    thursday          310   \n\n');
 
-        if (true == in_middle_of_playback) {
+        if (true === in_middle_of_playback) {
 
             console.log('currently in MIDDLE of a playback try later ...');
             return;
@@ -1132,12 +1139,12 @@ function launch_synth() {
 
                 audio_display_obj.update_one_row(array); // show another row on FFT display
             }
-        }
+        };
     } //      followup_fft
 
     function run_synth() {
 
-        if (false == allow_synth) {
+        if (false === allow_synth) {
 
             allow_synth = true;
 

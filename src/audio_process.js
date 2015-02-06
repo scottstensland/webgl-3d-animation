@@ -235,7 +235,7 @@ function pop_stradivarius(seed_obj, buff_obj, octave_offset) {
 	// new radians_per_sample  0.11398068584452764 
 
 	var synth_mode = 1;	// 1 == generate sin wave
-	var synth_mode = 2;	// 2 == elephant roar
+	// var synth_mode = 2;	// 2 == elephant roar
 
 	console.log("bbb sample_rate ", sample_rate);
 	console.log("desired_frequency ", desired_frequency);
@@ -399,7 +399,7 @@ function count_properties(given_obj) {
 
 		if (curr_property != "buffer") {
 
-			count++
+			count += 1;
 		}
 
 		console.log(count, "  count_properties with ... ", curr_property, given_obj[curr_property]);
@@ -430,7 +430,7 @@ function get_buffer(given_flavor) {		//		get_synth_from_sample_buffer
 			chosen_buff_obj.size_buffer = desired_synth_buff_size;
 
 			return chosen_buff_obj;
-			break;
+			// break;
 		}
 
 		case 2: {
@@ -441,7 +441,7 @@ function get_buffer(given_flavor) {		//		get_synth_from_sample_buffer
 			chosen_buff_obj.size_buffer = desired_synth_buff_size;
 
 			return chosen_buff_obj;
-			break;
+			// break;
 		}
 
 		case 3: {
@@ -474,7 +474,7 @@ function get_buffer(given_flavor) {		//		get_synth_from_sample_buffer
 													// factoring in sample_rate, frequency, num_channels ...
 			elephant_roar(chosen_buff_obj);
 			return chosen_buff_obj;
-			break;
+			// break;
 		}
 
 		case 4: {
@@ -509,7 +509,7 @@ function get_buffer(given_flavor) {		//		get_synth_from_sample_buffer
 
 			genetic_synth(chosen_buff_obj);	// skip over since we do synth work on server side
 			return chosen_buff_obj;
-			break;
+			// break;
 		}
 
 
@@ -552,7 +552,7 @@ function take_another_sample(when_sample_is_done_callback, given_mode) {
 		console.log('take_another_sample has a null first parm    given_mode ', given_mode);
 	}
 
-	if (false == continue_sampling) {
+	if (false === continue_sampling) {
 
 		continue_sampling = true;
 
@@ -694,7 +694,7 @@ function pop_display_buff(given_buff, given_index, given_x, given_y, given_z, gi
 
     // -------------
 
-	given_buff.vertices[given_index * SIZE_DIM_3D + X] = this_pt.x
+	given_buff.vertices[given_index * SIZE_DIM_3D + X] = this_pt.x;
 	given_buff.vertices[given_index * SIZE_DIM_3D + Y] = this_pt.y;
 	given_buff.vertices[given_index * SIZE_DIM_3D + Z] = this_pt.z;
 
@@ -869,7 +869,8 @@ function synth_audio_curve_pop_buff(given_sampled_buffer, d_sample_buff, d_synth
 
 				// --- check as to what limiting condition was --- //
 
-				if (! (best_y_so_far_error_distance > max_y_error)) {
+				// if (! (best_y_so_far_error_distance > max_y_error)) {
+				if (best_y_so_far_error_distance <= max_y_error) {
 
 					// console.log('limiting condition was max_y_error ', best_y_so_far_error_distance);
 
@@ -1040,7 +1041,7 @@ function perform_sampling(given_audio_buffer, given_buffer_size, providence) {
         aggregate_buffer_size += given_buffer_size;
     }
 
-    if (0 == aggregate_buffer_size % 1024) {
+    if (0 === aggregate_buffer_size % 1024) {
 
         // console.log('aggregate_buffer_size ', aggregate_buffer_size);
     }

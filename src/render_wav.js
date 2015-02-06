@@ -36,7 +36,7 @@ var Wav = function(opt_params){
 	/**
 	 * @private
 	 */
-	this._buffer;
+	this._buffer = null;
 	
 };
  
@@ -165,7 +165,7 @@ function render_wav() {
 	var b = new Blob(srclist, {type:'audio/wav'});
 	var URLObject = window.webkitURL || window.URL;
 	var url = URLObject.createObjectURL(b);
-	document.write("<a href='"+url+"'>play</a>");
+	// document.write("<a href='"+url+"'>play</a>");
 }
 
 

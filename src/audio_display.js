@@ -213,7 +213,7 @@ var is_time_domain_ready = false;
 
 function update_billboard() {       // refreshes time domain cylinder
 
-    if (false == is_time_domain_ready) {
+    if (false === is_time_domain_ready) {
 
         return;
     }
@@ -241,7 +241,8 @@ function update_billboard() {       // refreshes time domain cylinder
             black_out_index  += SIZE_DIM_COLORS;
         }
 
-        if (! (black_out_index < max_color_index_time_domain)) {
+        // if (! (black_out_index < max_color_index_time_domain)) {
+        if (black_out_index >= max_color_index_time_domain) {
 
             black_out_index = 0;   // wrap row back to beginning
         }
@@ -257,7 +258,8 @@ function update_billboard() {       // refreshes time domain cylinder
 
         curr_color_index_time_domain += max_number_rows_time_domain_cylinder * SIZE_DIM_COLORS;
 
-        if (! (curr_color_index_time_domain < max_color_index_time_domain)) {
+        // if (! (curr_color_index_time_domain < max_color_index_time_domain)) {
+        if (curr_color_index_time_domain >= max_color_index_time_domain) {
 
             curr_color_index_time_domain = 0;   // wrap row back to beginning
         }
@@ -398,7 +400,7 @@ function pipeline_buffer_for_time_domain_cylinder(given_audio_buffer, given_buff
 
     // console.log('in billboard  length curr_buffer_to_render_time_domain ', curr_buffer_to_render_time_domain.length);
 
-    if (curr_buffer_index_render_time_domain != 0) {
+    if (curr_buffer_index_render_time_domain !== 0) {
 
         // console.log('need to speed up time domain render ... was at ', curr_buffer_index_render_time_domain,
         //     ' with max_index_to_render_this_update of ', max_index_to_render_this_update);
@@ -479,7 +481,8 @@ function update_one_row(given_array) {  // FFT cylinder
     // console.log('min_fft_value_seen ', min_fft_value_seen, ' max_fft_value_seen ', max_fft_value_seen);
 
 
-    if (! (curr_fft_color_index < max_color_index_frequency_domain)) {
+    // if (! (curr_fft_color_index < max_color_index_frequency_domain)) {
+    if (curr_fft_color_index >= max_color_index_frequency_domain) {
 
         curr_fft_color_index = 0;   // wrap row back to beginning
 
@@ -653,7 +656,7 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
 
     var curr_cylinder_index = 0;
 
-    for (var curr_spoke = 0; curr_spoke < cylinder_blob.num_columns; curr_spoke++) {
+    for (curr_spoke = 0; curr_spoke < cylinder_blob.num_columns; curr_spoke++) {
 
         for (var curr_bucket = 0; curr_bucket < cylinder_blob.num_rows; curr_bucket++) {
 

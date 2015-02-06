@@ -99,6 +99,7 @@ var communication_sockets_obj = function() {
 
             socket.onmessage = function(e) {
 
+                var binary_bytes = null;
                 if (typeof e.data === "string") {
                     console.log('String message received: ' + e.data);
                 } else if (e.data instanceof ArrayBuffer) {
@@ -109,7 +110,7 @@ var communication_sockets_obj = function() {
 
                     // var binary_bytes = new ArrayBuffer(e.data);
 
-                    var binary_bytes = new Uint8Array(e.data);
+                    binary_bytes = new Uint8Array(e.data);
 
                     for (var i = 0; i < 200; i++) {
 
@@ -126,12 +127,12 @@ var communication_sockets_obj = function() {
 
                     // var binary_bytes = new Uint8Array(e.data);
                     // var binary_bytes = new ArrayBuffer(e.data);
-                    var binary_bytes = new Blob(e.data);
+                    binary_bytes = new Blob(e.data);
                     // var image = context.createImageData(canvas.width, canvas.height);
-                    for (var i = 0; i < 200; i++) {
+                    // for (var i = 0; i < 200; i++) {
 
-                        console.log(binary_bytes[i]);
-                    }
+                    //     console.log(binary_bytes[i]);
+                    // }
                     // context.drawImage(image, 0, 0);
 
 
@@ -202,7 +203,7 @@ var communication_sockets_obj = function() {
                 console.log(index, ' this array size should be 4 ', one_float_in_four_bytes_int.length,
                     ' originally value as a float ', one_float[0]);
 
-                for (var inneri = 0; inneri < 4; inneri++) {
+                for (inneri = 0; inneri < 4; inneri++) {
 
                     console.log(inneri, ' int value ', one_float_in_four_bytes_int[inneri]);
 
@@ -278,14 +279,14 @@ var communication_sockets_obj = function() {
                 // 	' originally value as a float ', one_float[0]);
 
                 // bbb
-                for (var inneri = 0; inneri < 4; inneri++) {
+                for (inneri = 0; inneri < 4; inneri++) {
 
                     // console.log(inneri, ' int value ', one_float_in_four_bytes_int[inneri]);
 
                     data_output.buffer[index_int_from_float++] = one_float_in_four_bytes_int[inneri];
                 }
 
-                if (index_int_from_float % 20000 == 0) {
+                if (index_int_from_float % 20000 === 0) {
 
                     console.log(index, ' currated sampled every 200 float value ', one_float[0]);
                 }
@@ -391,12 +392,13 @@ var communication_sockets_obj = function() {
                             console.log('... bundling elephant roar data   ');
 
                             var big_data_blob = {}; // parent object for big data
+                            var blob_property = null;
 
-                            for (var property in given_binary_data) { // copy over from source to target
+                            for (blob_property in given_binary_data) { // copy over from source to target
 
-                                if (property != "buffer") {
+                                if (blob_property != "buffer") {
 
-                                    big_data_blob[property] = given_binary_data[property];
+                                    big_data_blob[blob_property] = given_binary_data[blob_property];
                                 }
                             }
 
@@ -420,9 +422,9 @@ var communication_sockets_obj = function() {
                             console.log("ssss elephant roar POST float to int has buffer length ",
                                 big_data_blob.buffer.length);
 
-                            for (var property in big_data_blob) {
+                            for (blob_property in big_data_blob) {
 
-                                if (property == "buffer") {
+                                if (blob_property == "buffer") {
 
                                     console.log("seeing property property SSSSSSSOOO will skip over");
 
@@ -430,10 +432,10 @@ var communication_sockets_obj = function() {
 
                                 } else {
 
-                                    console.log("socket_client TTTTTTT ", property,
-                                        big_data_blob[property]);
+                                    console.log("socket_client TTTTTTT ", blob_property,
+                                        big_data_blob[blob_property]);
 
-                                    socket.send(property + "=" + big_data_blob[property]);
+                                    socket.send(blob_property + "=" + big_data_blob[blob_property]);
                                 }
                             }
 
@@ -457,7 +459,7 @@ var communication_sockets_obj = function() {
 
                         // --- default - catch all if not identifed above
 
-                        socket.send(big_data_blob.buffer);
+                        // socket.send(big_data_blob.buffer);
 
                         break;
                 }
@@ -471,26 +473,26 @@ var communication_sockets_obj = function() {
 
                 console.log('inside socket_client  about to pop_monster ');
 
-                var big_data_blob = {}; // parent object for big data
+                var monster_blob = {}; // parent object for big data
 
-                big_data_blob.size_buffer = 3; // number of elements in numeric array
+                monster_blob.size_buffer = 3; // number of elements in numeric array
 
                 if (given_mode == 3) {
 
-                    big_data_blob.datatype = 'int';
+                    monster_blob.datatype = 'int';
 
-                    big_data_blob.buffer = new Uint8Array(big_data_blob.size_buffer);
+                    monster_blob.buffer = new Uint8Array(monster_blob.size_buffer);
 
                 } else if (given_mode == 4) {
 
-                    big_data_blob.datatype = 'float';
+                    monster_blob.datatype = 'float';
 
-                    big_data_blob.buffer = new Uint8Array(big_data_blob.size_buffer * Float32Array.BYTES_PER_ELEMENT);
+                    monster_blob.buffer = new Uint8Array(monster_blob.size_buffer * Float32Array.BYTES_PER_ELEMENT);
                 }
 
-                pop_monster(big_data_blob);
+                pop_monster(monster_blob);
 
-                socket.send(big_data_blob.buffer);
+                socket.send(monster_blob.buffer);
 
                 // ---
 
@@ -538,7 +540,7 @@ var communication_sockets_obj = function() {
 
             console.log("cool about to send elephant roar data to nodejs server side file");
 
-            socket.send(big_data_blob.buffer);
+            // socket.send(big_data_blob.buffer);
 
 
 

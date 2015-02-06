@@ -50,9 +50,9 @@ var species_shark = 1;
 var species_no_animal_here = 2;
 
 
-var species_fish = 0;
-var species_shark = 1;
-var species_no_animal_here = 2;
+// var species_fish = 0;
+// var species_shark = 1;
+// var species_no_animal_here = 2;
 
 
 var unused = -1;    // place holder of no real value
@@ -223,7 +223,7 @@ function mvPushMatrix() {
 }
 
 function mvPopMatrix() {
-    if (mvMatrixStack.length == 0) {
+    if (mvMatrixStack.length === 0) {
         throw "Invalid popMatrix!";
     }
     mvMatrix = mvMatrixStack.pop();
@@ -232,18 +232,17 @@ function mvPopMatrix() {
 
 // ----------- above will get populated by Common Utils namespace function
 
-function init_board(size_x, size_y) {  // stens TODO verify this is OK
-                                                                    // looks bad ... where to put new Array()
+function init_board(size_x, size_y) {
 
-    var local_grid_board = new Array();   // flat surface animals walk about across X & Y
+    var local_grid_board = [];   // flat surface animals walk about across X & Y
 
     for (var index_x = 0; index_x < size_x; index_x++) {
 
-        local_grid_board[index_x] = new Array();
+        local_grid_board[index_x] = [];
 
         for (var index_y = 0; index_y < size_y; index_y++) {
 
-            local_grid_board[index_x][index_y] = new Array();
+            local_grid_board[index_x][index_y] = [];
 
             for (var curr_attrib = 0; curr_attrib < MAX_BOARD_ATTRIBUTES; curr_attrib++) {
 
@@ -286,18 +285,24 @@ function init_this_buffer(board, given_animal, given_max_animal, given_species, 
     var curr_individual = 0;
     for (; curr_vertex < given_max_animal;) {
 
+        var x_index = null;
+        var y_index = null;
+
+        var curr_x = null;
+        var curr_y = null;
+
         var num_trials = 0;
         var max_attemps_find_empty_spot = 200;// could maintain a list of available spots to avoid this
         do {
 
-            var x_index = Common_Utils.get_random_in_range_inclusive_int(board.board_min_x, board.board_max_x - 1);
-            var y_index = Common_Utils.get_random_in_range_inclusive_int(board.board_min_y, board.board_max_y - 1);
+            x_index = Common_Utils.get_random_in_range_inclusive_int(board.board_min_x, board.board_max_x - 1);
+            y_index = Common_Utils.get_random_in_range_inclusive_int(board.board_min_y, board.board_max_y - 1);
 
             // var curr_x = x_index * conversion_grid_to_world_x + board.world_min_x;
             // var curr_y = y_index * conversion_grid_to_world_y + board.world_min_y;
 
-            var curr_x = x_index * conversion_grid_to_world_x;
-            var curr_y = y_index * conversion_grid_to_world_y;
+            curr_x = x_index * conversion_grid_to_world_x;
+            curr_y = y_index * conversion_grid_to_world_y;
 
             // console.log('curr_vertex ', curr_vertex, ' x_index ', x_index, '   curr_x ' , curr_x);
             // console.log('curr_vertex ', curr_vertex, ' y_index ', y_index, '   curr_y ' , curr_y);
@@ -341,7 +346,6 @@ function init_this_buffer(board, given_animal, given_max_animal, given_species, 
 
         curr_vertex++;
         color_index += SIZE_DIM_COLORS;
-        // curr_index += SIZE_DIM_3D;
 
         curr_individual++;
     }
@@ -352,7 +356,6 @@ function init_this_buffer(board, given_animal, given_max_animal, given_species, 
 
     given_animal.vertex_position_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
-    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(given_animal.vertices), gl.STATIC_DRAW);
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
     given_animal.vertex_position_buffer.itemSize = 3;
     given_animal.vertex_position_buffer.numItems = curr_vertex;
@@ -361,18 +364,9 @@ function init_this_buffer(board, given_animal, given_max_animal, given_species, 
 
     given_animal.vertex_color_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
-    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(given_animal.colors), gl.STATIC_DRAW);
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
     given_animal.vertex_color_buffer.itemSize = 4;
     given_animal.vertex_color_buffer.numItems = curr_vertex;
-
-    // ---
-
-    // cubeVertexIndexBuffer = gl.createBuffer();
-    // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-    // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cube_indices), gl.STATIC_DRAW);
-    // cubeVertexIndexBuffer.itemSize = 1;
-    // cubeVertexIndexBuffer.numItems = curr_vertex;
 
 }       //      init_this_buffer
 
@@ -482,54 +476,54 @@ function setMatrixUniforms(given_point_size, gl) {
     // 									gl.viewportHeight);
 }
 
-function inner_indexed_draw(given_animal) {
+// function inner_indexed_draw(given_animal) {
 
-    mvPushMatrix();
-    // Common_Utils.mvPushMatrix(mvMatrix, mvMatrixStack);
+//     mvPushMatrix();
+//     // Common_Utils.mvPushMatrix(mvMatrix, mvMatrixStack);
 
-    // mat4.translate(mvMatrix, [0.7, -0.2, 3.0]);
-    // mat4.translate(mvMatrix, [1.7, 0.8, 4.0]);   // OK for board 4 by 4
-    // mat4.translate(mvMatrix, [min_max[X][median], min_max[Y][median], min_max[Z][median]]);   // OK for board 4 by 4
-    mat4.translate(mvMatrix, [  given_animal.min_max[X][median], 
-                                given_animal.min_max[Y][median],
-                                given_animal.min_max[Z][median]]);   // OK for board 4 by 4
-
-
-    mat4.rotate(mvMatrix, Common_Utils.degToRad(curr_degree_rotation_torus), [ 0.2,  0.2, -0.2]);
-
-    // mat4.translate(mvMatrix, [-min_max[X][median], -min_max[Y][median], -min_max[Z][median]]);   // OK for board 4 by 4
-    mat4.translate(mvMatrix, [  -given_animal.min_max[X][median], 
-                                -given_animal.min_max[Y][median], 
-                                -given_animal.min_max[Z][median]]);   // OK for board 4 by 4
-
-    // mat4.translate(mvMatrix, [ 0, 0, 3.0]);   // OK for board 4 by 4
+//     // mat4.translate(mvMatrix, [0.7, -0.2, 3.0]);
+//     // mat4.translate(mvMatrix, [1.7, 0.8, 4.0]);   // OK for board 4 by 4
+//     // mat4.translate(mvMatrix, [min_max[X][median], min_max[Y][median], min_max[Z][median]]);   // OK for board 4 by 4
+//     mat4.translate(mvMatrix, [  given_animal.min_max[X][median], 
+//                                 given_animal.min_max[Y][median],
+//                                 given_animal.min_max[Z][median]]);   // OK for board 4 by 4
 
 
+//     mat4.rotate(mvMatrix, Common_Utils.degToRad(curr_degree_rotation_torus), [ 0.2,  0.2, -0.2]);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+//     // mat4.translate(mvMatrix, [-min_max[X][median], -min_max[Y][median], -min_max[Z][median]]);   // OK for board 4 by 4
+//     mat4.translate(mvMatrix, [  -given_animal.min_max[X][median], 
+//                                 -given_animal.min_max[Y][median], 
+//                                 -given_animal.min_max[Z][median]]);   // OK for board 4 by 4
 
-    // -------------------------------------
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
-
-    // --------------------------------------
-
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, given_animal.indices, gl.STATIC_DRAW);
-
-    setMatrixUniforms(desired_point_size, gl);
-    // setMatrixUniforms(10.0, gl);
-
-    gl.drawElements(gl.TRIANGLES, given_animal.vertex_indices_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-
-    mvPopMatrix();
-     // Common_Utils.mvPopMatrix(mvMatrix, mvMatrixStack);
+//     // mat4.translate(mvMatrix, [ 0, 0, 3.0]);   // OK for board 4 by 4
 
 
-}		//		inner_indexed_draw
+
+//     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
+//     gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
+//     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+//     // -------------------------------------
+
+//     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
+//     gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
+//     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+//     // --------------------------------------
+
+//     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, given_animal.indices, gl.STATIC_DRAW);
+
+//     setMatrixUniforms(desired_point_size, gl);
+//     // setMatrixUniforms(10.0, gl);
+
+//     gl.drawElements(gl.TRIANGLES, given_animal.vertex_indices_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+//     mvPopMatrix();
+//      // Common_Utils.mvPopMatrix(mvMatrix, mvMatrixStack);
+
+
+// }		//		inner_indexed_draw
 
 
 function get_neighbor_x(given_source_x, chosen_neighbor_index) {
@@ -930,7 +924,7 @@ function update_board() {
                 curr_random = 0;
             }
 
-        } while (false == found_new_location && neighbor_index < 4);
+        } while (false === found_new_location && neighbor_index < 4);
 
         // color_index += SIZE_DIM_COLORS;
 
@@ -1160,7 +1154,7 @@ function update_board() {
                 curr_random = 0;
             }
 
-        } while (false == found_new_location && neighbor_index < 4);
+        } while (false === found_new_location && neighbor_index < 4);
 
         if (found_new_location) {
 
@@ -1317,7 +1311,7 @@ function update_board() {
                 curr_random = 0;
             }
 
-        } while (false == found_new_location && neighbor_index < 4);
+        } while (false === found_new_location && neighbor_index < 4);
     }
 
     // -------------  end of shark movement   ----------------
@@ -1359,7 +1353,6 @@ function init_torus_buffers() {
     animals_doughnut.vertex_position_buffer.itemSize = 3;
     animals_doughnut.vertex_position_buffer.numItems = curr_doughnut_vertex / 3;
 
-
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, animals_doughnut.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // ---
@@ -1370,10 +1363,8 @@ function init_torus_buffers() {
     animals_doughnut.vertex_color_buffer.itemSize = 3;
     animals_doughnut.vertex_color_buffer.numItems = curr_doughnut_color / 3;
 
-
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, animals_doughnut.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
     
-
     // ---
 
     animals_doughnut.vertex_indices_buffer = gl.createBuffer();
@@ -2031,7 +2022,6 @@ function init_f_N_s(given_chosen_model,
 return {	// to make visible to calling reference frame list function here
 
   init_f_N_s: init_f_N_s,
-  update_board: update_board,
   // wrapper_f_n_s_draw: wrapper_f_n_s_draw,
   animals_fish: animals_fish,
   animals_sharks: animals_sharks,

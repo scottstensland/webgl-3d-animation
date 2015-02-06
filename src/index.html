@@ -19,14 +19,16 @@
 <script type="text/javascript" src="borg.js"></script>
 <script type="text/javascript" src="fish_N_sharks.js"></script>
 <script type="text/javascript" src="schwartz_surface.js"></script>
+<script type="text/javascript" src="chladni.js"></script>
+
 <script type="text/javascript" src="trefoil_knot.js"></script>
 
 <script type="text/javascript" src="audio_display.js"></script>
 <script type="text/javascript" src="webaudio_tooling.js"></script>
 <script type="text/javascript" src="audio_process.js"></script>
 <script type="text/javascript" src="communication_sockets.js"></script>
-<script type="text/javascript" src="render_wav.js"></script>
-<script type="text/javascript" src="genetic_machinery_client.js"></script>
+<!-- <script type="text/javascript" src="render_wav.js"></script> -->
+<!-- <script type="text/javascript" src="genetic_machinery_client.js"></script> -->
 
 
 <!-- <script type="text/javascript" src="google_analytics.js"></script> -->
@@ -94,9 +96,9 @@
 
 <script type="text/javascript">
 
-"use strict";
-
 var stens = function() {
+
+"use strict";
 
 var mvMatrix = mat4.create();
 var mvMatrixStack = [];
@@ -317,7 +319,7 @@ function mvPushMatrix() {
 }
 
 function mvPopMatrix() {
-    if (mvMatrixStack.length == 0) {
+    if (mvMatrixStack.length === 0) {
         throw "Invalid popMatrix!";
     }
     mvMatrix = mvMatrixStack.pop();
@@ -382,7 +384,7 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
 
     mvPushMatrix();
 
-    if (given_animal.want_translate == true) {
+    if (given_animal.want_translate === true) {
 
         mat4.translate(mvMatrix, given_animal.pre_translate);   // OK for board 4 by 4
     }
@@ -392,7 +394,7 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
         mat4.rotate(mvMatrix, Common_Utils.degToRad(given_rotation), given_animal.rotation_array);        
     }
 
-    if (given_animal.want_translate == true) {
+    if (given_animal.want_translate === true) {
 
         mat4.translate(mvMatrix, given_animal.post_translate);   // OK for board 4 by 4
     }
@@ -445,10 +447,14 @@ function draw_scene(gl, shaderProgram) {
     mat4.translate(mvMatrix, [world_min_x, world_min_y, world_min_z]);   // OK for board 4 by 4
     mat4.multiply(mvMatrix, moonRotationMatrix);
 
+    // console.log(curr_degree_rotation_grid);
+
     inner_draw(borg_obj.animals_borg, 1.0, curr_degree_rotation_grid, gl, shaderProgram);
 
 
     inner_draw(schwartz_obj.animals_schwartz, 1.0, curr_degree_rotation_grid, gl, shaderProgram, true);
+    inner_draw(chladni_obj.animals_chladni, 1.0, curr_degree_rotation_grid, gl, shaderProgram, true);
+
     inner_draw(fns.animals_fish, desired_point_size, 0, gl, shaderProgram);
     inner_draw(fns.animals_sharks, desired_point_size, 0, gl, shaderProgram);
 
@@ -479,7 +485,7 @@ function draw_scene(gl, shaderProgram) {
     inner_draw(audio_display_obj.animals_audio_vis, 5.0, curr_degree_rotation_grid, gl, shaderProgram, true);
 
 
-    if (true == audio_process_obj.get_display_ready_flag()) {
+    if (true === audio_process_obj.get_display_ready_flag()) {
 
         // pure synthesized curve based on sampled audio
         inner_draw(audio_process_obj.animals_synth, 2.0, curr_degree_rotation_grid, gl, shaderProgram, true);
@@ -492,8 +498,6 @@ function draw_scene(gl, shaderProgram) {
 last_time = new Date().getTime();
 
 function animate() {
-
-    // update_board();
     
     var do_animation = true;
     // var do_animation = false;
@@ -504,10 +508,10 @@ function animate() {
     if (do_animation) {
 
         var timeNow = new Date().getTime();
-        if (last_time != 0) {
+        if (last_time !== 0) {
             var elapsed = timeNow - last_time;
 
-            if (speed != 0) {
+            if (speed !== 0) {
 
                 position_x -= Math.sin(Common_Utils.degToRad(curr_yaw)) * speed * elapsed;
                 position_z -= Math.cos(Common_Utils.degToRad(curr_yaw)) * speed * elapsed;
@@ -526,6 +530,9 @@ function animate() {
 
             // curr_degree_rotation_time_domain -= (48.0 * elapsed) / 1000.0;
             // curr_degree_rotation_time_domain += (1.0 * elapsed) / 1000.0;
+
+            // console.log("curr_degree_rotation_grid " + curr_degree_rotation_grid);
+
 
 
             // curr_degree_rotation_torus -= (75 * elapsed) / 1000.0;
@@ -607,7 +614,7 @@ function handleMouseMove(event) {
     var newX = event.clientX;
     var newY = event.clientY;
 
-    var deltaX = newX - lastMouseX
+    var deltaX = newX - lastMouseX;
     var newRotationMatrix = mat4.create();
     mat4.identity(newRotationMatrix);
     mat4.rotate(newRotationMatrix, Common_Utils.degToRad(deltaX / 10), [0, 1, 0]);
@@ -624,7 +631,7 @@ function handleMouseMove(event) {
                         ', ', position_x, ', ', position_y, ', ', position_z);
     }
 
-    lastMouseX = newX
+    lastMouseX = newX;
     lastMouseY = newY;
 }
 
@@ -707,7 +714,7 @@ function handleKeys() {
         speed = 0;
     }
 
-    if (view_UI_current_state && (0 != delta_pitch || 0 != delta_yaw || 0 != speed)) {
+    if (view_UI_current_state && (0 !== delta_pitch || 0 !== delta_yaw || 0 !== speed)) {
 
         // console.log(delta_pitch, '   ', delta_yaw, '     ', speed);
     }
@@ -786,6 +793,7 @@ function internal_webGLStart() {
 
     borg_obj.init_borg(gl, MAX_BORG_POINTS);
 
+
     // var max_num_schwartz_points = 200000;
     // var max_num_schwartz_points = 100000;
     // var max_num_schwartz_points = 10000;
@@ -793,6 +801,14 @@ function internal_webGLStart() {
     var max_num_schwartz_points = 50000;
 
     schwartz_obj.init_schwartz(gl, max_num_schwartz_points);
+    
+
+    // ---
+
+    var max_num_chladni_points = 50000;
+
+    chladni_obj.init_chladni(gl, max_num_chladni_points);
+
 
     // ---
 
@@ -897,7 +913,7 @@ return {
 
     internal_webGLStart: internal_webGLStart,
     set_camera_perspectives: set_camera_perspectives
-}
+};
 
 }();
 
@@ -907,6 +923,9 @@ return {
 <body onload="stens.internal_webGLStart();" >
     <ul id="error_output"></ul> 
     <p>
+
+        <button onclick="stens.set_camera_perspectives()">reset perspective</button>
+
         <button onclick="webaudio_tooling_obj.run_synth()">do synth</button>
         <button onclick="webaudio_tooling_obj.play_tune_jam(1)">play jam</button>
         <button onclick="webaudio_tooling_obj.play_tune_jam(2)">play jam looped</button>
@@ -952,7 +971,7 @@ return {
     </p>
 
     <canvas id="ecology_simulation" style="border: none;" width="1920" height="1080"></canvas>
-    <!-- <canvas id="ecology_simulation" style="border: none;" width="500" height="500"></canvas> -->
+    <!-- <canvas id="ecology_simulation" style="border: none;" width="200" height="200"></canvas> -->
     <!-- <canvas id="ecology_simulation" style="border: none;" width="800" height="800"></canvas> -->
     <!-- <canvas id="ecology_simulation" style="border: none;" width="1920" height="1080"></canvas> -->
 
