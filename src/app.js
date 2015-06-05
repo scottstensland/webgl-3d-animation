@@ -91,5 +91,6 @@ if (process.env.HOSTING_VENDOR == "heroku") {
     // servicePort = 8888;
 }
 
-console.log("\nPoint your browser at \n\n\t\t", serviceUrl + port + "/" + "webgl_3d_animation.html", "\n");
+// console.log("\nPoint your browser at \n\n\t\t", serviceUrl + port + "/" + "webgl_3d_animation.html", "\n");
+console.log("\nPoint your browser at \n\n\t\t", serviceUrl + port + "/" , "\n");
 
