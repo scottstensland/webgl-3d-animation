@@ -47,3 +47,25 @@ or ignore above and just see this WebGL app deployed live on heroku :
 Feel free to contact me on twitter if you have any questions! 
 
 ... my twitter name is same as my github name
+
+
+   instructions on how to drive this ...
+
+    run on a computer not on a phone since it currently uses
+   just the mouse and keyboard as controls
+
+     mouse left button and middle scroll wheel
+           page up / page down
+     arrow keys  left/right/up/down
+           also these keys :  w s a d
+
+
+      it uses WebGL for graphics
+    I wrote it in the language javascript infact that was my
+      "Hello World"  for both javascript and WebGL
+
+       hit the button :    "Play jam looped" 
+        so it plays a tune which I then visualize both
+         in time domain as well as frequency domain
+
+
