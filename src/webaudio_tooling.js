@@ -173,6 +173,8 @@ var webaudio_tooling_obj = function() {
         source_node.buffer = buffer;
         source_node.start(0);
 
+        console.log("... just called start on source_node");
+
         // // source_node.loop = true;
         // source_node.loop = false;
 
@@ -189,7 +191,7 @@ var webaudio_tooling_obj = function() {
 
         } else {
 
-            console.log('BOO HOO  do NOT have once_playback_starts_callback so ignore it');
+            // console.log('BOO HOO  do NOT have once_playback_starts_callback so ignore it');
         }
     }
 
