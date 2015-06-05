@@ -138,9 +138,6 @@ function set_camera_perspectives() {
     position_z = 9.181939802075272;
 }
 
-// console.log('\n\ncw + ss thurs 1105   \n\n');
-
-
 var delta_pitch = 0;
 var delta_yaw = 0;
 var speed = 0;
@@ -153,89 +150,14 @@ var gl;
 
 function initGL(canvas) {
 
-    // var gl;
-
     try {
-        
-        // gl = canvas.getContext("experimental-webgl");
-
-        // http://games.greggman.com/game/webgl-and-alpha/
 
         gl = canvas.getContext("experimental-webgl", { alpha: false });
-
-
-        // strangely below gives a white color to above blue points of time domain curve
-
-        // gl = canvas.getContext( "experimental-webgl", { 
-        //                             preserveDrawingBuffer : true,
-        //                             premultipliedAlpha: false} 
-        //                         );
-
-
 
         gl.viewportWidth = canvas.width;
         gl.viewportHeight = canvas.height;
 
-
- // document.createElement("canvas").getContext("webgl").getSupportedExtensions().join("\n")
-
         console.log(gl.getSupportedExtensions().join("\n"));
-
-
-// gl = document.createElement("ecology_simulation").getContext("experimental-webgl").getSupportedExtensions()
-// gl.getSupportedExtensions()
-// ["ANGLE_instanced_arrays", 
-//  "EXT_blend_minmax", 
-//  "EXT_frag_depth",  
-//  "EXT_shader_texture_lod",  
-//  "EXT_sRGB",  
-//  "EXT_texture_filter_anisotropic",  
-//  "WEBKIT_EXT_texture_filter_anisotropic",  
-//  "OES_element_index_uint",  
-//  "OES_standard_derivatives",  
-//  "OES_texture_float",  
-//  "OES_texture_float_linear",  
-//  "OES_texture_half_float",  
-//  "OES_texture_half_float_linear",  
-//  "OES_vertex_array_object",  
-//  "WEBGL_compressed_texture_s3tc",  
-//  "WEBKIT_WEBGL_compressed_texture_s3tc",  
-//  "WEBGL_debug_renderer_info",  
-//  "WEBGL_debug_shaders",  
-//  "WEBGL_depth_texture",  
-//  "WEBKIT_WEBGL_depth_texture",  
-//  "WEBGL_lose_context",  
-//  "WEBKIT_WEBGL_lose_context"].join("\n");
-
-// gl = document.createElement("canvas").getContext("webgl").getSupportedExtensions()
-// ["ANGLE_instanced_arrays", 
-//  "EXT_blend_minmax", 
-//  "EXT_frag_depth",  
-//  "EXT_shader_texture_lod",  
-//  "EXT_sRGB",  
-//  "EXT_texture_filter_anisotropic",  
-//  "WEBKIT_EXT_texture_filter_anisotropic",  
-//  "OES_element_index_uint",  
-//  "OES_standard_derivatives",  
-//  "OES_texture_float",  
-//  "OES_texture_float_linear",  
-//  "OES_texture_half_float",  
-//  "OES_texture_half_float_linear",  
-//  "OES_vertex_array_object",  
-//  "WEBGL_compressed_texture_s3tc",  
-//  "WEBKIT_WEBGL_compressed_texture_s3tc",  
-//  "WEBGL_debug_renderer_info",  
-//  "WEBGL_debug_shaders",  
-//  "WEBGL_depth_texture",  
-//  "WEBKIT_WEBGL_depth_texture",  
-//  "WEBGL_lose_context",  
-//  "WEBKIT_WEBGL_lose_context"]
-
-
-        // gl = gl;
-
-        // console.log('inside initGL width ', gl.viewportWidth);
-        // console.log('inside initGL height ', gl.viewportHeight);
 
     } catch (e) {}
 
@@ -285,12 +207,8 @@ function initShaders(gl) {
 
     var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader = getShader(gl, "shader-vs");
-    // var vertexShader_source = document.getElementById( 'shader-vs' ).textContent
 
-    // var shaderProgram = gl.createProgram();
     shaderProgram = gl.createProgram();
-
-    // shaderProgram = shaderProgram;
 
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
@@ -345,12 +263,6 @@ function inner_indexed_draw(given_animal, gl, given_rotation, given_matrix_rotat
                                 given_animal.min_max[Y][median],
                                 given_animal.min_max[Z][median]]);   // OK for board 4 by 4
 
-    // var translation_1 = vec3.create();
-    // vec3.set (translation_1, [  given_animal.min_max[X][median], 
-    //                             given_animal.min_max[Y][median],
-    //                             given_animal.min_max[Z][median]]);
-    // mat4.translate (mvMatrix, mvMatrix, translation_1);  // OK for board 4 by 4
-
     // ---
 
     mat4.rotate(mvMatrix, Common_Utils.degToRad(given_rotation), given_matrix_rotation);
@@ -358,15 +270,6 @@ function inner_indexed_draw(given_animal, gl, given_rotation, given_matrix_rotat
     mat4.translate(mvMatrix, [  -given_animal.min_max[X][median], 
                                 -given_animal.min_max[Y][median], 
                                 -given_animal.min_max[Z][median]]);   // OK for board 4 by 4
-
-
-    // var translation_2 = vec3.create();
-    // vec3.set (translation_2, [  given_animal.min_max[X][median], 
-    //                             given_animal.min_max[Y][median],
-    //                             given_animal.min_max[Z][median]]);
-    // mat4.translate (mvMatrix, mvMatrix, translation_2);  // OK for board 4 by 4
-
-
 
     // ---
 
@@ -409,10 +312,6 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
     if (given_animal.want_translate === true) {
 
         mat4.translate(mvMatrix, given_animal.pre_translate);   // OK for board 4 by 4
-
-        // var translation_1 = vec3.create();
-        // vec3.set (translation_1, given_animal.pre_translate);
-        // mat4.translate (mvMatrix, mvMatrix, translation_1);  // OK for board 4 by 4
     }
 
     if (given_animal.rotation_array) {
@@ -423,10 +322,6 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
     if (given_animal.want_translate === true) {
 
         mat4.translate(mvMatrix, given_animal.post_translate);   // OK for board 4 by 4
-
-        // var translation_2 = vec3.create();
-        // vec3.set (translation_2, given_animal.post_translate);
-        // mat4.translate (mvMatrix, mvMatrix, translation_2);  // OK for board 4 by 4
     }
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
@@ -449,8 +344,6 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
     mvPopMatrix();
 
 }       //      inner_draw
-
-// var count_num_draw_calls = 0;
 
 function draw_scene(gl, shaderProgram) {
 
@@ -476,47 +369,16 @@ function draw_scene(gl, shaderProgram) {
 
     mat4.translate(mvMatrix, [-position_x, -position_y, -position_z]);
 
-    // var translation_1 = vec3.create();
-    // vec3.set (translation_1, [-position_x, -position_y, -position_z]);
-    // mat4.translate (mvMatrix, mvMatrix, translation_1);  // OK for board 4 by 4
-
-
     // ----------
 
     mat4.translate(mvMatrix, [world_min_x, world_min_y, world_min_z]);   // OK for board 4 by 4
-
-    // var translation_2 = vec3.create();
-    // vec3.set (translation_2, [world_min_x, world_min_y, world_min_z]);
-    // mat4.translate (mvMatrix, mvMatrix, translation_2);  // OK for board 4 by 4
 
     // ---
 
     mat4.multiply(mvMatrix, moonRotationMatrix);
 
-    // console.log(curr_degree_rotation_grid);
 
     active_inner_draw.forEach(function(curr_element) {  // ccc
-
-        // active_inner_draw.push({
-
-        //     graphics_object : borg_obj,
-        //     point_size : 1.0
-        // });
-
-        // inner_draw(borg_obj.animals_borg, 1.0, curr_degree_rotation_grid, gl, shaderProgram);
-        // inner_draw(curr_element.graphics_object.obj_handle, curr_element.point_size, curr_degree_rotation_grid, gl, shaderProgram, true);
-
-                // inner_draw(audio_display_obj.animals_audio_vis, 5.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
-
-        // active_inner_draw.push({
-
-        //     graphics_object : audio_display_obj,
-        //     flavor_graphics : curr_object_handle,
-        //     type_graphics : audio_display_obj.all_object_labels[0],
-        //     point_size : 5.0,
-        //     rotation_property : rotation_grid
-        // });
-
 
         if (activity_status[curr_element.object_label]) {
 
@@ -526,88 +388,10 @@ function draw_scene(gl, shaderProgram) {
                         gl, shaderProgram, true);            
         }
 
-
-                    // rotation_degree[rotation_grid],
-
-        // curr_degree_rotation_grid
-
-        // rotation_degree.grid
-
-
-            // rotation_object : rotation_degree
-            // rotation_property : "grid"
-
     });
 
 
-// active_inner_draw
-
-    // console.log("monday corinde");
-
-
-    // inner_draw(schwartz_obj.animals_schwartz, 1.0, curr_degree_rotation_grid, gl, shaderProgram, true);
-
-    // inner_draw(chladni_obj.animals_chladni, 1.0, curr_degree_rotation_grid, gl, shaderProgram, true);
-    // inner_draw(chladni_obj.animals_chladni, 1.0, 0, gl, shaderProgram, true);
-
-    // inner_draw(fns.animals_fish, desired_point_size, 0, gl, shaderProgram);
-    // inner_draw(fns.animals_sharks, desired_point_size, 0, gl, shaderProgram);
-
-    // inner_draw(trefoil_knot_obj.animals_trefoil_knot, 5.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
-
-    // ---  
-
-    // inner_indexed_draw(fns.animals_doughnut,      gl, curr_degree_rotation_torus, 
-    //                                                 torus_matrix_rotation);
-
-    // FFT cylinder
-    // rotation_degree[rotation_fft]
-    // inner_indexed_draw(audio_display_obj.animals_fft, gl, curr_degree_rotation_fft,
-    //                                                 fft_matrix_rotation);
-
-
-    // active_inner_draw.forEach(function(curr_element) {
-
-    //     // active_inner_draw.push({
-
-    //     //     graphics_object : borg_obj,
-    //     //     point_size : 1.0
-    //     // });
-
-    //     // inner_draw(borg_obj.animals_borg, 1.0, curr_degree_rotation_grid, gl, shaderProgram);
-    //     // inner_draw(curr_element.graphics_object.obj_handle, curr_element.point_size, curr_degree_rotation_grid, gl, shaderProgram, true);
-    //     inner_indexed_draw( curr_element.graphics_object.obj_handle,
-    //                         gl,
-    //                         rotation_degree[curr_element.rotation_property],
-    //                         curr_element.matrix_rotation
-    //     );
-    // });
-    
-    // -------------
-
-
-
-
-
-    // FFT cylinder
-    // rotation_degree[rotation_fft]
-    // inner_indexed_draw(audio_display_obj.animals_fft, gl, curr_degree_rotation_fft,
-    //                                                 fft_matrix_rotation);
-
     active_inner_indexed_draw.forEach(function(curr_element) {
-
-    // inner_indexed_draw(audio_display_obj.animals_fft, gl, curr_degree_rotation_fft,
-    //                                                 fft_matrix_rotation);
-
-// rotation_degree[rotation_fft]
-
-
-            // flavor_graphics : curr_object_handle[audio_display_obj.all_object_labels[1]],
-            // rotation_property : rotation_fft,
-            // rotation_matrix : fft_matrix_rotation
-
-            // console.log(rotation_degree[curr_element.rotation_property]);
-            // console.log(curr_element.rotation_matrix);
 
         if (activity_status[curr_element.object_label]) {
 
@@ -618,24 +402,6 @@ function draw_scene(gl, shaderProgram) {
         }
     });
 
-
-
-// vvv
-
-// console.log('\n\ncw + ss   wed   1232   \n\n');
-
-    // flat synth time domain wall
-    // inner_indexed_draw(audio_process_obj.animals_audio_vis, gl, curr_degree_rotation_grid,
-    //                                                 time_domain_matrix_rotation);
-
-    // time domain cylinder
-    // inner_indexed_draw(audio_display_obj.animals_time_curve, gl, curr_degree_rotation_time_domain,
-    //                                                 time_domain_matrix_rotation);
-
-    // flat wall of time domain audio curve - OK good one BUT points NOT lines
-    // inner_draw(audio_display_obj.animals_audio_vis, 5.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
-
-
     if (true === audio_process_obj.get_display_ready_flag()) {
 
         // pure synthesized curve based on sampled audio
@@ -645,8 +411,6 @@ function draw_scene(gl, shaderProgram) {
     }
 
     // ---
-
-    // inner_draw(landscape_obj.animals_pasture, 2.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
 
 }       //      draw_scene
 
@@ -683,21 +447,11 @@ function animate() {
             rotation_degree[rotation_time_domain] -= (98.0 * elapsed) / 1000.0;
             // curr_degree_rotation_time_domain -= (0.0 * elapsed) / 1000.0;// NO rotation
 
-            // curr_degree_rotation_time_domain -= (48.0 * elapsed) / 1000.0;
-            // curr_degree_rotation_time_domain += (1.0 * elapsed) / 1000.0;
-
-            // console.log("curr_degree_rotation_grid " + curr_degree_rotation_grid);
-
-
-
             // curr_degree_rotation_torus -= (75 * elapsed) / 1000.0;
             curr_degree_rotation_torus -= (48 * elapsed) / 1000.0;
 
             // curr_degree_rotation_fft   -= (degrees_rotation_fft * elapsed) / 1000.0;
             rotation_degree[rotation_fft]   -= (degrees_rotation_fft * elapsed) / 1000.0;
-
-            
-
 
             curr_yaw   += delta_yaw   * elapsed;
             curr_pitch += delta_pitch * elapsed;
@@ -727,8 +481,6 @@ function tick() { // ccccccccc
 
         fns.update_board();
     }
-
-    // chladni_obj.do_chladni.update_chladni(this_key, lastMouseX, lastMouseY); // bbb
 
     if (activity_status["animals_time_curve"]) {
 
@@ -850,8 +602,6 @@ function handleMouseScrollWheel(event) {
 //              http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 
 
-// bbb
-
 function handleKeyDown(event) {
 
     event.preventDefault();
@@ -937,74 +687,7 @@ function handleKeys() {
 
 }
 
-function go_full_screen() {
-
-    // console.log('trying to go fullscreen 1140     ');
-
-    // document.getElementById("ecology_simulation").requestFullScreen();
-
-    var did_we_find_fullscreen_function = false;
-    var providence = 0;
-    var answer_to_document_fullScreen = false;
-
-
-    var canvas = document.getElementById("ecology_simulation");
-    if(canvas.requestFullScreen) {
-
-        did_we_find_fullscreen_function = true;
-        providence = 1;
-        canvas.requestFullScreen();
-    }
-    else if(canvas.webkitRequestFullScreen) {
-
-        did_we_find_fullscreen_function = true;
-        providence = 2;
-        canvas.webkitRequestFullScreen();
-    }
-    else if(canvas.mozRequestFullScreen) {
-
-        did_we_find_fullscreen_function = true;
-        providence = 3;
-        canvas.mozRequestFullScreen();
-    }
-
-    answer_to_document_fullScreen = document.fullScreen;
-
-    console.log('did_we_find_fullscreen_function ', did_we_find_fullscreen_function, 
-                    ' providence ', providence, 
-                    ' answer_to_document_fullScreen ', answer_to_document_fullScreen);
-
-/*
-    if(canvas.requestFullScreen)
-        canvas.requestFullScreen();
-    else if(canvas.webkitRequestFullScreen)
-        canvas.webkitRequestFullScreen();
-    else if(canvas.mozRequestFullScreen)
-        canvas.mozRequestFullScreen();
-*/
-
-}       //      go_full_screen
-
 // ------------
-
-// var state_animation = (function() {
-
-//     var state_borg = false;      // 
-
-//     return {
-
-//         set_state_borg : function(given_flag) {
-
-//             state_borg = given_flag;
-//         },
-//         get_state_borg : function() {
-
-//             return state_borg;
-//         }
-//     }
-
-// }());
-
 
 var state_animation = (function() {
 
@@ -1137,9 +820,6 @@ function internal_webGLStart() {
         console.log(siblings_obj);
     }
 
-    // go_full_screen();
-
-    // init_camera_perspectives();
     set_camera_perspectives();
 
     curr_canvas = document.getElementById("ecology_simulation");
@@ -1190,12 +870,6 @@ function internal_webGLStart() {
 
     if (true === state_animation.get_state(state_object_persistance_db)) {
 
-        // // var MAX_BORG_POINTS = 10;
-        // // var MAX_BORG_POINTS = 10000;
-        // var MAX_BORG_POINTS = 50000;
-        // // var MAX_BORG_POINTS = 100000;
-        // // var MAX_BORG_POINTS = 300000;
-
         persistance_handler.entry_point(gl);
 
         curr_object_handle     = persistance_handler.get_object_handle();
@@ -1204,16 +878,6 @@ function internal_webGLStart() {
         object_label = curr_all_object_labels[0];
 
         activity_status[object_label] = true;
-
-        /*
-        active_inner_draw.push({
-
-            flavor_graphics : curr_object_handle[object_label],
-            point_size      : 1.0,
-            rotation_property : rotation_grid,
-            object_label    : object_label
-        });
-        */
     }
 
 
@@ -1432,12 +1096,21 @@ function internal_webGLStart() {
 
         var MAX_LANDSCAPE_ANIMALS = 10000;
 
-        var landscape_min_x = -1.0;
-        var landscape_max_x =  1.0;
-        var landscape_min_y = -1.0;
-        var landscape_max_y =  1.0;
+        // var landscape_min_x = -1.0;
+        // var landscape_max_x =  1.0;
+        // var landscape_min_y = -1.0;
+        // var landscape_max_y =  1.0;
+        // var landscape_min_z = -1.0;
+        // var landscape_max_z =  1.0;
+
+
+        var landscape_min_x =  5.0;
+        var landscape_max_x =  3.0;
+        var landscape_min_y = -4.0;
+        var landscape_max_y = -2.0;
         var landscape_min_z = -1.0;
         var landscape_max_z =  1.0;
+
 
         landscape_obj.init_landscape(gl, MAX_LANDSCAPE_ANIMALS,
                                 landscape_min_x, landscape_max_x, 
@@ -1551,6 +1224,8 @@ function internal_webGLStart() {
     communication_sockets_obj.socket_client(1); // create websocket connection from browser to server
 
     // ---
+
+    webaudio_tooling_obj.play_tune_jam(2); // launch audio rendering and visualization
 
     tick(gl);
 

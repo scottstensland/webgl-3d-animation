@@ -4,24 +4,11 @@
 
 <!--    this is a node.js app ... my source code at  https://github.com/scottstensland/webgl-3d-animation
 
-         enjoy  Scott Stensland - July 28th 2014
--->
-
-<!--  orig
-
-<form action="demo_form.asp">
-  <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
-  <input type="checkbox" name="vehicle" value="Car" checked> I have a car<br>
-  <input type="submit" value="Submit">
-</form>
+         enjoy  Scott Stensland
 -->
 
 <script type="text/javascript" src="ui_logic_handler.js"></script>
 <script type="text/javascript" src="persistance_handler.js"></script>
-
-
-<!-- <script type="text/javascript" src="common/glMatrix-0.9.5.min.js"></script> -->
-<!-- <script type="text/javascript" src="common/gl-matrix.2.1.0.js"></script> -->
 <script type="text/javascript" src="common/gl-matrix.1.3.7.js"></script>
 <script type="text/javascript" src="common/common.js"></script>
 <script type="text/javascript" src="common/vec3.js"></script>
@@ -36,59 +23,7 @@
 <script type="text/javascript" src="webaudio_tooling.js"></script>
 <script type="text/javascript" src="audio_process.js"></script>
 <script type="text/javascript" src="communication_sockets.js"></script>
-<!-- <script type="text/javascript" src="render_wav.js"></script> -->
-<!-- <script type="text/javascript" src="genetic_machinery_client.js"></script> -->
 <script type="text/javascript" src="landscape.js"></script>
-
-
-<script id="todo_list" type="text/javascript">
-/*
-
-    handle bit_depth on both write WAV file and read +++ handle socket serialization issues
-
-    do a button to run sampling for entire duration of supplied source file mp3/ogg/...
-    
-    ____
-
-    migrate off normal buttons and onto webgl only buttons
-
-    how to disable normal buttons - gray it out after being activated
-
-*/
-</script>
-
-<script id="ignore___shader-vs" type="x-shader/x-vertex">
-
-    attribute vec3 aVertexPosition;
-    attribute vec4 aVertexColor;
-
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-
-    uniform float given_point_size;
-
-    varying vec4 vColor;
-
-    uniform vec2 u_resolution;
-
-    void main(void) {
-
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-
-        vColor = aVertexColor;
-
-        // gl_PointSize = 0.8;  // minute
-        // gl_PointSize = 50.0;    // OK for 2X2
-        // gl_PointSize = 20.0;
-        // gl_PointSize = 3.0;
-        gl_PointSize = given_point_size;     // OK for board size 400
-        // gl_PointSize = 0.50;     // OK for board size 400
-
-    }
-
-</script>
-
-<!-- http://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js -->
 
 <script id="shader-vs" type="x-shader/x-vertex">
 
@@ -130,114 +65,39 @@
 
     // ---
 
-    float shift_right (float v, float amt) { 
-
-    v = floor(v) + 0.5; 
-    return floor(v / exp2(amt)); 
-    }
-
-    float shift_left (float v, float amt) { 
-
-        return floor(v * exp2(amt) + 0.5); 
-    }
-
-    float mask_last (float v, float bits) { 
-
-        return mod(v, shift_left(1.0, bits)); 
-    }
-
-    float extract_bits (float num, float from, float to) { 
-
-        from = floor(from + 0.5); to = floor(to + 0.5); 
-        return mask_last(shift_right(num, from), to - from); 
-    }
-
-    vec4 encode_float (float val) { 
-
-        if (val == 0.0) return vec4(0, 0, 0, 0); 
-        float sign = val > 0.0 ? 0.0 : 1.0; 
-        val = abs(val); 
-        float exponent = floor(log2(val)); 
-        float biased_exponent = exponent + 127.0; 
-        float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0; 
-        float t = biased_exponent / 2.0; 
-        float last_bit_of_biased_exponent = fract(t) * 2.0; 
-        float remaining_bits_of_biased_exponent = floor(t); 
-        float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0; 
-        float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0; 
-        float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0; 
-        float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
-        return vec4(byte4, byte3, byte2, byte1); 
-    }
-
-    // ---
-
     void main(void) {
 
-        gl_FragColor = vColor; // orig  bbbbbbbb
-
-         float myFloat = 420.420;
-        // gl_FragColor = encode_float(myFloat);
+        gl_FragColor = vColor;
     }
+
 </script>
 
 <script type="text/javascript"  src="webgl_3d_animation.js"></script>
 
-
-
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_persistance', this);" checked>mongo DB</label>
 
-
-
-
-<label>click to show
-<input type="checkbox" onclick="ui_logic_handler.handleClick('animals_audio_vis', this);" checked>
+<label>click to show<input type="checkbox" onclick="ui_logic_handler.handleClick('animals_audio_vis', this);" checked>
     audio vis</label>
-
-
 
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_fft', this);" checked>audio fft</label>
 
-
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_time_curve', this);" checked>audio time curve</label>
-
-
 
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_borg', this);" checked>borg</label>
 
-
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_chladni', this);" checked>chladni</label>
-
 
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_pasture', this);" checked>pasture</label>
 
-
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_trefoil_knot', this);" checked>trefoil knot</label>
-
 
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_schwartz', this);" checked>schwartz</label>
 
-
-<label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_fish', this);" checked>fish & sharks</label>
+<label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_fish', this);" checked>fish &amp; sharks</label>
 
 <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_doughnut', this);" checked>doughnut</label>
 
 
-
-
-<!--
-animals_audio_vis: true
-animals_borg: true
-animals_chladni: true
-animals_doughnut: true
-animals_fft: true
-animals_fish: true
-animals_pasture: true
-animals_schwartz: true
-animals_sharks: true
-animals_time_curve: true
-animals_trefoil_knot: true
--->
 
 </head>
 <body onload="webgl_3d_animation.internal_webGLStart();" >
@@ -246,11 +106,11 @@ animals_trefoil_knot: true
 
         <button onclick="webgl_3d_animation.set_camera_perspectives()">reset perspective !</button>
 
-        <button onclick="webaudio_tooling_obj.run_synth()">do synth</button>
+        <!-- <button onclick="webaudio_tooling_obj.run_synth()">do synth</button> -->
 <!--        <button onclick="webaudio_tooling_obj.play_tune_jam(1)">play jam</button>   -->
-        <button onclick="webaudio_tooling_obj.play_tune_jam(2)">play jam looped</button>
+        <!-- <button onclick="webaudio_tooling_obj.play_tune_jam(2)">play jam looped</button> -->
         <!-- <button onclick="webaudio_tooling_obj.play_tune_jam(3)">play wav buffer</button> -->
-        <button onclick="webaudio_tooling_obj.record_microphone()">rec mic</button>
+        <!-- <button onclick="webaudio_tooling_obj.record_microphone()">rec mic</button> -->
 
     </p>
 

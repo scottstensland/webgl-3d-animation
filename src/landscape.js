@@ -39,11 +39,11 @@ all_object_labels.push(animals_pasture);
 // ---------- setup display geometry ---------- //
 
 
-object_handle[animals_pasture].pre_translate  = [  0.5,  1.5,  1.5];
-object_handle[animals_pasture].post_translate = Common_Utils.negate_array(object_handle[animals_pasture].pre_translate);
+// object_handle[animals_pasture].pre_translate  = [  0.5,  1.5,  1.5];
+// object_handle[animals_pasture].post_translate = Common_Utils.negate_array(object_handle[animals_pasture].pre_translate);
 
 // we want dupe of above here
-object_handle[animals_pasture].pre_translate  = [  0.5,  1.5,  1.5];
+object_handle[animals_pasture].pre_translate  = [  -1.5,  1.5,  1.5];
 object_handle[animals_pasture].post_translate = Common_Utils.negate_array(object_handle[animals_pasture].pre_translate);
 
 // ---

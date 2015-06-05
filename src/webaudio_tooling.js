@@ -119,6 +119,8 @@ var webaudio_tooling_obj = function() {
         // When loaded decode the data
         request.onload = function() {
 
+            console.log("... onload triggered");
+
             // decode the data
             audio_context.decodeAudioData(request.response, function(buffer) {
 
@@ -138,6 +140,8 @@ var webaudio_tooling_obj = function() {
             }, on_error); // stens TODO - chase down why getting null error when attemping to decode filetype ogg / wav OK
         };
         request.send();
+
+        console.log("onload ... should trigger momentarily");
 
     } //      load_sound
 
