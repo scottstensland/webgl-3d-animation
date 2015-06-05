@@ -7,7 +7,7 @@
 // var fns = function () {	//	this engulfs the entirety of below file
 
 
-fns = function() {
+var fns = function() {
 
 
 var fish_colors = [];
@@ -72,14 +72,30 @@ var conversion_grid_to_world_y;
 var conversion_world_to_grid_x;
 var conversion_world_to_grid_y;
 
+// ---------------------------------
 
-var animals_fish = {};
+// var object_handle[animals_fish] = {};
+// var object_handle[animals_sharks] = {};
+// var object_handle[animals_doughnut] = {};
 
 
-var animals_sharks = {};
+var object_handle = {}; // holds all the various flavors of graphic object types
 
+var animals_fish  = "animals_fish";
+var animals_sharks  = "animals_sharks";
+var animals_doughnut  = "animals_doughnut";
 
-var animals_doughnut = {};
+object_handle[animals_fish] = {};
+object_handle[animals_sharks] = {};
+object_handle[animals_doughnut] = {};
+
+var all_object_labels = [];
+
+all_object_labels.push(animals_fish);
+all_object_labels.push(animals_sharks);
+all_object_labels.push(animals_doughnut);
+
+// ---------------------------------
 
 
 var playboard = {};        // grab bag of board items
@@ -452,15 +468,15 @@ function init_buffers(given_playboard, given_size_board_x, given_size_board_y, g
     given_playboard.world_min_x = world_min_x;
     given_playboard.world_min_y = world_min_y;
 
-    animals_fish.want_translate = false;
+    object_handle[animals_fish].want_translate = false;
 
     var is_animal_fish = true;
-    init_this_buffer(given_playboard, animals_fish, given_max_fish, species_fish, is_animal_fish);
+    init_this_buffer(given_playboard, object_handle[animals_fish], given_max_fish, species_fish, is_animal_fish);
 
-    animals_sharks.want_translate = false;
+    object_handle[animals_sharks].want_translate = false;
 
     is_animal_fish = false;
-    init_this_buffer(given_playboard, animals_sharks, given_max_shark, species_shark, is_animal_fish);
+    init_this_buffer(given_playboard, object_handle[animals_sharks], given_max_shark, species_shark, is_animal_fish);
 
 }       //      init_buffers
 
@@ -701,8 +717,8 @@ function update_board() {
 
     if (do_output) {
 
-        show_animals(animals_fish, 'fish');
-        show_animals(animals_sharks, 'shark');
+        show_animals(object_handle[animals_fish], 'fish');
+        show_animals(object_handle[animals_sharks], 'shark');
         show_grid();
 
         console.log('------------ top of chronos ------------------ ', count_chronos);
@@ -715,9 +731,9 @@ function update_board() {
     var curr_animal_index = 0;  // curr_fish or curr_shark     ... keep separate as size 3
     var color_index = 0;        // color for curr_animal_index ... keep separate as size 4
 
-    // console.log('animals_fish.count  ', animals_fish.count);
+    // console.log('object_handle[animals_fish].count  ', object_handle[animals_fish].count);
 
-    var current_fish_count = animals_fish.count;    // just to avoid visiting new borns
+    var current_fish_count = object_handle[animals_fish].count;    // just to avoid visiting new borns
 
     if (do_output) {
 
@@ -728,7 +744,7 @@ function update_board() {
 
         var local_fish = curr_animal_index * SIZE_DIM_3D;
 
-        if (invisible == animals_fish.vertices[local_fish + X]) {
+        if (invisible == object_handle[animals_fish].vertices[local_fish + X]) {
 
             // if (do_output) {
             // console.log("doing a fish skip");
@@ -737,8 +753,8 @@ function update_board() {
             continue;   // skip over dead fish
         }
 
-        source_x = Math.round(animals_fish.vertices[local_fish + X] * conversion_world_to_grid_x);
-        source_y = Math.round(animals_fish.vertices[local_fish + Y] * conversion_world_to_grid_y);
+        source_x = Math.round(object_handle[animals_fish].vertices[local_fish + X] * conversion_world_to_grid_x);
+        source_y = Math.round(object_handle[animals_fish].vertices[local_fish + Y] * conversion_world_to_grid_y);
 
         if (do_output) {
 
@@ -804,9 +820,9 @@ function update_board() {
                 playboard.grid_board[target_x][target_y][index_age] =
                 playboard.grid_board[source_x][source_y][index_age];
 
-                animals_fish.vertices[local_fish + X] = target_x * conversion_grid_to_world_x;
-                animals_fish.vertices[local_fish + Y] = target_y * conversion_grid_to_world_y;
-                animals_fish.vertices[local_fish + Z] = 0.0;
+                object_handle[animals_fish].vertices[local_fish + X] = target_x * conversion_grid_to_world_x;
+                object_handle[animals_fish].vertices[local_fish + Y] = target_y * conversion_grid_to_world_y;
+                object_handle[animals_fish].vertices[local_fish + Z] = 0.0;
                     
                 // ---
 
@@ -847,7 +863,7 @@ function update_board() {
 
                     if (do_output) {
                     
-                        console.log('prior  animals_fish.count  ', animals_fish.count);
+                        console.log('prior  object_handle[animals_fish].count  ', object_handle[animals_fish].count);
                     }
 
                     if (curr_dead_fish > 0) {   // do we have any dead fish laying about - primed for resurrection
@@ -858,27 +874,27 @@ function update_board() {
 
                     } else {                    // create new baby fish out of thin air
 
-                        baby_fish_index = animals_fish.count++;
+                        baby_fish_index = object_handle[animals_fish].count++;
 
-                        animals_fish.vertex_position_buffer.numItems++;
-                        animals_fish.vertex_color_buffer.numItems++;
+                        object_handle[animals_fish].vertex_position_buffer.numItems++;
+                        object_handle[animals_fish].vertex_color_buffer.numItems++;
                     }
 
                     if (do_output) {
                     
-                        console.log('post animals_fish.count  ', animals_fish.count,
+                        console.log('post object_handle[animals_fish].count  ', object_handle[animals_fish].count,
                                     ' baby_fish_index ', baby_fish_index);
                     }
 
                     playboard.grid_board[source_x][source_y][index_animal] = baby_fish_index;
 
-                    animals_fish.vertices[baby_fish_index*SIZE_DIM_3D + X] = 
+                    object_handle[animals_fish].vertices[baby_fish_index*SIZE_DIM_3D + X] = 
                                                     source_x * conversion_grid_to_world_x;
 
-                    animals_fish.vertices[baby_fish_index*SIZE_DIM_3D + Y] = 
+                    object_handle[animals_fish].vertices[baby_fish_index*SIZE_DIM_3D + Y] = 
                                                     source_y * conversion_grid_to_world_y;
 
-                    animals_fish.vertices[baby_fish_index*SIZE_DIM_3D + Z] = 0.0;
+                    object_handle[animals_fish].vertices[baby_fish_index*SIZE_DIM_3D + Z] = 0.0;
 
                     if (do_output) {
 
@@ -888,10 +904,10 @@ function update_board() {
                             );
                     }
 
-                    animals_fish.colors[baby_fish_index*SIZE_DIM_COLORS + R] = fish_colors.R;
-                    animals_fish.colors[baby_fish_index*SIZE_DIM_COLORS + G] = fish_colors.G;
-                    animals_fish.colors[baby_fish_index*SIZE_DIM_COLORS + B] = fish_colors.B;
-                    animals_fish.colors[baby_fish_index*SIZE_DIM_COLORS + A] = fish_colors.A;
+                    object_handle[animals_fish].colors[baby_fish_index*SIZE_DIM_COLORS + R] = fish_colors.R;
+                    object_handle[animals_fish].colors[baby_fish_index*SIZE_DIM_COLORS + G] = fish_colors.G;
+                    object_handle[animals_fish].colors[baby_fish_index*SIZE_DIM_COLORS + B] = fish_colors.B;
+                    object_handle[animals_fish].colors[baby_fish_index*SIZE_DIM_COLORS + A] = fish_colors.A;
 
                     // ---
 
@@ -940,15 +956,15 @@ function update_board() {
 
     if (do_output) {
 
-        show_animals(animals_fish, 'fish');
-        show_animals(animals_sharks, 'shark');
+        show_animals(object_handle[animals_fish], 'fish');
+        show_animals(object_handle[animals_sharks], 'shark');
 
         show_grid();
 
         console.log('\n<><><>    end of fish ... start of shark   <><><>', count_chronos, '\n');
     }
 
-    var current_shark_count = animals_sharks.count;    // just to avoid visiting new borns
+    var current_shark_count = object_handle[animals_sharks].count;    // just to avoid visiting new borns
 
     if (do_output) {
 
@@ -960,15 +976,15 @@ function update_board() {
 
         var local_shark = curr_animal_index * SIZE_DIM_3D;
 
-        if (invisible == animals_sharks.vertices[local_shark + X]) {
+        if (invisible == object_handle[animals_sharks].vertices[local_shark + X]) {
 
             // console.log("seeing a dead shark skip");
 
             continue;   // skip over dead shark
         }
 
-        source_x = Math.round(animals_sharks.vertices[local_shark + X] * conversion_world_to_grid_x);
-        source_y = Math.round(animals_sharks.vertices[local_shark + Y] * conversion_world_to_grid_y);
+        source_x = Math.round(object_handle[animals_sharks].vertices[local_shark + X] * conversion_world_to_grid_x);
+        source_y = Math.round(object_handle[animals_sharks].vertices[local_shark + Y] * conversion_world_to_grid_y);
 
         if (do_output) {
 
@@ -1027,15 +1043,15 @@ function update_board() {
 
                 dead_fish_bucket[curr_dead_fish++] = target_fish_index;
 
-                animals_fish.vertices[target_fish_index*SIZE_DIM_3D + X] = invisible;  // stens TODO confirm OK
-                animals_fish.vertices[target_fish_index*SIZE_DIM_3D + Y] = invisible;  // stens TODO confirm OK
-                animals_fish.vertices[target_fish_index*SIZE_DIM_3D + Z] = invisible;  // stens TODO confirm OK
+                object_handle[animals_fish].vertices[target_fish_index*SIZE_DIM_3D + X] = invisible;  // stens TODO confirm OK
+                object_handle[animals_fish].vertices[target_fish_index*SIZE_DIM_3D + Y] = invisible;  // stens TODO confirm OK
+                object_handle[animals_fish].vertices[target_fish_index*SIZE_DIM_3D + Z] = invisible;  // stens TODO confirm OK
 
                   // stens TODO - probably NOT necessary as its location is off visible grid
-                // animals_fish.colors[target_fish_index*SIZE_DIM_COLORS + R] = blank_colors.R;
-                // animals_fish.colors[target_fish_index*SIZE_DIM_COLORS + G] = blank_colors.G;
-                // animals_fish.colors[target_fish_index*SIZE_DIM_COLORS + B] = blank_colors.B;
-                // animals_fish.colors[target_fish_index*SIZE_DIM_COLORS + A] = blank_colors.A;
+                // object_handle[animals_fish].colors[target_fish_index*SIZE_DIM_COLORS + R] = blank_colors.R;
+                // object_handle[animals_fish].colors[target_fish_index*SIZE_DIM_COLORS + G] = blank_colors.G;
+                // object_handle[animals_fish].colors[target_fish_index*SIZE_DIM_COLORS + B] = blank_colors.B;
+                // object_handle[animals_fish].colors[target_fish_index*SIZE_DIM_COLORS + A] = blank_colors.A;
 
                 if (do_output) {
 
@@ -1059,9 +1075,9 @@ function update_board() {
 
                 // stens TODO - assure you handle burial of freshly eaten fish
 
-                animals_sharks.vertices[local_shark+X] = target_x * conversion_grid_to_world_x;
-                animals_sharks.vertices[local_shark+Y] = target_y * conversion_grid_to_world_y;
-                animals_sharks.vertices[local_shark+Z] = 0.0;
+                object_handle[animals_sharks].vertices[local_shark+X] = target_x * conversion_grid_to_world_x;
+                object_handle[animals_sharks].vertices[local_shark+Y] = target_y * conversion_grid_to_world_y;
+                object_handle[animals_sharks].vertices[local_shark+Z] = 0.0;
 
 
 
@@ -1103,27 +1119,27 @@ function update_board() {
 
                     } else {
 
-                        baby_shark_index = animals_sharks.count++;
+                        baby_shark_index = object_handle[animals_sharks].count++;
 
-                        animals_sharks.vertex_position_buffer.numItems++;
-                        animals_sharks.vertex_color_buffer.numItems++;
+                        object_handle[animals_sharks].vertex_position_buffer.numItems++;
+                        object_handle[animals_sharks].vertex_color_buffer.numItems++;
                     }
 
                     playboard.grid_board[source_x][source_y][index_animal] = baby_shark_index;
 // local_shark
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +X] = 
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +X] = 
                                                 source_x * conversion_grid_to_world_x;
 
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +Y] =
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +Y] =
                                                 source_y * conversion_grid_to_world_y;
 
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +Z] = 0.0;
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +Z] = 0.0;
 
 
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + R] = shark_colors.R;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + G] = shark_colors.G;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + B] = shark_colors.B;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + A] = shark_colors.A;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + R] = shark_colors.R;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + G] = shark_colors.G;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + B] = shark_colors.B;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + A] = shark_colors.A;
 
                     // ---
 
@@ -1178,9 +1194,9 @@ function update_board() {
             playboard.grid_board[source_x][source_y][index_animal] = unused;
             playboard.grid_board[source_x][source_y][index_age] = unused;
 
-            animals_sharks.vertices[local_shark + X] = invisible;
-            animals_sharks.vertices[local_shark + Y] = invisible;
-            animals_sharks.vertices[local_shark + Z] = invisible;
+            object_handle[animals_sharks].vertices[local_shark + X] = invisible;
+            object_handle[animals_sharks].vertices[local_shark + Y] = invisible;
+            object_handle[animals_sharks].vertices[local_shark + Z] = invisible;
 
 
             doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + R] = 0.0; // shark red
@@ -1221,9 +1237,9 @@ function update_board() {
                 playboard.grid_board[target_x][target_y][index_age]    =
                 playboard.grid_board[source_x][source_y][index_age];
 
-                animals_sharks.vertices[local_shark + X] = target_x * conversion_grid_to_world_x;
-                animals_sharks.vertices[local_shark + Y] = target_y * conversion_grid_to_world_y;
-                animals_sharks.vertices[local_shark + Z] = 0.0;
+                object_handle[animals_sharks].vertices[local_shark + X] = target_x * conversion_grid_to_world_x;
+                object_handle[animals_sharks].vertices[local_shark + Y] = target_y * conversion_grid_to_world_y;
+                object_handle[animals_sharks].vertices[local_shark + Z] = 0.0;
 
 
             doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + R] = 1.0; // shark red
@@ -1263,25 +1279,25 @@ function update_board() {
 
                     } else {
 
-                        baby_shark_index = animals_sharks.count++;
+                        baby_shark_index = object_handle[animals_sharks].count++;
 
-                        animals_sharks.vertex_position_buffer.numItems++;
-                        animals_sharks.vertex_color_buffer.numItems++;
+                        object_handle[animals_sharks].vertex_position_buffer.numItems++;
+                        object_handle[animals_sharks].vertex_color_buffer.numItems++;
                     }
 
                     playboard.grid_board[source_x][source_y][index_animal] = baby_shark_index;
 
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +X] = 
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +X] = 
                                                 source_x * conversion_grid_to_world_x;
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +Y] = 
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +Y] = 
                                                 source_y * conversion_grid_to_world_y;
-                    animals_sharks.vertices[baby_shark_index*SIZE_DIM_3D +Z] = 0.0;
+                    object_handle[animals_sharks].vertices[baby_shark_index*SIZE_DIM_3D +Z] = 0.0;
 
 
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + R] = shark_colors.R;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + G] = shark_colors.G;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + B] = shark_colors.B;
-                    animals_sharks.colors[baby_shark_index*SIZE_DIM_COLORS + A] = shark_colors.A;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + R] = shark_colors.R;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + G] = shark_colors.G;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + B] = shark_colors.B;
+                    object_handle[animals_sharks].colors[baby_shark_index*SIZE_DIM_COLORS + A] = shark_colors.A;
 
                     // ---
 
@@ -1318,12 +1334,12 @@ function update_board() {
 
     if (do_output) {
 
-        show_animals(animals_fish, 'fish');
-        show_animals(animals_sharks, 'shark');
+        show_animals(object_handle[animals_fish], 'fish');
+        show_animals(object_handle[animals_sharks], 'shark');
         show_grid();
 
-        console.log('count fish ', animals_fish.count);
-        console.log('count shark ', animals_sharks.count);
+        console.log('count fish ', object_handle[animals_fish].count);
+        console.log('count shark ', object_handle[animals_sharks].count);
 
         console.log('------------ bottom of chronos ------------------ ', count_chronos++);
     }
@@ -1339,39 +1355,39 @@ function update_board() {
 
 function init_torus_buffers() {
 
-    animals_doughnut.vertices = doughnut_box_vertices;
+    object_handle[animals_doughnut].vertices = doughnut_box_vertices;
 
-    animals_doughnut.colors = doughnut_box_colors;
+    object_handle[animals_doughnut].colors = doughnut_box_colors;
 
-    animals_doughnut.indices = doughnut_indices;
-
-    // ---
-
-    animals_doughnut.vertex_position_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, animals_doughnut.vertex_position_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, animals_doughnut.vertices, gl.STATIC_DRAW);
-    animals_doughnut.vertex_position_buffer.itemSize = 3;
-    animals_doughnut.vertex_position_buffer.numItems = curr_doughnut_vertex / 3;
-
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, animals_doughnut.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    object_handle[animals_doughnut].indices = doughnut_indices;
 
     // ---
 
-    animals_doughnut.vertex_color_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, animals_doughnut.vertex_color_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, animals_doughnut.colors, gl.STATIC_DRAW);
-    animals_doughnut.vertex_color_buffer.itemSize = 3;
-    animals_doughnut.vertex_color_buffer.numItems = curr_doughnut_color / 3;
+    object_handle[animals_doughnut].vertex_position_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertex_position_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertices, gl.STATIC_DRAW);
+    object_handle[animals_doughnut].vertex_position_buffer.itemSize = 3;
+    object_handle[animals_doughnut].vertex_position_buffer.numItems = curr_doughnut_vertex / 3;
 
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, animals_doughnut.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, object_handle[animals_doughnut].vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+    // ---
+
+    object_handle[animals_doughnut].vertex_color_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertex_color_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_doughnut].colors, gl.STATIC_DRAW);
+    object_handle[animals_doughnut].vertex_color_buffer.itemSize = 3;
+    object_handle[animals_doughnut].vertex_color_buffer.numItems = curr_doughnut_color / 3;
+
+    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, object_handle[animals_doughnut].vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
     
     // ---
 
-    animals_doughnut.vertex_indices_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, animals_doughnut.vertex_indices_buffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, animals_doughnut.indices, gl.STATIC_DRAW);
-    animals_doughnut.vertex_indices_buffer.itemSize = 1;
-    animals_doughnut.vertex_indices_buffer.numItems = curr_doughnut_index;
+    object_handle[animals_doughnut].vertex_indices_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_doughnut].vertex_indices_buffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_doughnut].indices, gl.STATIC_DRAW);
+    object_handle[animals_doughnut].vertex_indices_buffer.itemSize = 1;
+    object_handle[animals_doughnut].vertex_indices_buffer.numItems = curr_doughnut_index;
 
 }       //      init_torus_buffers
 
@@ -1436,7 +1452,7 @@ function init_doughnut() {
 
     Common_Utils.init_min_max(min_max);
 
-    animals_doughnut.min_max = min_max;
+    object_handle[animals_doughnut].min_max = min_max;
 
     // console.debug("%o", min_max);
 
@@ -1895,9 +1911,9 @@ function show_values() {
     console.log('curr_doughnut_index   ', curr_doughnut_index); 
 
 
-    console.log('vertex_position_buffer.numItems   ', animals_doughnut.vertex_position_buffer.numItems);
-    console.log('vertex_color_buffer.numItems   ',    animals_doughnut.vertex_color_buffer.numItems);
-    console.log('vertex_indices_buffer.numItems   ',  animals_doughnut.vertex_indices_buffer.numItems);
+    console.log('vertex_position_buffer.numItems   ', object_handle[animals_doughnut].vertex_position_buffer.numItems);
+    console.log('vertex_color_buffer.numItems   ',    object_handle[animals_doughnut].vertex_color_buffer.numItems);
+    console.log('vertex_indices_buffer.numItems   ',  object_handle[animals_doughnut].vertex_indices_buffer.numItems);
 }
 
 // ------------
@@ -1982,8 +1998,8 @@ function inner_draw(given_animal, given_point_size, given_rotation) {
 
 // 	mvMatrix = given_mvMatrix;
 
-//     inner_draw(animals_fish, desired_point_size, 0);
-//     inner_draw(animals_sharks, desired_point_size, 0);
+//     inner_draw(object_handle[animals_fish], desired_point_size, 0);
+//     inner_draw(object_handle[animals_sharks], desired_point_size, 0);
 // }
 
 
@@ -2019,15 +2035,25 @@ function init_f_N_s(given_chosen_model,
     init_torus_buffers();	
 }
 
+
+var get_object_handle = function() {
+
+    return object_handle;
+}
+
+var get_all_object_labels = function() {
+
+    return all_object_labels;
+}
+
+
 return {	// to make visible to calling reference frame list function here
 
-  init_f_N_s: init_f_N_s,
-  // wrapper_f_n_s_draw: wrapper_f_n_s_draw,
-  animals_fish: animals_fish,
-  animals_sharks: animals_sharks,
-  animals_doughnut: animals_doughnut,
-  update_board: update_board,
-  get_desired_point_size: get_desired_point_size
+    init_f_N_s: init_f_N_s,
+    update_board: update_board,
+    get_desired_point_size: get_desired_point_size,
+    get_object_handle : get_object_handle,
+    get_all_object_labels : get_all_object_labels
 };
 
 }();	//	fns = function() 
