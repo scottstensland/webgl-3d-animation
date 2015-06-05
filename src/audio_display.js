@@ -40,9 +40,25 @@ var SIZE_DIM_COLORS = 4;
 var FLT_MAX = 999.99;
 var FLT_MIN = -999.99;
 
-var animals_audio_vis = {};
-var animals_fft = {};           // audio frequency domain display on surface of tall rotating cylinder
-var animals_time_curve = {};    // audio time domain curve display on surface of squat rotating cylinder
+var object_handle = {}; // holds all the various flavors of graphic object types
+
+// var animals_audio_vis = {};
+// var animals_fft = {};           // audio frequency domain display on surface of tall rotating cylinder
+// var animals_time_curve = {};    // audio time domain curve display on surface of squat rotating cylinder
+
+var animals_audio_vis  = "animals_audio_vis";
+var animals_fft        = "animals_fft";
+var animals_time_curve = "animals_time_curve";
+
+object_handle[animals_audio_vis] = {};
+object_handle[animals_fft] = {};
+object_handle[animals_time_curve] = {};
+
+var all_object_labels = [];
+
+all_object_labels.push(animals_audio_vis);
+all_object_labels.push(animals_fft);
+all_object_labels.push(animals_time_curve);
 
 var curr_bucket_depth = 0;
 
@@ -155,15 +171,15 @@ function draw_time_domain(given_audio_buffer, given_buffer_size) {
 
     for (var curr_bucket = 0; curr_bucket < given_buffer_size; curr_bucket++) {
 
-        animals_audio_vis.vertices[curr_vertex_index + X] = curr_x;
-        animals_audio_vis.vertices[curr_vertex_index + Y] = curr_y;
-        animals_audio_vis.vertices[curr_vertex_index + Z] = time_domain_median_z + given_audio_buffer[curr_bucket];
+        object_handle[animals_audio_vis].vertices[curr_vertex_index + X] = curr_x;
+        object_handle[animals_audio_vis].vertices[curr_vertex_index + Y] = curr_y;
+        object_handle[animals_audio_vis].vertices[curr_vertex_index + Z] = time_domain_median_z + given_audio_buffer[curr_bucket];
 
 
-        animals_audio_vis.colors[curr_color_index + R] = 0.0;
-        animals_audio_vis.colors[curr_color_index + G] = 0.0;
-        animals_audio_vis.colors[curr_color_index + B] = 1.0;
-        animals_audio_vis.colors[curr_color_index + B] = 1.0;
+        object_handle[animals_audio_vis].colors[curr_color_index + R] = 0.0;
+        object_handle[animals_audio_vis].colors[curr_color_index + G] = 0.0;
+        object_handle[animals_audio_vis].colors[curr_color_index + B] = 1.0;
+        object_handle[animals_audio_vis].colors[curr_color_index + B] = 1.0;
 
         // if (count_num_time_domain_show < 1) {
 
@@ -175,8 +191,8 @@ function draw_time_domain(given_audio_buffer, given_buffer_size) {
 
         if (0 < curr_bucket) {
 
-            animals_audio_vis.indices[curr_indices_index++] = curr_bucket - 1;
-            animals_audio_vis.indices[curr_indices_index++] = curr_bucket;
+            object_handle[animals_audio_vis].indices[curr_indices_index++] = curr_bucket - 1;
+            object_handle[animals_audio_vis].indices[curr_indices_index++] = curr_bucket;
         }
 
         curr_vertex_index += SIZE_DIM_3D;
@@ -233,10 +249,10 @@ function update_billboard() {       // refreshes time domain cylinder
 
         for (var curr_bucket = 0; curr_bucket < max_number_rows_time_domain_cylinder; curr_bucket++) {
 
-            animals_time_curve.colors[black_out_index + R] = 0.0;
-            animals_time_curve.colors[black_out_index + G] = 0.0;
-            animals_time_curve.colors[black_out_index + B] = 0.0;
-            animals_time_curve.colors[black_out_index + A] = 1.0;
+            object_handle[animals_time_curve].colors[black_out_index + R] = 0.0;
+            object_handle[animals_time_curve].colors[black_out_index + G] = 0.0;
+            object_handle[animals_time_curve].colors[black_out_index + B] = 0.0;
+            object_handle[animals_time_curve].colors[black_out_index + A] = 1.0;
 
             black_out_index  += SIZE_DIM_COLORS;
         }
@@ -251,10 +267,10 @@ function update_billboard() {       // refreshes time domain cylinder
 
         var display_value = SIZE_DIM_COLORS * Math.floor(max_number_rows_time_domain_cylinder * (1.0 + curr_value) / 2.0);
 
-        animals_time_curve.colors[curr_color_index_time_domain + display_value + R] = 1.0;
-        animals_time_curve.colors[curr_color_index_time_domain + display_value + G] = 0.0;
-        animals_time_curve.colors[curr_color_index_time_domain + display_value + B] = 0.0;
-        animals_time_curve.colors[curr_color_index_time_domain + display_value + A] = 1.0;
+        object_handle[animals_time_curve].colors[curr_color_index_time_domain + display_value + R] = 1.0;
+        object_handle[animals_time_curve].colors[curr_color_index_time_domain + display_value + G] = 0.0;
+        object_handle[animals_time_curve].colors[curr_color_index_time_domain + display_value + B] = 0.0;
+        object_handle[animals_time_curve].colors[curr_color_index_time_domain + display_value + A] = 1.0;
 
         curr_color_index_time_domain += max_number_rows_time_domain_cylinder * SIZE_DIM_COLORS;
 
@@ -451,10 +467,10 @@ function update_one_row(given_array) {  // FFT cylinder
         //     console.log('fft value ', curr_bucket, given_array[curr_bucket]);
         // }
 
-        animals_fft.colors[curr_fft_color_index + R] = given_array[curr_bucket] / bucket_color_factor;
-        animals_fft.colors[curr_fft_color_index + G] = 1.0 / (bucket_color_factor - given_array[curr_bucket]);
-        animals_fft.colors[curr_fft_color_index + B] = bucket_color_factor / given_array[curr_bucket];
-        animals_fft.colors[curr_fft_color_index + A] = 1.0;
+        object_handle[animals_fft].colors[curr_fft_color_index + R] = given_array[curr_bucket] / bucket_color_factor;
+        object_handle[animals_fft].colors[curr_fft_color_index + G] = 1.0 / (bucket_color_factor - given_array[curr_bucket]);
+        object_handle[animals_fft].colors[curr_fft_color_index + B] = bucket_color_factor / given_array[curr_bucket];
+        object_handle[animals_fft].colors[curr_fft_color_index + A] = 1.0;
 
         if (given_array[curr_bucket] > max_fft_value_seen) {
 
@@ -798,6 +814,11 @@ function allocate_graphics_N_synth_cyl(gl, given_animal_obj, cylinder_blob) {
 //     console.log('NOTICE - just allocated curr buffer to size ', given_buffer_size);
 // }
 
+var set_want_lines = function(given_flag) {
+
+    object_handle[animals_audio_vis].want_lines = given_flag;
+}
+
 
 function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_columns_fft_cylinder, 
                         given_buffer_size, given_sample_depth, given_buffer_size_time_domain) {
@@ -836,33 +857,33 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
     // console.log('BUFF_SIZE ', BUFF_SIZE, ' sample_depth ', sample_depth, 
     //             ' BUFF_SIZE_TIME_DOMAIN ', BUFF_SIZE_TIME_DOMAIN);
 
-    animals_audio_vis.vertices = new Float32Array(BUFF_SIZE * SIZE_DIM_3D);
-    animals_audio_vis.colors   = new Float32Array(BUFF_SIZE * SIZE_DIM_COLORS);
-    animals_audio_vis.indices  = new  Uint16Array(BUFF_SIZE * num_indices_per_time_domain_vertex); 
+    object_handle[animals_audio_vis].vertices = new Float32Array(BUFF_SIZE * SIZE_DIM_3D);
+    object_handle[animals_audio_vis].colors   = new Float32Array(BUFF_SIZE * SIZE_DIM_COLORS);
+    object_handle[animals_audio_vis].indices  = new  Uint16Array(BUFF_SIZE * num_indices_per_time_domain_vertex); 
 
     // ---
 
-    animals_audio_vis.vertex_position_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, animals_audio_vis.vertex_position_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, animals_audio_vis.vertices, gl.STATIC_DRAW);
-    animals_audio_vis.vertex_position_buffer.itemSize = SIZE_DIM_3D;
-    animals_audio_vis.vertex_position_buffer.numItems = BUFF_SIZE;
+    object_handle[animals_audio_vis].vertex_position_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_audio_vis].vertex_position_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_audio_vis].vertices, gl.STATIC_DRAW);
+    object_handle[animals_audio_vis].vertex_position_buffer.itemSize = SIZE_DIM_3D;
+    object_handle[animals_audio_vis].vertex_position_buffer.numItems = BUFF_SIZE;
 
     // ---
 
-    animals_audio_vis.vertex_color_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, animals_audio_vis.vertex_color_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, animals_audio_vis.colors, gl.STATIC_DRAW);
-    animals_audio_vis.vertex_color_buffer.itemSize = SIZE_DIM_COLORS;
-    animals_audio_vis.vertex_color_buffer.numItems = BUFF_SIZE;
+    object_handle[animals_audio_vis].vertex_color_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_audio_vis].vertex_color_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_audio_vis].colors, gl.STATIC_DRAW);
+    object_handle[animals_audio_vis].vertex_color_buffer.itemSize = SIZE_DIM_COLORS;
+    object_handle[animals_audio_vis].vertex_color_buffer.numItems = BUFF_SIZE;
 
     // ---
 
-    animals_audio_vis.vertex_indices_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, animals_audio_vis.vertex_indices_buffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, animals_audio_vis.indices, gl.STATIC_DRAW);
-    animals_audio_vis.vertex_indices_buffer.itemSize = 1;
-    animals_audio_vis.vertex_indices_buffer.numItems = BUFF_SIZE * num_indices_per_time_domain_vertex;
+    object_handle[animals_audio_vis].vertex_indices_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_audio_vis].vertex_indices_buffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_audio_vis].indices, gl.STATIC_DRAW);
+    object_handle[animals_audio_vis].vertex_indices_buffer.itemSize = 1;
+    object_handle[animals_audio_vis].vertex_indices_buffer.numItems = BUFF_SIZE * num_indices_per_time_domain_vertex;
 
 
     var min_max = [];
@@ -871,7 +892,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     // var animals_borg = {};
 
-    animals_audio_vis.min_max = min_max;
+    object_handle[animals_audio_vis].min_max = min_max;
 
     // -------------------------------  construct FFT cylinder   --------------------------  //
 
@@ -901,7 +922,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     cylinder_blob.cyl_height = 2.0;
 
-    allocate_graphics_N_synth_cyl(gl, animals_fft, cylinder_blob);
+    allocate_graphics_N_synth_cyl(gl, object_handle[animals_fft], cylinder_blob);
 
     curr_fft_row = 0;
     // curr_fft_bucket = 0;
@@ -977,9 +998,20 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     cylinder_blob.rotate_3D_per_axis = curr_3D_array;
 
-    allocate_graphics_N_synth_cyl(gl, animals_time_curve, cylinder_blob);
+    allocate_graphics_N_synth_cyl(gl, object_handle[animals_time_curve], cylinder_blob);
 
 }       //      init_audio_vis
+
+var get_object_handle = function() {
+
+    return object_handle;
+}
+
+
+var get_all_object_labels = function() {
+
+    return all_object_labels;
+}
 
 return {    // to make visible to calling reference frame list function here
 
@@ -988,10 +1020,14 @@ return {    // to make visible to calling reference frame list function here
   draw_time_domain: draw_time_domain,
   pipeline_buffer_for_time_domain_cylinder: pipeline_buffer_for_time_domain_cylinder,
   update_billboard: update_billboard,
-  animals_fft: animals_fft,
-  animals_time_curve: animals_time_curve,
-  animals_audio_vis: animals_audio_vis
+  // object_handle : object_handle,
+  // animals_fft: animals_fft,
+  // animals_time_curve: animals_time_curve,
+  // animals_audio_vis: animals_audio_vis,
+  set_want_lines : set_want_lines,
   // allocate_local_buffer: allocate_local_buffer
+  get_object_handle : get_object_handle,
+  get_all_object_labels : get_all_object_labels
 };
 
 }();    //  audio_display_obj = function() 
