@@ -139,6 +139,19 @@ var webaudio_tooling_obj = function() {
 
             }, on_error); // stens TODO - chase down why getting null error when attemping to decode filetype ogg / wav OK
         };
+
+        gain_node.gain.value = 0.3;
+
+      // // --- enable volume control for output speakers
+          
+      // document.getElementById('volume').addEventListener('change', function() {
+
+      //     var curr_volume = this.value;
+      //     gain_node.gain.value = curr_volume;
+
+      //     console.log("curr_volume ", curr_volume);
+      // });
+
         request.send();
 
         console.log("onload ... should trigger momentarily");
@@ -232,15 +245,18 @@ var webaudio_tooling_obj = function() {
 
     // ---
 
-    function do_mute() {
+    function do_mute() { // bbb
 
-        gain_node.disconnect();
+        // gain_node.disconnect();
+
+        gain_node.gain.value = 0.0;
     }
 
     function un_mute() {
 
-        // gain_node = audio_context.createGain(); // Declare gain node
-        gain_node.connect(audio_context.destination); // Connect gain node to speakers
+        // gain_node.connect(audio_context.destination); // Connect gain node to speakers
+
+        gain_node.gain.value = 1.0;
     }
 
     // ----
@@ -623,8 +639,6 @@ function launch_synth() {
     var is_jam_happening = false;
 
     function play_tune_jam(flag_loop) {
-
-        // bbb
 
         switch (flag_loop) {
 
@@ -1049,7 +1063,6 @@ function launch_synth() {
 
     function setup_onaudioprocess_callback_render(given_node, render_this_buffer, render_size_buffer, done_callback) {
 
-        // bbb
         var curr_index_synth_buffer = 0; // keep playing until this reaches size of synth buffer
 
         given_node.onaudioprocess = (function() {

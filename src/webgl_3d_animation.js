@@ -53,6 +53,7 @@ var activity_status = {}; // stores boolean to indicate active state for each gr
 var activity_siblings = {}; // key is graphics flavor value is array of its siblings to enable
                             // enmass on/off for entire group of graphics falvors
 
+var activity_callback = {}; // stores pair of callbacks executed on true/false of flavor
 
 // var curr_degree_rotation_grid = 0;
 var curr_degree_rotation_torus = 0;
@@ -477,12 +478,14 @@ function tick() { // ccccccccc
     requestAnimFrame(tick);
     handleKeys();
 
-    if (activity_status["animals_fish"]) {
+    // if (activity_status["animals_fish"]) {
+    if (activity_status.animals_fish) {
 
         fns.update_board();
     }
 
-    if (activity_status["animals_time_curve"]) {
+    // if (activity_status["animals_time_curve"]) {
+    if (activity_status.animals_time_curve) {
 
         audio_display_obj.update_billboard();   // refreshes time domain cylinder
     }
@@ -743,7 +746,7 @@ var state_animation = (function() {
 
             return state_value[curr_index];
         }
-    }
+    };
 
 }());
 
@@ -766,6 +769,7 @@ function internal_webGLStart() {
     var state_object_chladni = "object_chladni";
     var state_object_trefoil = "object_trefoil";
     var state_object_audio_domain = "object_audio_domain";
+    var state_object_toggle_mute = "toggle_mute";
 
     // ---
 
@@ -865,6 +869,16 @@ function internal_webGLStart() {
     console.log("           vertexUnits " + gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS));
     console.log("         fragmentUnits " + gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS));
     console.log("         combinedUnits " + gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+
+    // ------------
+
+    activity_status[state_object_toggle_mute] = true; // toggle mute audio volume
+
+    activity_callback[state_object_toggle_mute] = {
+
+        true : webaudio_tooling_obj.do_mute,
+        false : webaudio_tooling_obj.un_mute
+    };
 
     // ------------
 
@@ -1088,7 +1102,11 @@ function internal_webGLStart() {
             object_label    : object_label            
         });
 
-    };      //      true === state_animation.get_state(state_object_audio_domain)
+        // ---
+
+        // webaudio_tooling_obj.do_mute();
+
+    }      //      true === state_animation.get_state(state_object_audio_domain)
 
     // -------------    landscape   ------------- //
 
@@ -1133,7 +1151,7 @@ function internal_webGLStart() {
             rotation_property : rotation_grid,
             object_label    : object_label                        
         });
-    };
+    }
 
     // -------------    fish and sharks   ------------- //
 
@@ -1195,9 +1213,7 @@ function internal_webGLStart() {
             rotation_matrix : torus_matrix_rotation,
             object_label    : object_label
         });
-    };
-
-
+    }
 
     // gl.clearColor(0.0, 0.0, 0.0, 1.0);
     // gl.clearColor(0.3, 0.3, 0.3, 1.0);
@@ -1221,7 +1237,7 @@ function internal_webGLStart() {
 
     // ---
 
-    communication_sockets_obj.socket_client(1); // create websocket connection from browser to server
+    // communication_sockets_obj.socket_client(1); // create websocket connection from browser to server
 
     // ---
 
@@ -1233,11 +1249,11 @@ function internal_webGLStart() {
 
 var ui_events_entry_point = function(flavor_checkbox, given_event) {
 
-    console.log("nice ... " + flavor_checkbox + " now says " + given_event);
+    // console.log("nice ... " + flavor_checkbox + " now says " + given_event);
 
     if (typeof activity_status[flavor_checkbox] !== "undefined") {
 
-        console.log("cool Corinde ... here is event " + flavor_checkbox + " value " + given_event);
+        // console.log("cool Corinde ... here is event " + flavor_checkbox + " value " + given_event);
 
         activity_status[flavor_checkbox] = given_event;
 
@@ -1249,12 +1265,16 @@ var ui_events_entry_point = function(flavor_checkbox, given_event) {
 
                 if (all_siblings.hasOwnProperty(curr_sibling)) {
 
-                    // console.log("... found sibling : " + flavor_checkbox +
-                    //         " has sibling " + curr_sibling);
-
                     activity_status[curr_sibling] = given_event;
                 }
             }
+        }
+
+        // ---
+
+        if (typeof activity_callback[flavor_checkbox] !== "undefined") {
+
+            activity_callback[flavor_checkbox][given_event]();
         }
 
     } else {
@@ -1262,7 +1282,7 @@ var ui_events_entry_point = function(flavor_checkbox, given_event) {
         console.log("whooa ... did not see key here is entire associative array");
         console.log(activity_status);
     }
-}
+};
 
 return {
 
