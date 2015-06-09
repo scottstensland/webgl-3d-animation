@@ -1,7 +1,7 @@
 webgl-3d-animation
 ==================
 
-A node.js app giving you an interactive 3D animation using WebGL showing a 2D predator prey ecology on a grid which is real-time mapped onto the surface of a 3D torus.  node.js server side gives access to WAV format files which are rendered using Web Audio API - this is an exercise where I taught myself how to display data for an ongoing project on sound synthesis
+An interactive 3D animation using WebGL to depict a 2D predator prey ecology on a grid real-time mapped onto the surface of a 3D torus.  Sound file is parsed then visualized both in time and frequency domains as well as rendered using Web Audio API - this is an exercise where I taught myself how to display data for an ongoing project on sound synthesis 
 
 
 # Installation
@@ -64,8 +64,5 @@ Feel free to contact me on twitter if you have any questions!
     I wrote it in the language javascript infact that was my
       "Hello World"  for both javascript and WebGL
 
-       hit the button :    "Play jam looped" 
-        so it plays a tune which I then visualize both
-         in time domain as well as frequency domain
 
 

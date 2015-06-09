@@ -146,7 +146,8 @@ var speed = 0;
 
 var desired_point_size = 1.0;
 
-var shaderProgram;
+var shaderProgram_01;
+var shaderProgram_02;
 var gl;
 
 function initGL(canvas) {
@@ -206,31 +207,33 @@ function getShader(gl, id) {
 
 function initShaders(gl) {
 
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
+    var fragmentShader = getShader(gl, "fragment_shader_01");
+    var vertexShader   = getShader(gl, "vertex_shader_01");
 
-    shaderProgram = gl.createProgram();
+    shaderProgram_01 = gl.createProgram();
 
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
+    console.log("\n\n\n hello Corinde its 5pm today");
 
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    gl.attachShader(shaderProgram_01, vertexShader);
+    gl.attachShader(shaderProgram_01, fragmentShader);
+    gl.linkProgram(shaderProgram_01);
+
+    if (!gl.getProgramParameter(shaderProgram_01, gl.LINK_STATUS)) {
         alert("Could not initialise shaders");
     }
 
-    gl.useProgram(shaderProgram);
+    gl.useProgram(shaderProgram_01);
 
-    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    shaderProgram_01.vertexPositionAttribute = gl.getAttribLocation(shaderProgram_01, "aVertexPosition");
+    gl.enableVertexAttribArray(shaderProgram_01.vertexPositionAttribute);
 
-    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+    shaderProgram_01.vertexColorAttribute = gl.getAttribLocation(shaderProgram_01, "aVertexColor");
+    gl.enableVertexAttribArray(shaderProgram_01.vertexColorAttribute);
 
-    shaderProgram.pMatrixUniform    = gl.getUniformLocation(shaderProgram, "uPMatrix");
-    shaderProgram.mvMatrixUniform   = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    shaderProgram.point_size        = gl.getUniformLocation(shaderProgram, "given_point_size");
-    shaderProgram.screen_resolution = gl.getUniformLocation(shaderProgram, "u_resolution");
+    shaderProgram_01.pMatrixUniform    = gl.getUniformLocation(shaderProgram_01, "uPMatrix");
+    shaderProgram_01.mvMatrixUniform   = gl.getUniformLocation(shaderProgram_01, "uMVMatrix");
+    shaderProgram_01.point_size        = gl.getUniformLocation(shaderProgram_01, "given_point_size");
+    shaderProgram_01.screen_resolution = gl.getUniformLocation(shaderProgram_01, "u_resolution");
 
 }       //      initShaders
 
@@ -248,10 +251,10 @@ function mvPopMatrix() {
 }
 
 function setMatrixUniforms(given_point_size, gl) {
-    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-    gl.uniform1f(shaderProgram.point_size, given_point_size);
-    gl.uniform2f(shaderProgram.screen_resolution, gl.viewportWidth, gl.viewportHeight); // vec2 for shader
+    gl.uniformMatrix4fv(shaderProgram_01.pMatrixUniform, false, pMatrix);
+    gl.uniformMatrix4fv(shaderProgram_01.mvMatrixUniform, false, mvMatrix);
+    gl.uniform1f(shaderProgram_01.point_size, given_point_size);
+    gl.uniform2f(shaderProgram_01.screen_resolution, gl.viewportWidth, gl.viewportHeight); // vec2 for shader
 }
 
 // ---
@@ -276,13 +279,13 @@ function inner_indexed_draw(given_animal, gl, given_rotation, given_matrix_rotat
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram_01.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // -------------------------------------
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram_01.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // --------------------------------------
 
@@ -306,7 +309,7 @@ function inner_indexed_draw(given_animal, gl, given_rotation, given_matrix_rotat
 // ---
 
 function inner_draw(given_animal, given_point_size, given_rotation, gl, 
-                    shaderProgram, blob_tag) {
+                    shaderProgram_01, blob_tag) {
 
     mvPushMatrix();
 
@@ -329,14 +332,14 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
 
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
 
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram_01.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // -------------------------------------
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
 
     gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram_01.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     setMatrixUniforms(given_point_size, gl);
 
@@ -346,7 +349,7 @@ function inner_draw(given_animal, given_point_size, given_rotation, gl,
 
 }       //      inner_draw
 
-function draw_scene(gl, shaderProgram) {
+function draw_scene(gl, shaderProgram_01) {
 
     // console.log('count_num_draw_calls ', count_num_draw_calls);
     // count_num_draw_calls++;
@@ -386,7 +389,7 @@ function draw_scene(gl, shaderProgram) {
             inner_draw( curr_element.flavor_graphics,
                         curr_element.point_size,
                         rotation_degree[curr_element.rotation_property],
-                        gl, shaderProgram, true);            
+                        gl, shaderProgram_01, true);            
         }
 
     });
@@ -406,9 +409,9 @@ function draw_scene(gl, shaderProgram) {
     if (true === audio_process_obj.get_display_ready_flag()) {
 
         // pure synthesized curve based on sampled audio
-        inner_draw(audio_process_obj.animals_synth, 2.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
+        inner_draw(audio_process_obj.animals_synth, 2.0, rotation_degree[rotation_grid], gl, shaderProgram_01, true);
 
-        inner_draw(audio_process_obj.animals_sampled, 2.0, rotation_degree[rotation_grid], gl, shaderProgram, true);
+        inner_draw(audio_process_obj.animals_sampled, 2.0, rotation_degree[rotation_grid], gl, shaderProgram_01, true);
     }
 
     // ---
@@ -490,7 +493,7 @@ function tick() { // ccccccccc
         audio_display_obj.update_billboard();   // refreshes time domain cylinder
     }
 
-    draw_scene(gl, shaderProgram);
+    draw_scene(gl, shaderProgram_01);
 
     animate();   // remove comment to engage rotation animation
 
@@ -1159,7 +1162,7 @@ function internal_webGLStart() {
 
         fns.init_f_N_s( chosen_model,
                         world_min_x, world_min_y, world_max_x, world_max_y,
-                        gl, shaderProgram);
+                        gl, shaderProgram_01);
 
         desired_point_size = fns.get_desired_point_size();
 
