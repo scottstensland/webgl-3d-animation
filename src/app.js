@@ -71,7 +71,7 @@ console.log("process.env.HOSTING_VENDOR ", process.env.HOSTING_VENDOR);
 // console.log("process.env.SUBDOMAIN ", process.env.SUBDOMAIN);
 // console.log("process.env.PORT ", process.env.PORT);
 
-console.log("version: 0.0.55   ");
+console.log("version: 0.0.61   ");
 
 var serviceUrl;
 // var servicePort;
