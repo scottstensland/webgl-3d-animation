@@ -61,7 +61,7 @@ Feel free to contact me on twitter if you have any questions!
 
 
       it uses WebGL for graphics
-    I wrote it in the language javascript infact that was my
+    I wrote it in the language javascript infact this was my
       "Hello World"  for both javascript and WebGL
 
 

@@ -35,7 +35,7 @@ function entry_point() {
 
 	// webgl_3d_animation.ui_events_entry_point(flavor_checkbox, cb.checked);
 
-	console.log("Hello Corinde in mongo db land");
+	// console.log("Hello Corinde in mongo db land");
 }
 
 

@@ -732,7 +732,7 @@ function launch_synth() {
         was_anything_stopped = false; // reset for any possible subsequent playback
     }
 
-    console.log('\n\ncw + ss    thursday         41999   \n\n');
+    // console.log('\n\ncw + ss    thursday         41999   \n\n');
 
     function render_audio_buffer(render_this_buffer, render_size_buffer, done_callback) {
 
@@ -772,7 +772,7 @@ function launch_synth() {
 
                     if (curr_index_synth_buffer >= render_size_buffer) {
 
-                        console.log('\n\ncw + ss    thursday        419             \n\n');
+                        // console.log('\n\ncw + ss    thursday        419             \n\n');
 
                         if (script_processor_synth_from_sample_node) {
 
@@ -856,7 +856,7 @@ function launch_synth() {
 
     function render_buffer(given_flavor) {
 
-        console.log('\n\ncw + ss    thursday          310   \n\n');
+        // console.log('\n\ncw + ss    thursday          310   \n\n');
 
         if (true === in_middle_of_playback) {
 
@@ -1129,7 +1129,7 @@ function launch_synth() {
         var glob_script_processor_fft_node = audio_context.createScriptProcessor(2048, 1, 1);
         glob_script_processor_fft_node.connect(gain_node);
 
-        console.log('\n\ncw + ss    thursday         428     \n\n');
+        // console.log('\n\ncw + ss    thursday         428     \n\n');
 
         // setup a analyzer
         var glob_fft_analyzer = audio_context.createAnalyser();

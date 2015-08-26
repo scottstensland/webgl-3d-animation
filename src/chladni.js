@@ -338,12 +338,12 @@ var do_chladni = (function () {
 var get_object_handle = function() {
 
     return object_handle;
-}
+};
 
 var get_all_object_labels = function() {
 
     return all_object_labels;
-}
+};
 
 return {    // to make visible to calling reference frame list function here
 

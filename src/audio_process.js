@@ -587,7 +587,7 @@ function init_audio_processing(given_gl, BUFF_SIZE) {
     desired_synth_buff_size = sample_synth_buff_size_multiplier * BUFF_SIZE;
 
 
-	console.log('EEEEEEEEE   427    desired_synth_buff_size ', desired_synth_buff_size);
+	// console.log('EEEEEEEEE   427    desired_synth_buff_size ', desired_synth_buff_size);
 
 	curr_sampled_buffer      = new Float32Array(desired_synth_buff_size);
 	synth_from_sample_buffer = new Float32Array(desired_synth_buff_size);
