@@ -53,7 +53,7 @@ socket_server();
 
 // ---
 
-console.log("version: 0.0.62  ");
+console.log("version: " + process.env.npm_package_version);
 
 var serviceUrl;
 

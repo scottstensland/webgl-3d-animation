@@ -1,0 +1,137 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Event Horizon</title>
+
+
+<!--    this is a node.js app ... my source code at  https://github.com/scottstensland/webgl-3d-animation
+
+         enjoy  Scott Stensland - July 28th 2014
+-->
+
+<!-- <script type="text/javascript" src="common/glMatrix-0.9.5.min.js"></script> -->
+<!-- <script type="text/javascript" src="common/gl-matrix.2.1.0.js"></script> -->
+<script type="text/javascript" src="common/gl-matrix.1.3.7.js"></script>
+<script type="text/javascript" src="common/common.js"></script>
+<script type="text/javascript" src="common/vec3.js"></script>
+<script type="text/javascript" src="common/webgl-utils.js"></script>
+<script type="text/javascript" src="common/Common_Utils.js"></script>
+
+<script id="todo_list" type="text/javascript">
+/*
+
+    handle bit_depth on both write WAV file and read +++ handle socket serialization issues
+
+    do a button to run sampling for entire duration of supplied source file mp3/ogg/...
+    
+    ____
+
+    migrate off normal buttons and onto webgl only buttons
+
+    how to disable normal buttons - gray it out after being activated
+
+*/
+</script>
+
+<script id="ignore___shader-vs" type="x-shader/x-vertex">
+
+    attribute vec3 aVertexPosition;
+    attribute vec4 aVertexColor;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    uniform float given_point_size;
+
+    varying vec4 vColor;
+
+    uniform vec2 u_resolution;
+
+    void main(void) {
+
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+
+        vColor = aVertexColor;
+
+        // gl_PointSize = 0.8;  // minute
+        // gl_PointSize = 50.0;    // OK for 2X2
+        // gl_PointSize = 20.0;
+        // gl_PointSize = 3.0;
+        gl_PointSize = given_point_size;     // OK for board size 400
+        // gl_PointSize = 0.50;     // OK for board size 400
+
+    }
+
+</script>
+
+<!-- http://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js -->
+
+<script id="shader-vs" type="x-shader/x-vertex">
+
+    attribute vec3 aVertexPosition;
+    attribute vec4 aVertexColor;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    uniform float given_point_size;
+
+    varying vec4 vColor;
+
+    uniform vec2 u_resolution;
+
+    void main(void) {
+
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+
+        vColor = aVertexColor;
+
+        // gl_PointSize = 0.8;  // minute
+        // gl_PointSize = 50.0;    // OK for 2X2
+        // gl_PointSize = 20.0;
+        // gl_PointSize = 3.0;
+        gl_PointSize = given_point_size;     // OK for board size 400
+        // gl_PointSize = 0.50;     // OK for board size 400
+
+    }
+
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec4 vColor;
+
+    uniform vec2 resolution;
+
+    void main(void) {
+        gl_FragColor = vColor;
+    }
+</script>
+
+<script type="text/javascript"  src="framebuffer.js"></script>
+
+</head>
+<body onload="webgl_3d_animation.internal_webGLStart();" >
+    <ul id="error_output"></ul> 
+    <p>
+
+        <button onclick="webgl_3d_animation.set_camera_perspectives()">reset perspective !</button>
+
+        <button onclick="webaudio_tooling_obj.run_synth()">do synth</button>
+        <button onclick="webaudio_tooling_obj.play_tune_jam(1)">play jam</button>
+        <button onclick="webaudio_tooling_obj.play_tune_jam(2)">play jam looped</button>
+        <!-- <button onclick="webaudio_tooling_obj.play_tune_jam(3)">play wav buffer</button> -->
+        <button onclick="webaudio_tooling_obj.record_microphone()">rec mic</button>
+
+    </p>
+
+    <canvas id="ecology_simulation" style="border: none;" width="1920" height="1080"></canvas>
+    <!-- <canvas id="ecology_simulation" style="border: none;" width="200" height="200"></canvas> -->
+    <!-- <canvas id="ecology_simulation" style="border: none;" width="800" height="800"></canvas> -->
+    <!-- <canvas id="ecology_simulation" style="border: none;" width="1920" height="1080"></canvas> -->
+    <br>
+<div id="log_microphone">
+</div>
+  
+
+</body>
+</html>

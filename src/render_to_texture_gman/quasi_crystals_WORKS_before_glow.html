@@ -1,0 +1,1455 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>quasi crystal</title>
+
+
+<div id="effect"></div>
+<div id="info"></div>
+
+  <!-- working F11 fullscreen ... time uniform variable -->
+
+<!-- <script type="text/javascript" src="webgl-utils.js"></script> -->
+<!-- <script type="text/javascript" src="../common/webgl-utils.js"></script> -->
+
+<style>
+
+  body {
+      background-color: #000000;
+      margin: 0px;
+      overflow: hidden;
+  }
+
+/*
+  #info {
+      position: absolute;
+      top: 0px;
+
+      color: #ffff88;
+      font-family: Monospace;
+      font-size: 14px;
+      font-weight: bold;
+      text-shadow: rgba( 0, 0, 0, 0.75 ) 0px 1px 2px;
+      background-color: rgba(0,0,0,0.8) ;
+      padding: 1em;
+  }
+  */
+
+</style>
+
+
+<script id="vertex_shader" type="whatever">
+/*
+    attribute vec4 a_position;
+    varying vec2 v_texcoord;
+
+    void main() {
+      gl_Position = a_position;
+      v_texcoord = a_position.xy * 0.5 + 0.5;
+    }    
+*/
+
+precision mediump float;
+
+// attribute vec3 vertexPosition;
+attribute vec4 a_position;
+varying vec2 position;
+
+void main() {
+  // gl_Position = vec4(vertexPosition, 1.0);
+  gl_Position = a_position;
+  position = (a_position.xy + 1.0) * 0.5;
+}
+
+</script>
+
+
+
+<script id="vertex_shader_glow" type="whatever">
+/*
+    attribute vec4 a_position;
+    varying vec2 v_texcoord;
+
+    void main() {
+      gl_Position = a_position;
+      v_texcoord = a_position.xy * 0.5 + 0.5;
+    }    
+*/
+
+precision mediump float;
+
+// attribute vec3 vertexPosition;
+attribute vec4 a_position;
+varying vec2 position;
+
+void main() {
+  // gl_Position = vec4(vertexPosition, 1.0);
+  gl_Position = a_position;
+  position = (a_position.xy + 1.0) * 0.5;
+}
+
+</script>
+
+
+
+
+<script id="fragment_shader_glow" type="whatever">
+
+precision mediump float;
+varying vec2 surfacePosition;
+void main() {
+float intensity = 3.0; // Lower number = more 'glow'
+vec3 light_color = vec3(0.4, 0.3, 0.1); // RGB, proportional values, higher increases intensity
+float master_scale = 0.01; // Change the size of the effect
+
+float c = master_scale/(length(surfacePosition) * length(surfacePosition));
+gl_FragColor = vec4(vec3(pow(c, intensity))*light_color, 1.0);
+}
+
+</script>
+
+
+
+<script id="fragment_shader_rotating_red_bricks" type="whatever">
+
+// https://www.shadertoy.com/view/MtXXzr
+  
+  // Created by Stephane Cuillerdier - Aiekick/2015
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+
+//based on my Weird Fractal 4 : https://www.shadertoy.com/view/MtsGzB
+
+// matrix op
+mat3 getRotYMat(float a) {
+
+  return mat3(cos(a),0.,sin(a),0.,1.,0.,-sin(a),0.,cos(a));
+}
+
+float map(in vec3 p, in vec3 q, inout vec3 r, inout float m) {
+
+  float d = 0.;
+    for (int j = 0; j < 3 ; j++)
+      r=max(r*=r*=r*=r=mod(q*m+1.,2.)-1.,r.yzx),
+        d=max(d,( 0.29 -length(r)*0.6)/m)*0.8,
+        m*=1.08;
+    return d;
+}
+
+vec4 fractal(vec2 uv) {
+
+  vec2 s = iResolution.xy;
+    float t = iGlobalTime*.3, c,d,m,f=0.;
+    vec3 p=vec3(2.*(2.*uv-s)/s.x,1.),r=p-p,q=r;
+    p*= mat3(0,-1,0,1,0,0,0,0,1);
+    p*=getRotYMat(-t);
+    p.y/=2.;
+    q.zx += 10.+vec2(sin(t),cos(t))*3.;
+    for (float i=1.; i>0.; i-=.002) 
+    {
+      c=d=0.,m=1.;
+        f+=0.01;
+        d = map(p,q,r,m);
+        q+=p*d;
+        c = i;
+        if(d<0.001) break;
+    }
+    
+    vec3 e = vec3( 0.1, 0., 0. );
+    vec3 n = normalize(vec3(
+      map(p,q+e.xyy,r,m) - map(p,q-e.xyy,r,m),
+        map(p,q+e.yxy,r,m) - map(p,q-e.yxy,r,m),
+        map(p,q+e.yyx,r,m) - map(p,q-e.yyx,r,m) ));
+
+    float k = dot(r,r+.15);
+    vec3 col= vec3(1.,k,k/c)-vec3(0.86,0.44,0.13);
+    return vec4(col/f, 1.);
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+    
+  fragColor = fractal(fragCoord.xy);
+}
+
+
+
+void main() {
+
+  vec2 fragCoord = vec2(position);
+
+  gl_FragColor = fractal(fragCoord.xy);
+}
+
+
+
+</script>
+
+<script id="fragment_shader_color_twist" type="whatever">
+
+// https://www.shadertoy.com/view/MtfGDN
+
+
+/*
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+uniform vec2 resolution;
+
+void main() {
+  
+  gl_FragColor.r = position.x;
+  gl_FragColor.g = position.y;
+  gl_FragColor.b = 1.0;
+  gl_FragColor.a = 1.0;
+}
+*/
+
+
+precision mediump float;
+
+varying vec2 position;
+
+uniform float time;
+uniform vec2 resolution;
+
+
+/*
+float random(float p) {
+  return fract(sin(p)*10000.);
+}
+
+float noise(vec2 p) {
+  return random(p.x + p.y*10000.);
+}
+
+void main() {
+  vec2 p = position;
+  float brightness = noise(p);
+  gl_FragColor.rgb = vec3(brightness);
+  gl_FragColor.a = 1.;
+}
+*/
+/*
+void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+
+  vec3 u = vec3(fragCoord,0.) / iResolution;
+  float y = .63 * asin( u.y * 2. - 1. );
+  vec2 b = normalize( sign( .5 - u.x ) * vec2( 1., tan( 1.57 - 6.28 * u.x ) ) * ( 1. - y * y ) );
+  fragColor.rgb = normalize( cross( vec3( s(17.), s(41.), s(13.) ), vec3( b.x, y, b.y ) ) );
+}
+*/
+
+
+float s( float b ) {
+
+    return abs( b / 2. - mod( time * 9., b ) );
+}
+
+void main() {
+
+  // vec2 iResolution = resolution;
+
+// uniform vec3 iResolution;
+
+  vec3 iResolution = vec3(resolution.x, resolution.y, 1.);
+
+
+  // vec3 u = vec3(fragCoord,0.) / iResolution;
+  vec3 u = vec3(position, 0.) / iResolution;
+  // vec3 u = vec3(position/ iResolution, 0.) ;
+
+  // vec2 fragCoord = vec2( position/resolution );
+
+  // vec3 u = vec3(fragCoord, 0.) / resolution;
+  // vec3 u = vec3(fragCoord, 0.);
+
+  float y = .63 * asin( u.y * 2. - 1. );
+  vec2 b = normalize( sign( .5 - u.x ) * vec2( 1., tan( 1.57 - 6.28 * u.x ) ) * ( 1. - y * y ) );
+
+  vec3 local_color;
+
+  local_color = normalize( cross( vec3( s(17.), s(41.), s(13.) ), vec3( b.x, y, b.y ) ) );
+
+  gl_FragColor.rgb = local_color;
+
+
+  // vec2 p = position;
+  // float brightness = p.x;
+  // gl_FragColor.rgb = vec3(brightness);
+
+}
+
+</script>
+
+
+<script id="fragment_shader_noise" type="whatever">
+
+precision mediump float;
+
+varying vec2 position;
+
+float random(float p) {
+  return fract(sin(p)*10000.);
+}
+
+float noise(vec2 p) {
+  return random(p.x + p.y*10000.);
+}
+
+void main() {
+  vec2 p = position;
+  float brightness = noise(p);
+  gl_FragColor.rgb = vec3(brightness);
+  gl_FragColor.a = 1.;
+}
+
+
+</script>
+
+<script id="fragment_shader_basic_gradient" type="whatever">
+
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+uniform vec2 resolution;
+
+void main() {
+  gl_FragColor.r = position.x;
+  gl_FragColor.g = position.y;
+  gl_FragColor.b = 1.0;
+  gl_FragColor.a = 1.0;
+}
+
+</script>
+
+
+
+<script id="fragment_shader_quasi_crystal" type="whatever">
+
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+
+const float waves = 19.;
+
+// triangle wave from 0 to 1
+float wrap(float n) {
+  return abs(mod(n, 2.)-1.)*-1. + 1.;
+}
+
+// creates a cosine wave in the plane at a given angle
+float wave(float angle, vec2 point) {
+  float cth = cos(angle);
+  float sth = sin(angle);
+  return (cos (cth*point.x + sth*point.y) + 1.) / 2.;
+}
+
+// sum cosine waves at various interfering angles
+// wrap values when they exceed 1
+float quasi(float interferenceAngle, vec2 point) {
+  float sum = 0.;
+  for (float i = 0.; i < waves; i++) {
+    sum += wave(3.1416*i*interferenceAngle, point);
+  }
+  return wrap(sum);
+}
+
+void main() {
+  float b = quasi(time*0.002, (position-0.5)*200.);
+  vec4 c1 = vec4(0.0,0.,0.2,1.);
+  vec4 c2 = vec4(1.5,0.7,0.,1.);
+  gl_FragColor = mix(c1,c2,b);
+}
+</script>
+
+
+<script id="fragment_shader_iq_monster" type="whatever">
+
+//  inigo quilez
+// https://www.shadertoy.com/view/4sX3R2
+
+
+precision mediump float; 
+
+varying vec2 position; 
+uniform float time;
+uniform vec2 resolution;
+
+
+
+vec3 hash3( float n )
+{
+    return fract(sin(vec3(n,n+1.0,n+2.0))*vec3(13.5453123,31.1459123,37.3490423));
+}
+
+vec3 noise( in float x )
+{
+    float p = floor(x);
+    float f = fract(x);
+    f = f*f*(3.0-2.0*f);
+    return mix( hash3(p+0.0), hash3(p+1.0),f);
+}
+
+
+mat4 rotationMat( in vec3 xyz )
+{
+    vec3 si = sin(xyz);
+    vec3 co = cos(xyz);
+
+  return mat4( co.y*co.z,                co.y*si.z,               -si.y,       0.0,
+                 si.x*si.y*co.z-co.x*si.z, si.x*si.y*si.z+co.x*co.z, si.x*co.y,  0.0,
+                 co.x*si.y*co.z+si.x*si.z, co.x*si.y*si.z-si.x*co.z, co.x*co.y,  0.0,
+           0.0,                      0.0,                      0.0,        1.0 );
+}
+
+const float s = 1.1;
+
+mat4 mm;
+
+vec3 map( vec3 p )
+{
+  float k = 1.0;
+  float m = 1e10;
+  for( int i=0; i<22; i++ ) 
+  {
+    m = min( m, dot(p,p)/(k*k) );
+    p = (mm*vec4((abs(p)),1.0)).xyz;
+    k*= s;
+  }
+  
+
+  float d = (length(p)-0.25)/k;
+  
+  float h = p.z - 0.35*p.x;
+  
+  return vec3( d, m, h );
+}
+
+vec3 intersect( in vec3 ro, in vec3 rd )
+{
+    float t = 0.0;
+    for( int i=0; i<100; i++ )
+  {
+        vec3 res = map( ro+rd*t );
+        if( res.x<0.0002 ) return vec3(t,res.yz);
+        t += res.x;
+    if( t>9.0 ) break;
+    }
+
+    return vec3( -1.0 );
+}
+
+vec3 calcNormal( in vec3 pos, float e )
+{
+    vec3 eps = vec3(e,0.0,0.0);
+
+  return normalize( vec3(
+           map(pos+eps.xyy).x - map(pos-eps.xyy).x,
+           map(pos+eps.yxy).x - map(pos-eps.yxy).x,
+           map(pos+eps.yyx).x - map(pos-eps.yyx).x ) );
+}
+
+float softshadow( in vec3 ro, in vec3 rd, float mint, float k )
+{
+    float res = 1.0;
+    float t = mint;
+    for( int i=0; i<32; i++ )
+    {
+        float h = map(ro + rd*t).x;
+    h = max( h, 0.0 );
+        res = min( res, k*h/t );
+        t += clamp( h, 0.001, 0.1 );
+    if( res<0.01 || t>6.0 ) break;
+    }
+    return clamp(res,0.0,1.0);
+}
+
+float calcAO( in vec3 pos, in vec3 nor )
+{
+  float totao = 0.0;
+    for( int aoi=0; aoi<16; aoi++ )
+    {
+    vec3 aopos = -1.0+2.0*hash3(float(aoi)*213.47);
+    aopos *= sign( dot(aopos,nor) );
+    aopos = pos + nor*0.01 + aopos*0.04;
+        float dd = clamp( map( aopos ).x*4.0, 0.0, 1.0 );
+        totao += dd;
+    }
+  totao /= 16.0;
+  
+    return clamp( totao*totao*50.0, 0.0, 1.0 );
+}
+
+mat3 setCamera( in vec3 ro, in vec3 ta, float cr )
+{
+  vec3 cw = normalize(ta-ro);
+  vec3 cp = vec3(sin(cr), cos(cr),0.0);
+  vec3 cu = normalize( cross(cw,cp) );
+  vec3 cv = normalize( cross(cu,cw) );
+    return mat3( cu, cv, cw );
+}
+
+// void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+
+void main() { 
+
+  vec2 iResolution = resolution;
+  float iGlobalTime = time;
+  vec2 fragCoord = vec2( gl_Position );
+
+  vec2 q = fragCoord.xy / iResolution.xy;
+    vec2 p = -1.0 + 2.0 * q;
+    p.x *= iResolution.x/iResolution.y;
+    vec2 m = vec2(0.5);
+  if( iMouse.z>0.0 ) m = iMouse.xy/iResolution.xy;
+
+    // animation  
+  float time = iGlobalTime;
+  time += 15.0*smoothstep(  15.0, 25.0, iGlobalTime );
+  time += 20.0*smoothstep(  65.0, 80.0, iGlobalTime );
+  time += 35.0*smoothstep( 105.0, 135.0, iGlobalTime );
+  time += 20.0*smoothstep( 165.0, 180.0, iGlobalTime );
+  time += 40.0*smoothstep( 220.0, 290.0, iGlobalTime );
+  time +=  5.0*smoothstep( 320.0, 330.0, iGlobalTime );
+  float time1 = (time-10.0)*1.5 - 167.0;
+  float time2 = time;
+  
+    mm = rotationMat( vec3(0.4,0.1,3.4) + 
+                      0.15*sin(0.1*vec3(0.40,0.30,0.61)*time1) + 
+                      0.15*sin(0.1*vec3(0.11,0.53,0.48)*time1));
+    mm[0].xyz *= s; 
+    mm[1].xyz *= s;
+    mm[2].xyz *= s; 
+  mm[3].xyz = vec3( 0.15, 0.05, -0.07 ) + 0.05*sin(vec3(0.0,1.0,2.0) + 0.2*vec3(0.31,0.24,0.42)*time1);
+  
+    // camera
+  float an = 1.0 + 0.1*time2 - 6.2*m.x;
+  float cr = 0.15*sin(0.2*time2);
+    vec3 ro = (2.4 + 0.6*smoothstep(10.0,20.0,time2))*vec3(sin(an),0.25,cos(an));
+    vec3 ta = vec3( 0.0, 0.0 + 0.13*cos(0.3*time2), 0.0 );
+  ta += 0.05*noise(  0.0 + 1.0*time );
+  ro += 0.05*noise( 11.3 + 1.0*time );
+    // camera-to-world transformation    
+    mat3 ca = setCamera( ro, ta, cr );
+    // ray direction
+    vec3 rd = ca * normalize( vec3(p.xy,3.0) );
+
+  // raymarch
+    vec3 tmat = intersect(ro,rd);
+  
+  // shade
+    vec3 col = vec3(0.0);
+    if( tmat.z>-0.5 )
+    {
+        // geometry
+        vec3 pos = ro + tmat.x*rd;
+        vec3 nor = calcNormal(pos, 0.005);
+    vec3 sor = calcNormal(pos, 0.010);
+
+        // material
+    vec3 mate = vec3(1.0);
+    mate = mix( vec3(0.5,0.5,0.2), vec3(0.5,0.3,0.0), 0.5 + 0.5*sin(4.0+8000.0*tmat.y)  );
+    mate = mix( vec3(1.0,0.9,0.8), mate, 0.5 + 0.5*sin(4.0+20.0*tmat.z) );
+        mate.x *= 1.15;
+
+    // lighting
+    float occ = 1.1*calcAO( pos, nor );
+    occ *= 0.75 + 0.25*clamp(tmat.y*400.0,0.0,1.0);
+    
+    // diffuse
+    col = vec3(0.0);
+    for( int i=0; i<32; i++ )
+    {
+      //vec3 rr = normalize(-1.0 + 2.0*texture2D( iChannel2, vec2((0.5+float(i)),0.5)/256.0,-100.0).xyz);
+      vec3 rr = normalize(-1.0 + 2.0*hash3(float(i)*123.5463));
+      rr = normalize( nor + 7.0*rr );
+      rr = rr * sign(dot(nor,rr));                
+      float ds = occ;//softshadow( pos, rr, 0.01, 32.0 );
+            col += pow( textureCube( iChannel0, rr ).xyz, vec3(2.2) ) * dot(rr,nor) * ds;
+    }
+        col /= 32.0;                    
+
+    col *= 1.8;
+
+        // subsurface   
+    col *= 1.0 + 1.0*vec3(1.0,0.6,0.1)*pow(clamp(1.0+dot(rd,sor),0.0,1.0),2.0)*vec3(1.0);
+    
+        // specular   
+    float fre = pow( clamp(1.0+dot(rd,nor),0.0,1.0), 5.0 );
+    vec3 ref = reflect( rd, nor );
+    float rs = softshadow( pos, ref, 0.01, 32.0 );
+        col += 1.8 * (0.04 + 12.0*fre) * occ * pow( textureCube( iChannel0, ref ).xyz, vec3(2.0) ) * rs;
+
+        col *= mate;
+    }
+  else
+  {
+        // background   
+    col = pow( textureCube( iChannel0, rd ).xyz, vec3(2.2) );
+  }
+
+  // gamma
+  col = pow( clamp( col, 0.0, 1.0 ), vec3(0.45) );
+
+  // vigneting
+  col *= 0.5 + 0.5*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
+  
+    // fragColor = vec4( col, 1.0 );
+    gl_FragColor = vec4( col, 1.0 );
+
+}
+
+
+</script>
+
+<script id="fragment_shader_iq_squiggles" type="whatever">
+/*
+precision mediump float;
+varying vec2 v_texcoord;
+uniform sampler2D u_sampler;
+void main() {
+    gl_FragColor = texture2D(u_sampler, v_texcoord);
+}
+*/
+
+/*
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+uniform vec2 resolution;
+
+void main() {
+  gl_FragColor.r = position.x;
+  gl_FragColor.g = position.y;
+  gl_FragColor.b = 1.0;
+  gl_FragColor.a = 1.0;
+}
+
+*/
+
+precision mediump float; 
+
+varying vec2 position; 
+uniform float time;
+// float time = 0.5; 
+uniform vec2 resolution; 
+// vec2 resolution; 
+
+// uniform vec2 u_resolution;  //  I want this put in later
+
+// makes a pseudorandom number between 0 and 1 
+
+float hash(float n) { 
+
+    return fract(sin(n)*93942.234); 
+} 
+
+// smoothsteps a grid of random numbers at the integers 
+
+float noise(vec2 p) { 
+
+    vec2 w = floor(p); vec2 k = fract(p); k = k*k*(3.-2.*k); 
+
+    // smooth it 
+
+    float n = w.x + w.y*57.; 
+    float a = hash(n); 
+    float b = hash(n+1.); 
+    float c = hash(n+57.); 
+    float d = hash(n+58.); 
+
+    return mix( mix(a, b, k.x), mix(c, d, k.x), k.y); 
+
+} 
+
+// rotation matrix 
+
+mat2 m = mat2(0.6,0.8,-0.8,0.6); 
+
+// fractional brownian motion (i.e. photoshop clouds) 
+
+float fbm(vec2 p) { 
+
+    float f = 0.; 
+    
+    f += 0.5000*noise(p); 
+    p *= 2.02*m; 
+    f += 0.2500*noise(p); 
+    p *= 2.01*m; 
+    f += 0.1250*noise(p);
+    p *= 2.03*m; 
+    f += 0.0625*noise(p); 
+    f /= 0.9375; 
+
+    return f; 
+} 
+
+void main() { 
+
+    // relative coordinates 
+
+    // vec2 resolution = vec2(200, 200);
+
+    // resolution.x = 200;
+    // resolution.y = 200;
+
+    vec2 p = vec2(position*6.)*vec2(resolution.x/resolution.y, 1.); 
+    float t = time * .009; 
+
+    // calling fbm on itself 
+
+    vec2 a = vec2(fbm(p+t*3.), fbm(p-t*3.+8.1)); 
+    vec2 b = vec2(fbm(p+t*4. + a*7. + 3.1), fbm(p-t*4. + a*7. + 91.1)); 
+
+    float c = fbm(b*9. + t*20.); 
+
+    // increase contrast 
+
+    c = smoothstep(0.15,0.98,c); 
+
+    // mix in some color 
+
+    vec3 col = vec3(c); 
+    col.rb += b*0.17; 
+
+    gl_FragColor = vec4(col, 1.); 
+
+    // gl_FragColor = vColor;
+
+}
+
+</script>
+
+
+
+<script id="fragment_shader_iq_squiggles_modde" type="whatever">
+
+precision mediump float; 
+
+varying vec2 position; 
+uniform float time;
+
+// uniform vec2 resolution; 
+
+
+// makes a pseudorandom number between 0 and 1 
+
+float hash(float n) { 
+
+    return fract(sin(n)*93942.234); 
+} 
+
+// smoothsteps a grid of random numbers at the integers 
+
+float noise(vec2 p) { 
+
+    vec2 w = floor(p); vec2 k = fract(p); k = k*k*(3.-2.*k); 
+
+    // smooth it 
+
+    float n = w.x + w.y*57.; 
+    float a = hash(n); 
+    float b = hash(n+1.); 
+    float c = hash(n+57.); 
+    float d = hash(n+58.); 
+
+    return mix( mix(a, b, k.x), mix(c, d, k.x), k.y); 
+
+} 
+
+// rotation matrix 
+
+mat2 m = mat2(0.6,0.8,-0.8,0.6); 
+
+// fractional brownian motion (i.e. photoshop clouds) 
+
+float fbm(vec2 p) { 
+
+    float f = 0.; 
+    
+    f += 0.5000*noise(p); 
+    p *= 2.02*m; 
+
+    f += 0.2500*noise(p); 
+    p *= 2.01*m; 
+
+    f += 0.1250*noise(p);
+    p *= 2.03*m; 
+
+    f += 0.0625*noise(p); 
+    f /= 0.9375; 
+
+    return f; 
+} 
+
+void main() { 
+
+    // relative coordinates 
+
+    vec2 resolution = vec2(200, 200);
+
+    // resolution.x = 200;
+    // resolution.y = 200;
+
+    vec2 p = vec2(position*6.)*vec2(resolution.x/resolution.y, 1.); 
+    float t = time * .009; 
+
+    // calling fbm on itself 
+
+    vec2 a = vec2(fbm(p+t*3.), fbm(p-t*3.+8.1)); 
+    vec2 b = vec2(fbm(p+t*4. + a*7. + 3.1), fbm(p-t*4. + a*7. + 91.1)); 
+
+    float c = fbm(b*9. + t*20.); 
+
+    // increase contrast 
+
+    c = smoothstep(0.15,0.98,c); 
+
+    // mix in some color 
+
+    vec3 col = vec3(c); 
+    col.rb += b*0.17; 
+
+    gl_FragColor = vec4(col, 1.); 
+
+    // gl_FragColor = vColor;
+
+}
+
+
+</script>
+
+
+<script id="fragment_shader_iq_worms" type="whatever">
+  
+// https://www.shadertoy.com/view/XsjXR1
+// Created by inigo quilez - iq/2014
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+
+
+precision mediump float; 
+
+varying vec2 position; 
+uniform float iGlobalTime;
+// float time = 0.5; 
+uniform vec2 iResolution; 
+// vec2 resolution; 
+
+
+
+float hash( vec2 p ) {
+
+  return fract(sin(1.0+dot(p,vec2(127.1,311.7)))*43758.545);
+}
+
+vec2  sincos( float x ) { return vec2( sin(x), cos(x) ); }
+vec3  opU( vec3 d1, vec3 d2 ){ return (d1.x<d2.x) ? d1 : d2;}
+
+vec2 sdSegment( in vec3 p, in vec3 a, in vec3 b )
+{
+    vec3 pa = p - a, ba = b - a;
+  float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+  return vec2( length( pa - ba*h ), h );
+}
+
+vec3 map( vec3 p )
+{
+    vec2  id = floor( (p.xz+1.0)/2.0 );
+    float ph = hash(id+113.1);
+    float ve = hash(id);
+
+    p.xz = mod( p.xz+1.0, 2.0 ) - 1.0;
+    p.xz += 0.5*cos( 2.0*ve*iGlobalTime + (p.y+ph)*vec2(0.53,0.32) - vec2(1.57,0.0) );
+
+    vec3 p1 = p; p1.xz += 0.15*sincos(p.y-ve*iGlobalTime*ve+0.0);
+    vec3 p2 = p; p2.xz += 0.15*sincos(p.y-ve*iGlobalTime*ve+2.0);
+    vec3 p3 = p; p3.xz += 0.15*sincos(p.y-ve*iGlobalTime*ve+4.0);
+    
+    vec2 h1 = sdSegment( p1, vec3(0.0,-50.0, 0.0), vec3(0.0, 50.0, 0.0) );
+    vec2 h2 = sdSegment( p2, vec3(0.0,-50.0, 0.0), vec3(0.0, 50.0, 0.0) );
+    vec2 h3 = sdSegment( p3, vec3(0.0,-50.0, 0.0), vec3(0.0, 50.0, 0.0) );
+
+    return opU( opU( vec3(h1.x-0.15*(0.8+0.2*sin(200.0*h1.y)), ve + 0.000, h1.y), 
+                     vec3(h2.x-0.15*(0.8+0.2*sin(200.0*h2.y)), ve + 0.015, h2.y) ), 
+                     vec3(h3.x-0.15*(0.8+0.2*sin(200.0*h3.y)), ve + 0.030, h3.y) );
+
+}
+
+vec3 intersect( in vec3 ro, in vec3 rd, in float px, const float maxdist )
+{
+    vec3 res = vec3(-1.0);
+    float t = 0.0;
+    for( int i=0; i<256; i++ )
+    {
+      vec3 h = map(ro + t*rd);
+        res = vec3( t, h.yz );
+        if( h.x<(px*t) || t>maxdist ) break;
+        t += min( h.x, 0.5 )*0.7;
+    }
+  return res;
+}
+
+vec3 calcNormal( in vec3 pos )
+{
+    const vec2 e = vec2(1.0,-1.0)*0.003;
+    return normalize( e.xyy*map( pos + e.xyy ).x + 
+            e.yyx*map( pos + e.yyx ).x + 
+            e.yxy*map( pos + e.yxy ).x + 
+            e.xxx*map( pos + e.xxx ).x );
+}
+
+float calcOcc( in vec3 pos, in vec3 nor )
+{
+    const float h = 0.1;
+  float ao = 0.0;
+    for( int i=0; i<8; i++ )
+    {
+        vec3 dir = sin( float(i)*vec3(1.0,7.13,13.71)+vec3(0.0,2.0,4.0) );
+        dir = dir + 2.0*nor*max(0.0,-dot(nor,dir));            
+        float d = map( pos + h*dir ).x;
+        ao += h-d;
+    }
+    return clamp( 1.0 - 0.7*ao, 0.0, 1.0 );
+}
+
+vec3 render( in vec3 ro, in vec3 rd, in float px )
+{
+    vec3 col = vec3(0.0);
+    
+    const float maxdist = 32.0;
+    vec3 res = intersect( ro, rd, px, maxdist );
+    if( res.x < maxdist )
+    {
+        vec3  pos = ro + res.x*rd;
+        vec3  nor = calcNormal( pos );
+        float occ = calcOcc( pos, nor );
+
+        col = 0.5 + 0.5*cos( res.y*30.0 + vec3(0.0,4.4,4.0) );
+        col *= 0.5 + 1.5*nor.y;
+        col += clamp(1.0+dot(rd,nor),0.0,1.0);
+        float u = 800.0*res.z - sin(res.y)*iGlobalTime;
+        col *= 0.95 + 0.05*cos( u + 3.1416*cos(1.5*u + 3.1416*cos(3.0*u)) + vec3(0.0,1.0,2.0) );
+        col *= vec3(1.5,1.0,0.7);
+        col *= occ;
+
+        float fl = mod( (0.5+cos(2.0+res.y*47.0))*iGlobalTime + res.y*7.0, 4.0 )/4.0;
+        col *= 2.5 - 1.5*smoothstep(0.02,0.04,abs(res.z-fl));
+        
+        col *= exp( -0.1*res.x );
+        col *= 1.0 - smoothstep( 20.0, 30.0, res.x );
+    }
+    
+    return pow( col, vec3(0.5,1.0,1.0) );
+}
+
+// void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void main( void ) {
+
+  vec2 fragCoord = vec2( position );
+
+  vec2 p = (-iResolution.xy+2.0*fragCoord.xy)/iResolution.y;
+    vec2 q = fragCoord.xy/iResolution.xy;
+    
+  vec3  ro = vec3(0.6,2.4,1.2);
+  vec3  ta = vec3(0.0,0.0,0.0);
+    float fl = 3.0;
+    vec3  ww = normalize( ta - ro);
+    vec3  uu = normalize( cross( vec3(0.0,1.0,0.0), ww ) );
+    vec3  vv = normalize( cross(ww,uu) );
+    vec3  rd = normalize( p.x*uu + p.y*vv + fl*ww );
+
+    vec3 col = render( ro, rd, 1.0/(iResolution.y*fl) );
+    
+    col *= pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
+    
+  gl_FragColor = vec4( col, 1.0 );
+}
+
+/*
+void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
+{
+    vec3 ro = fragRayOri + vec3( 1.0, 0.0, 1.0 );
+    vec3 rd = fragRayDir;
+    vec3 col = render( ro, rd, 0.001 );
+    
+  fragColor = vec4( col, 1.0 );
+}
+*/
+
+
+</script>
+
+<!-- <canvas id="c" width="400" height="400"></canvas> -->
+
+
+
+<script type="text/javascript" >
+
+var enclosing_object = (function() {
+
+
+var effectDiv, sourceDiv;
+var canvas;
+var gl;
+var vertex_shader, fragment_shader, current_shader_program, vertex_buffer;
+
+var parameters = {
+
+    start_time: new Date().getTime(), 
+    time: 0, 
+    screenWidth: 0, 
+    screenHeight: 0
+};
+
+var last_time = new Date().getTime();
+
+var delta_pitch = 0;
+var delta_yaw = 0;
+var speed = 0;
+
+
+var torus_matrix_rotation = [ 0.2,  0.2, -0.2];
+// var fft_matrix_rotation = [ 0.6,  0.0, -0.0];
+var fft_matrix_rotation = [ 0.9,  0.0, -0.0];
+// var time_domain_matrix_rotation = [ -0.8,  0.0, 0.0];
+var time_domain_matrix_rotation = [ -0.0, 0.0, 0.4];
+
+var rotation_degree = {};
+
+var rotation_grid = "grid";
+var rotation_fft = "fft";
+var rotation_time_domain = "time_domain";
+
+
+// curr_degree_rotation_time_domain
+
+
+var rotation_none = "none";
+
+rotation_degree[rotation_grid] = 0;
+rotation_degree[rotation_fft] = 0;
+rotation_degree[rotation_time_domain] = 0;
+rotation_degree[rotation_none] = 0;
+
+
+
+var FoV = 20.0;
+var curr_pitch = -9.020000000000001;
+var curr_yaw = 2.9000000000000017;
+var curr_speed = 0;
+
+
+var position_x = 0.6825400916557905;
+var position_y = 0.4093690657292863;
+var position_z = 10.021485672918804;
+
+var curr_key_pressed = null;
+var this_key = 1;
+
+// var view_UI_current_state = true;
+var view_UI_current_state = false;
+
+// window.onload = main();
+
+init();
+
+setInterval( tick, 1000 / 60 );
+
+
+function onWindowResize( event ) {
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    parameters.screenWidth = canvas.width;
+    parameters.screenHeight = canvas.height;
+    
+    parameters.aspectX = canvas.width/canvas.height ;
+    parameters.aspectY = 1.0 ;
+
+    gl.viewport( 0, 0, canvas.width, canvas.height );
+
+}
+
+function init() {
+
+  vertex_shader = document.getElementById( 'vertex_shader' ).textContent; // baseline
+
+    // vertex_shader = document.getElementById( 'vertex_shader_glow' ).textContent; // baseline
+
+
+  // ........... works  
+
+  // fragment_shader = document.getElementById( 'fragment_shader_noise' ).textContent;
+
+  // fragment_shader = document.getElementById( 'fragment_shader_basic_gradient' ).textContent;
+  // fragment_shader = document.getElementById( 'fragment_shader_quasi_crystal' ).textContent;
+  fragment_shader = document.getElementById( 'fragment_shader_iq_squiggles' ).textContent;// nice
+  // fragment_shader = document.getElementById( 'fragment_shader_iq_squiggles_modde' ).textContent;
+
+
+
+
+
+
+
+
+  // ........... work in progress
+
+    // fragment_shader = document.getElementById( 'fragment_shader_glow' ).textContent;
+  
+  // fragment_shader = document.getElementById( 'fragment_shader_rotating_red_bricks' ).textContent;
+
+  // fragment_shader = document.getElementById( 'fragment_shader_iq_monster' ).textContent;
+
+    // fragment_shader = document.getElementById( 'fragment_shader_color_twist' ).textContent;
+
+  // fragment_shader = document.getElementById( 'fragment_shader_iq_worms' ).textContent;// HANGS !!!
+
+
+
+
+  effectDiv = document.getElementById( 'effect' );
+  // sourceDiv = document.getElementById( 'info' );
+  // sourceDiv.innerHTML = '--- adapted from http://mrdoob.com/lab/javascript/webgl/glsl/02/ by mrdoob<br/>'+
+  //                     '--- answer for http://stackoverflow.com/questions/4638317';
+
+
+  canvas = document.createElement( 'canvas' );
+  effectDiv.appendChild( canvas );
+
+  /*
+  canvas = document.getElementById("c");
+  gl = getWebGLContext(canvas);
+  if (!gl) {
+      alert("no WebGL");
+      return;
+  }
+  */
+
+
+  // Initialise WebGL
+
+  try {
+
+      gl = canvas.getContext( "experimental-webgl" );
+
+  } catch( error ) { }
+
+  if ( !gl ) {
+
+      alert("WebGL not supported");
+      throw "cannot create webgl context";
+
+  }
+
+  var verts = [
+
+        1,  1,
+       -1,  1,
+       -1, -1,
+        1,  1,
+       -1, -1,
+        1, -1,
+  ];
+
+
+// http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
+
+
+// gl.vertexAttribPointer(
+//     location,        // get data from the buffer that's was last bound with gl.bindBuffer
+//     numComponents,   // how many components per vertex (1 - 4)
+//     typeOfData,      // what the type of data is (BYTE, FLOAT, INT, UNSIGNED_SHORT, etc...)
+//     normalizeFlag,
+//     strideToNextPieceOfData, // how many bytes to skip to get from one piece of data to next piece
+//     offsetIntoBuffer);       // offset for how far into the buffer our data is
+
+
+  vertex_buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(0);
+
+  // var program = createProgramFromScripts(gl, ["vshader", "fshader"], ["a_position"]);
+  // gl.useProgram(program);
+
+  current_shader_program = create_program( vertex_shader, fragment_shader );
+  gl.useProgram( current_shader_program );
+
+
+  // create an empty texture
+  var local_texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, local_texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+  // Create a framebuffer and attach the texture.
+  var local_fb = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, local_fb);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, local_texture, 0);
+
+/*
+  // Render to the texture (using green because it's simple)
+  gl.clearColor(0, 1, 0, 1); // green;
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // Now draw with the texture to the canvas
+  // NOTE: We clear the canvas to red so we'll know
+  // we're drawing the texture and not seeing the green
+  // from above.
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.clearColor(1, 0, 0, 1); // red
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 6); // comment out to see red not green from texture
+*/
+  // ---
+
+  onWindowResize();
+  window.addEventListener( 'resize', onWindowResize, false );
+
+  // ---
+
+  // tick(gl);
+
+}   //    init()
+
+// ---
+
+
+function create_program( vertex, fragment ) {
+
+    var program = gl.createProgram();
+
+    var vs = createShader( vertex, gl.VERTEX_SHADER );
+    var fs = createShader( '#ifdef GL_ES\nprecision highp float;\n#endif\n\n' + fragment, gl.FRAGMENT_SHADER );
+
+    if ( vs === null || fs === null ) return null;
+
+    gl.attachShader( program, vs );
+    gl.attachShader( program, fs );
+
+    gl.deleteShader( vs );
+    gl.deleteShader( fs );
+
+    gl.linkProgram( program );
+
+    if ( !gl.getProgramParameter( program, gl.LINK_STATUS ) ) {
+
+        alert( "ERROR:\n" +
+        "VALIDATE_STATUS: " + gl.getProgramParameter( program, gl.VALIDATE_STATUS ) + "\n" +
+        "ERROR: " + gl.getError() + "\n\n" +
+        "- Vertex Shader -\n" + vertex + "\n\n" +
+        "- Fragment Shader -\n" + fragment );
+
+        return null;
+
+    }
+
+    return program;
+
+}
+
+function createShader( src, type ) {
+
+    var shader = gl.createShader( type );
+
+    gl.shaderSource( shader, src );
+    gl.compileShader( shader );
+
+    if ( !gl.getShaderParameter( shader, gl.COMPILE_STATUS ) ) {
+
+        alert( ( type == gl.VERTEX_SHADER ? "VERTEX" : "FRAGMENT" ) + " SHADER:\n" + gl.getShaderInfoLog( shader ) );
+        return null;
+
+    }
+
+    return shader;
+
+}
+
+
+function draw_scene(gl, current_shader_program) {
+
+
+  // Render to the texture (using green because it's simple)
+  gl.clearColor(0, 1, 0, 1); // green;
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+
+    // Set values to program variables
+
+  gl.uniform1f( gl.getUniformLocation( current_shader_program, 'time' ), parameters.time / 1000 );
+  gl.uniform2f( gl.getUniformLocation( current_shader_program, 'resolution' ), 
+                parameters.screenWidth, parameters.screenHeight );
+  gl.uniform2f( gl.getUniformLocation( current_shader_program, 'aspect' ), 
+                parameters.aspectX, parameters.aspectY );
+
+
+
+  // Now draw with the texture to the canvas
+  // NOTE: We clear the canvas to red so we'll know
+  // we're drawing the texture and not seeing the green
+  // from above.
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.clearColor(1, 0, 0, 1); // red
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 6); // comment out to see red not green from texture
+
+  // ---
+
+
+/*
+    // console.log('count_num_draw_calls ', count_num_draw_calls);
+    // count_num_draw_calls++;
+
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    // gl.clearColor(0.3, 0.3, 0.3, 1.0);  // background color gray
+    // gl.clearColor(0.2, 0.2, 0.2, 1.0);  // background color gray
+    // gl.clearColor(0.15, 0.15, 0.15, 1.0);  // background color black
+    // gl.clearColor(0.1, 0.1, 0.1, 1.0);  // background color black
+    gl.clearColor(0.03, 0.03, 0.03, 1.0);  // background color black
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+
+    mat4.perspective(FoV , gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+    mat4.identity(mvMatrix);
+
+    // ---------- handle navigation
+
+    mat4.rotate(mvMatrix, Common_Utils.degToRad(-curr_pitch), [1, 0, 0]);
+    mat4.rotate(mvMatrix, Common_Utils.degToRad(-curr_yaw), [0, 1, 0]);
+
+    mat4.translate(mvMatrix, [-position_x, -position_y, -position_z]);
+
+    // ----------
+
+    mat4.translate(mvMatrix, [world_min_x, world_min_y, world_min_z]);   // OK for board 4 by 4
+
+    // ---
+
+    mat4.multiply(mvMatrix, moonRotationMatrix);
+
+
+    active_inner_draw.forEach(function(curr_element) {  // ccc
+
+        if (activity_status[curr_element.object_label]) {
+
+            inner_draw( curr_element.flavor_graphics,
+                        curr_element.point_size,
+                        rotation_degree[curr_element.rotation_property],
+                        gl, current_shader_program, true);            
+        }
+    });
+
+    active_inner_indexed_draw.forEach(function(curr_element) {
+
+        if (activity_status[curr_element.object_label]) {
+
+            inner_indexed_draw( curr_element.flavor_graphics,
+                                gl,
+                                rotation_degree[curr_element.rotation_property],
+                                curr_element.rotation_matrix);
+        }
+    });
+*/
+    // ---
+
+}       //      draw_scene
+
+function animate() {
+    
+    var do_animation = true;
+    // var do_animation = false;
+
+    // Used to make us "jog" up and down as we move forward.
+    var joggingAngle = 0;
+
+    if (do_animation) {
+
+        var timeNow = new Date().getTime();
+        if (last_time !== 0) {
+            var elapsed = timeNow - last_time;
+
+            if (speed !== 0) {
+
+                position_x -= Math.sin(Common_Utils.degToRad(curr_yaw)) * speed * elapsed;
+                position_z -= Math.cos(Common_Utils.degToRad(curr_yaw)) * speed * elapsed;
+
+                joggingAngle += elapsed * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
+
+                position_y = Math.sin(Common_Utils.degToRad(joggingAngle)) / 20 + 0.4;
+
+                curr_speed = speed;
+            }
+
+            rotation_degree[rotation_grid] -= (38 * elapsed) / 1000.0;
+
+            rotation_degree[rotation_time_domain] -= (98.0 * elapsed) / 1000.0;
+            // curr_degree_rotation_time_domain -= (0.0 * elapsed) / 1000.0;// NO rotation
+
+            // curr_degree_rotation_torus -= (75 * elapsed) / 1000.0;
+            // curr_degree_rotation_torus -= (48 * elapsed) / 1000.0;
+
+            // curr_degree_rotation_fft   -= (degrees_rotation_fft * elapsed) / 1000.0;
+            // rotation_degree[rotation_fft]   -= (degrees_rotation_fft * elapsed) / 1000.0;
+
+            curr_yaw   += delta_yaw   * elapsed;
+            curr_pitch += delta_pitch * elapsed;
+
+            // --- uuu
+
+            if (view_UI_current_state) {
+
+                // console.log('delta_pitch ', delta_pitch, '  delta_yaw ', delta_yaw, '    speed ', speed);
+            }            
+        }
+        last_time = timeNow; 
+
+        // curr_degree_rotation_torus = curr_degree_rotation_torus % 360;
+
+        // curr_degree_rotation_fft   = curr_degree_rotation_fft   % 360;
+        rotation_degree[rotation_fft]   = rotation_degree[rotation_fft]   % 360;
+    }
+}       //      animate
+
+function tick() { // ccccccccc
+
+  parameters.time = new Date().getTime() - parameters.start_time;
+
+  // console.log(parameters.time);
+
+  // requestAnimFrame(tick);
+  // handleKeys();
+
+
+  draw_scene(gl, current_shader_program);
+
+  animate();   // remove comment to engage rotation animation
+
+  // -------  write to output texture
+
+  }
+
+
+
+  
+}());   //    enclosing_object
+
+
+</script>
+
+
+
+
+</head>
+<body>
+
+
+
+</body>
+</html>
