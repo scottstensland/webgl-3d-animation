@@ -66,7 +66,3 @@ Feel free to contact me on twitter if you have any questions!
 
 
 
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/scottstensland/webgl-3d-animation/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
