@@ -247,6 +247,8 @@ var webaudio_tooling_obj = function() {
 
     function do_mute() { // bbb
 
+		console.log('inside do_mute');
+
         // gain_node.disconnect();
 
         gain_node.gain.value = 0.0;
@@ -255,6 +257,9 @@ var webaudio_tooling_obj = function() {
     function un_mute() {
 
         // gain_node.connect(audio_context.destination); // Connect gain node to speakers
+
+		console.log('inside un_mute');
+		audio_context.resume();
 
         gain_node.gain.value = 1.0;
     }
