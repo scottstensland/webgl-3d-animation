@@ -41,7 +41,7 @@ Using a WebGL savvy browser, point it at URL :
 
 or ignore above and just see this WebGL app deployed live on heroku :
 
-[http://webgl-3d-animation.herokuapp.com/](http://webgl-3d-animation.herokuapp.com/ "Scott Stensland's WebGL magic")
+[http://0dayallday.com:8888/](http://0dayallday.com:8888/  "Scott Stensland's WebGL magic")
 
 
 Feel free to contact me on twitter if you have any questions! 
