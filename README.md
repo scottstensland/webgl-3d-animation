@@ -39,7 +39,7 @@ Using a WebGL savvy browser, point it at URL :
 		 http://localhost:8888 
 ```
 
-or ignore above and just see this WebGL app deployed live on heroku :
+or ignore above and just see this WebGL app deployed live :
 
 [http://0dayallday.com:8888/](http://0dayallday.com:8888/  "Scott Stensland's WebGL magic")
 
