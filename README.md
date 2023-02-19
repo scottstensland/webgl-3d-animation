@@ -41,7 +41,7 @@ Using a WebGL savvy browser, point it at URL :
 
 or ignore above and just see this WebGL app deployed live :
 
-[https://0dayallday.com/webgl/](https://0dayallday.com/webgl/  "Scott Stensland's WebGL magic")
+[https://cybrcr.com/webgl/](https://cybrcr.com/webgl/  "Scott Stensland's WebGL magic")
 
 
 Feel free to contact me on twitter if you have any questions! 
