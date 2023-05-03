@@ -3,7 +3,6 @@ webgl-3d-animation
 
 An interactive 3D animation using WebGL to depict a 2D predator prey ecology on a grid real-time mapped onto the surface of a 3D torus.  Sound file is parsed then visualized both in time and frequency domains as well as rendered using Web Audio API - this is an exercise where I taught myself how to display data for an ongoing project on sound synthesis 
 
-
 # Installation
 
 Visit [nodejs.org](http://nodejs.org) and install Node.js. 
@@ -33,7 +32,7 @@ npm start
 ```
 
 
-Using a WebGL savvy browser, point it at URL :
+Using a WebGL savvy browser, point it at url
 
 ```bash
 		 http://localhost:8888 
@@ -43,11 +42,9 @@ or ignore above and just see this WebGL app deployed live :
 
 [https://cybrcr.com/webgl/](https://cybrcr.com/webgl/  "Scott Stensland's WebGL magic")
 
-
 Feel free to contact me on twitter if you have any questions! 
 
 ... my twitter name is same as my github name
-
 
    instructions on how to drive this ...
 
@@ -59,10 +56,6 @@ Feel free to contact me on twitter if you have any questions!
      arrow keys  left/right/up/down
            also these keys :  w s a d
 
-
       it uses WebGL for graphics
     I wrote it in the language javascript infact this was my
-      "Hello World"  for both javascript and WebGL
-
-
-
+      "Hello World" for both javascript and WebGL
