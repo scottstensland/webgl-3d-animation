@@ -49,12 +49,16 @@ Feel free to contact me on twitter if you have any questions!
    instructions on how to drive this ...
 
 	this will run on any browser however
-	run this on a laptop/desktop to be able to navigate using below keyboard keys
-    since I have not yet added ability to properly navigate using fingers on mobile devices
-	see this video I created using similar logic which shows cool navigation flythrough
+	run this on a laptop/desktop to be able
+	to navigate using below keyboard keys
+    since I have not yet added ability to
+	properly navigate using fingers on mobile devices
+	see this video I created using similar logic
+	which shows cool navigation flythrough
 
-		 Predator Prey ecology agent based simulation in c++ OpenGL folds a 2d plane onto surface of a torus 
-		https://www.youtube.com/watch?v=frYWtGXqBWc
+Predator Prey ecology agent based simulation in c++ OpenGL
+folds a 2d plane onto surface of a torus 
+[https://www.youtube.com/watch?v=frYWtGXqBWc](https://www.youtube.com/watch?v=frYWtGXqBWc)
 
     run on a computer not on a phone since it currently uses
    just the mouse and keyboard as controls
