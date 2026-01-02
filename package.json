@@ -27,7 +27,7 @@
     "name": "webgl-3d-animation",
     "repository": {
         "type": "git",
-        "url": "https://github.com/scottstensland/webgl-3d-animation.git"
+        "url": "git+https://github.com/scottstensland/webgl-3d-animation.git"
     },
     "scripts": {
         "start": "node src/app.js",
