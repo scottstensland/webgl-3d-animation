@@ -458,13 +458,13 @@ function inner_indexed_draw(given_animal, gl, given_rotation, given_matrix_rotat
     // ---
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_position_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, given_animal.vertices, gl.DYNAMIC_DRAW);
     gl.vertexAttribPointer(local_shader_program.vertexPositionAttribute, given_animal.vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // -------------------------------------
 
     gl.bindBuffer(gl.ARRAY_BUFFER, given_animal.vertex_color_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.DYNAMIC_DRAW);
     gl.vertexAttribPointer(local_shader_program.vertexColorAttribute, given_animal.vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, null);

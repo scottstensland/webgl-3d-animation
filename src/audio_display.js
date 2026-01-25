@@ -459,6 +459,13 @@ function update_one_row(given_array) {  // FFT cylinder
     max_fft_value_seen = 0;
     min_fft_value_seen = 9999;
 
+    var animal = object_handle[animals_fft];
+
+    // Initialize base_vertices if not present (to store original shape)
+    if (!animal.base_vertices && animal.vertices) {
+        animal.base_vertices = new Float32Array(animal.vertices);
+    }
+
     // bbb
 
     // curr_color_index = curr_fft_row*MAX_NUM_ROWS_FFT_CYLINDER*SIZE_DIM_COLORS;
@@ -470,10 +477,48 @@ function update_one_row(given_array) {  // FFT cylinder
         //     console.log('fft value ', curr_bucket, given_array[curr_bucket]);
         // }
 
-        object_handle[animals_fft].colors[curr_fft_color_index + R] = given_array[curr_bucket] / bucket_color_factor;
-        object_handle[animals_fft].colors[curr_fft_color_index + G] = 1.0 / (bucket_color_factor - given_array[curr_bucket]);
-        object_handle[animals_fft].colors[curr_fft_color_index + B] = bucket_color_factor / given_array[curr_bucket];
-        object_handle[animals_fft].colors[curr_fft_color_index + A] = 1.0;
+        var amplitude = given_array[curr_bucket] / bucket_color_factor; // 0.0 to 1.0
+
+        // --- Color Update ---
+        animal.colors[curr_fft_color_index + R] = amplitude;
+        animal.colors[curr_fft_color_index + G] = 1.0 - amplitude; // Red to Green gradient? Or inverted?
+        // Original: G = 1.0 / (255 - val)... dangerous div by zero. Let's make it simpler "Heatmap"
+        // Hot (High Freq/Amp) = Red/White?
+        // Let's stick to a simple gradient for now or keep original if stable.
+        // Original:
+        // R = val/255 (0..1)
+        // G = 1.0 / (255 - val) -> if val=254, 1.0. if val=0, 1/255.
+        // B = 255 / val -> if val=1, 255 (clamped to 1?). if val=255, 1.
+
+        // Let's use a cleaner heatmap: Low=Blue, Mid=Green, High=Red
+        if (amplitude < 0.5) {
+            animal.colors[curr_fft_color_index + R] = 0.0;
+            animal.colors[curr_fft_color_index + G] = amplitude * 2.0;
+            animal.colors[curr_fft_color_index + B] = 1.0 - (amplitude * 2.0);
+        } else {
+            animal.colors[curr_fft_color_index + R] = (amplitude - 0.5) * 2.0;
+            animal.colors[curr_fft_color_index + G] = 1.0 - ((amplitude - 0.5) * 2.0);
+            animal.colors[curr_fft_color_index + B] = 0.0;
+        }
+        animal.colors[curr_fft_color_index + A] = 1.0;
+
+        // --- Vertex Displacement (The "Beef") ---
+        if (animal.base_vertices) {
+            var curr_vertex_index = (curr_fft_color_index / SIZE_DIM_COLORS) * SIZE_DIM_3D;
+
+            var base_x = animal.base_vertices[curr_vertex_index + X];
+            var base_y = animal.base_vertices[curr_vertex_index + Y];
+            var base_z = animal.base_vertices[curr_vertex_index + Z];
+
+            // Displacement Factor: Push out based on amplitude
+            // Since cylinder is along X axis, Y and Z form the cross-section.
+            // We scale Y and Z relative to the cylinder's center axis.
+            var scale_factor = 1.0 + (amplitude * 1.5); // Tune 1.5 for "height" of spikes
+
+            animal.vertices[curr_vertex_index + X] = base_x;
+            animal.vertices[curr_vertex_index + Y] = base_y * scale_factor;
+            animal.vertices[curr_vertex_index + Z] = base_z * scale_factor;
+        }
 
         if (given_array[curr_bucket] > max_fft_value_seen) {
 
