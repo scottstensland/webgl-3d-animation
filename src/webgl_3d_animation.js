@@ -1130,7 +1130,7 @@ function init_buffers(gl) {
         object_label: 'animals_pasture',
         flavor_graphics: landscape_handle['animals_pasture'],
         point_size: 2.0,
-        rotation_property: rotation_none,
+        rotation_property: rotation_grid,
         shader_program: shader_program_landscape
     });
     activity_status['animals_pasture'] = true;

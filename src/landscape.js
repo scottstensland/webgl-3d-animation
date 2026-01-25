@@ -42,6 +42,9 @@ all_object_labels.push(animals_pasture);
 object_handle[animals_pasture].pre_translate = [-1.5, 1.5, 1.5];
 object_handle[animals_pasture].post_translate = Common_Utils.negate_array(object_handle[animals_pasture].pre_translate);
 
+object_handle[animals_pasture].want_translate = true;
+object_handle[animals_pasture].rotation_array = [0, 1, 0];
+
 // ---
 
 // -------------------------------------------------------
@@ -55,7 +58,7 @@ function allocate_buffers(gl, given_animal, given_max_animal, min_x, max_x, min_
   let color_index = 0;
   let curr_vertex = 0;
 
-  for (; curr_vertex < given_max_animal; ) {
+  for (; curr_vertex < given_max_animal;) {
     let x_index = null;
     let y_index = null;
 
@@ -90,6 +93,13 @@ function allocate_buffers(gl, given_animal, given_max_animal, min_x, max_x, min_
   gl.bufferData(gl.ARRAY_BUFFER, given_animal.colors, gl.STATIC_DRAW);
   given_animal.vertex_color_buffer.itemSize = 4;
   given_animal.vertex_color_buffer.numItems = curr_vertex;
+
+  // Initialize min_max for rotation
+  const min_max = [];
+  Common_Utils.init_min_max(min_max);
+  Common_Utils.populate_min_max(min_max, min_x, min_y, min_z);
+  Common_Utils.populate_min_max(min_max, max_x, max_y, max_z);
+  given_animal.min_max = min_max;
 
   /*
     // ----------- depth textures --------------- //
