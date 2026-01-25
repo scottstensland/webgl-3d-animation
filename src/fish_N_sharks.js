@@ -977,8 +977,8 @@ function init_doughnut() {
   var toggle_red_N_green = true;
 
   // var radius_of_letter_C = 0.16;    // thickness of doughnut
-  var radius_of_letter_C = 0.2;    // thickness of doughnut
-  // var radius_of_letter_C = 0.24;    // thickness of doughnut
+  // var radius_of_letter_C = 0.2;    // thickness of doughnut
+  var radius_of_letter_C = 0.24;    // thickness of doughnut
   // var radius_of_letter_C = 1.6;    // thickness of doughnut
   // var radius_of_letter_C = 0.36;    // thickness of doughnut
 

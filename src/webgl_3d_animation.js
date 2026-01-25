@@ -1148,6 +1148,19 @@ function init_buffers(gl) {
     const birth_shark = 95;
     const starvation = 7;
 
+    // Initialize render_to_texture
+    render_to_texture_obj.init(gl);
+    const texture_handle = render_to_texture_obj.get_object_handle();
+    const texture_labels = render_to_texture_obj.get_all_object_labels();
+    const texture_label = texture_labels[0];
+
+    active_draw_texture.push({
+        flavor_graphics: texture_handle[texture_label],
+        object_label: texture_label,
+        shader_program: shader_program_texture
+    });
+    activity_status[texture_label] = true;
+
     // Dynamic point size calculation roughly based on viewport/board size
     const point_size_fns = (0.8 * gl.viewportWidth) / (size_board_x + 2);
 
@@ -1180,7 +1193,7 @@ function init_buffers(gl) {
         rotation_matrix: torus_matrix_rotation,
         shader_program: shaderProgram_01
     });
-    activity_status['animals_doughnut'] = false;
+    activity_status['animals_doughnut'] = true;
 
     // Initialize Audio Display (Restored original values)
     // init_audio_vis(gl, rows_fft, cols_fft, buff_size, sample_depth, buff_size_time_domain)
