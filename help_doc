@@ -1,0 +1,32 @@
+
+To set up and run this modernized repo on a fresh Ubuntu 24.04 box:
+
+1. Install Node.js (repo requires >=24.0.0; Ubuntu 24.04 has older version, so use nvm):
+   sudo apt update
+   sudo apt install curl
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   source ~/.bashrc
+   nvm install 24
+   nvm use 24
+
+2. Clone the repo:
+   git clone https://github.com/scottstensland/webgl-3d-animation.git
+   cd webgl-3d-animation
+
+3. Install dependencies:
+   npm install
+
+4. Run development server (Vite for client-side):
+   npm run dev
+   Open http://localhost:3000 in browser
+
+5. Build for production:
+   npm run build
+
+6. Run production server (Node.js with Express):
+   npm start
+   Open http://localhost:8888 in browser
+
+Repo modernization complete: Vite integrated for bundling, some files converted to modules, unused dirs removed, syntax updated in key files.
+
+

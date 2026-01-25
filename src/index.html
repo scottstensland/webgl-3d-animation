@@ -11,24 +11,7 @@
 -->
 
 
-    <script type="text/javascript" src="ui_logic_handler.js"></script>
-    <script type="text/javascript" src="persistance_handler.js"></script>
-    <script type="text/javascript" src="common/gl-matrix.1.3.7.js"></script>
-    <script type="text/javascript" src="common/common.js"></script>
-    <script type="text/javascript" src="common/vec3.js"></script>
-    <script type="text/javascript" src="common/webgl-utils.js"></script>
-    <script type="text/javascript" src="common/Common_Utils.js"></script>
-    <script type="text/javascript" src="borg.js"></script>
-    <script type="text/javascript" src="fish_N_sharks.js"></script>
-    <script type="text/javascript" src="schwartz_surface.js"></script>
-    <script type="text/javascript" src="chladni.js"></script>
-    <script type="text/javascript" src="trefoil_knot.js"></script>
-    <script type="text/javascript" src="audio_display.js"></script>
-    <script type="text/javascript" src="webaudio_tooling.js"></script>
-    <script type="text/javascript" src="audio_process.js"></script>
-    <script type="text/javascript" src="communication_sockets.js"></script>
-    <script type="text/javascript" src="landscape.js"></script>
-    <script type="text/javascript" src="render_to_texture.js"></script>
+    <script type="module" src="/main.js"></script>
 
     <script id="vertex_shader_render_to_texture" type="x-shader/x-vertex">
         attribute vec3 aVertexPosition;
@@ -144,7 +127,7 @@
         }
     </script>
 
-    <script type="text/javascript" src="webgl_3d_animation.js"></script>
+    <script type="module" src="webgl_3d_animation.js"></script>
 </head>
 
 <body>
@@ -152,20 +135,20 @@
 
     <div id="controls" style="display: none;">
         <div>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('toggle_mute', this);" checked>mute audio</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_audio_vis', this);" checked>audio vis</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_fft', this);" checked>audio fft</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_time_curve', this);" checked>audio time curve</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_borg', this);" checked>borg</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_chladni', this);" checked>chladni</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_pasture', this);" checked>pasture</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_trefoil_knot', this);" checked>trefoil knot</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_schwartz', this);" checked>schwartz</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_fish', this);" checked>fish & sharks</label>
-            <label><input type="checkbox" onclick="ui_logic_handler.handleClick('animals_doughnut', this);" checked>doughnut</label>
+            <label><input type="checkbox" data-control="toggle_mute" checked>mute audio</label>
+            <label><input type="checkbox" data-control="animals_audio_vis" checked>audio vis</label>
+            <label><input type="checkbox" data-control="animals_fft" checked>audio fft</label>
+            <label><input type="checkbox" data-control="animals_time_curve" checked>audio time curve</label>
+            <label><input type="checkbox" data-control="animals_borg" checked>borg</label>
+            <label><input type="checkbox" data-control="animals_chladni" checked>chladni</label>
+            <label><input type="checkbox" data-control="animals_pasture" checked>pasture</label>
+            <label><input type="checkbox" data-control="animals_trefoil_knot" checked>trefoil knot</label>
+            <label><input type="checkbox" data-control="animals_schwartz" checked>schwartz</label>
+            <label><input type="checkbox" data-control="animals_fish" checked>fish & sharks</label>
+            <label><input type="checkbox" data-control="animals_doughnut" checked>doughnut</label>
         </div>
         <p>
-            <button onclick="webgl_3d_animation.set_camera_perspectives()">reset perspective</button>
+            <button id="reset-perspective">reset perspective</button>
         </p>
     </div>
 
@@ -180,15 +163,7 @@
             document.getElementById('start-button').style.display = 'none';
             document.getElementById('controls').style.display = 'block';
             document.getElementById('ecology_simulation').style.display = 'block';
-
-            // Call the original startup function. The browser allows the AudioContext
-            // to start now because this function was triggered by a user click.
-            if (typeof webgl_3d_animation !== 'undefined' && typeof webgl_3d_animation.internal_webGLStart === 'function') {
-                webgl_3d_animation.internal_webGLStart();
-            } else {
-                console.error("The webgl_3d_animation object or its start function is not available.");
-            }
-        }, { once: true }); // {once: true} ensures the event listener is removed after the first click.
+        }, { once: true });
     </script>
 </body>
 </html>

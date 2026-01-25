@@ -1,0 +1,19 @@
+
+
+rm -rf ./node_modules
+
+npm install
+
+
+npm run dev
+
+
+	# ..........
+
+npm run dev      # Start development server (http://localhost:3000/)
+npm run build    # Create production build
+npm run preview  # Preview production build
+
+
+
+

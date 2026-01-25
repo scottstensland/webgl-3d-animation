@@ -1,6 +1,6 @@
 
 
-var trefoil_knot_obj = function() {
+import * as Common_Utils from './common/Common_Utils.js';
 
 // ------------- below are CONSTANTS shared with other scripts ------------------ //
 
@@ -203,12 +203,5 @@ var get_all_object_labels = function() {
     return all_object_labels;
 }
 
-return {    // to make visible to calling reference frame list function here
-
-  init_trefoil_knot: init_trefoil_knot,
-  get_object_handle : get_object_handle,
-  get_all_object_labels : get_all_object_labels
-};
-
-}();    //  fns = function() 
+export { init_trefoil_knot, get_object_handle, get_all_object_labels };
 

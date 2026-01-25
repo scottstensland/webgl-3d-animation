@@ -1,69 +1,54 @@
 
-var path            = require('path');
-var fs              = require('fs');
-var WebSocketServer = require("ws").Server;
-var http            = require("http");
-var express         = require("express");
-var app             = express();
+const path = require('path');
+const fs = require('fs');
+const { Server: WebSocketServer } = require("ws");
+const http = require("http");
+const express = require("express");
+const app = express();
 
-var port = process.env.PORT || 8888;
+const port = process.env.PORT || 8888;
 
 function socket_server() {
-
     app.use(express.static(__dirname + "/"));
 
-    var server = http.createServer(app);
+    const server = http.createServer(app);
 
     server.listen(port);
 
-    console.log("http server listening on %d", port);
+    console.log(`http server listening on ${port}`);
 
-    var wss = new WebSocketServer({
-        server: server
-    });
+    const wss = new WebSocketServer({ server });
 
     console.log("websocket server created");
 
-    wss.on("connection", function(ws) {
-
+    wss.on("connection", (ws) => {
         console.log("websocket connection open");
 
-        app.on("text", function(received_data) {
-
-            console.log("Received text format : " + received_data);
+        // Note: This app.on("text") seems misplaced; it might be intended for ws or another event.
+        app.on("text", (received_data) => {
+            console.log(`Received text format: ${received_data}`);
         });
 
-        ws.on("message", function(received_data) {
-
-            console.log("Received message : " + received_data);
+        ws.on("message", (received_data) => {
+            console.log(`Received message: ${received_data}`);
         });
 
-        // ---
-
-        ws.on("close", function() {
+        ws.on("close", () => {
             console.log("websocket connection close");
         });
     });
-
-} //      socket_server
-
-// ---
+} // socket_server
 
 socket_server();
 
-// ---
+console.log(`version: ${process.env.npm_package_version}`);
 
-console.log("version: " + process.env.npm_package_version);
+let serviceUrl;
 
-var serviceUrl;
-
-if (process.env.HOSTING_VENDOR == "heroku") {
-
+if (process.env.HOSTING_VENDOR === "heroku") {
     serviceUrl = "http://webgl-3d-animation.herokuapp.com:";
-
 } else {
-
     serviceUrl = "http://localhost:";
 }
 
-console.log("\nPoint your browser at \n\n\t\t", serviceUrl + port + "/", "\n");
+console.log(`\nPoint your browser at \n\n\t\t${serviceUrl}${port}/\n`);

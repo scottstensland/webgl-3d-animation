@@ -1,6 +1,7 @@
 
 
-var audio_display_obj = function() {
+import * as Common_Utils from './common/Common_Utils.js';
+import { vec3 } from 'gl-matrix';
 
 /*
 
@@ -46,8 +47,8 @@ var object_handle = {}; // holds all the various flavors of graphic object types
 // var animals_fft = {};           // audio frequency domain display on surface of tall rotating cylinder
 // var animals_time_curve = {};    // audio time domain curve display on surface of squat rotating cylinder
 
-var animals_audio_vis  = "animals_audio_vis";
-var animals_fft        = "animals_fft";
+var animals_audio_vis = "animals_audio_vis";
+var animals_fft = "animals_fft";
 var animals_time_curve = "animals_time_curve";
 
 object_handle[animals_audio_vis] = {};
@@ -119,12 +120,12 @@ var curr_time_domain_row = 0;
 // ---
 
 var time_domain_min_x = -1.0;
-var time_domain_min_y =  2.0;
-var time_domain_min_z =  0.5;
+var time_domain_min_y = 2.0;
+var time_domain_min_z = 0.5;
 
-var time_domain_max_x =  4.0;
-var time_domain_max_y =  2.0;
-var time_domain_max_z =  1.50;
+var time_domain_max_x = 4.0;
+var time_domain_max_y = 2.0;
+var time_domain_max_z = 1.50;
 
 var time_domain_delta_x = time_domain_max_x - time_domain_min_x;
 var time_domain_delta_y = time_domain_max_y - time_domain_min_y;
@@ -151,11 +152,11 @@ function draw_time_domain(given_audio_buffer, given_buffer_size) {
     // console.log('just inside time domain draw');
 
 
-// console.log('\n\ncw + ss   wed   1243   \n\n');
+    // console.log('\n\ncw + ss   wed   1243   \n\n');
 
     // bbb
 
-    
+
 
     var curr_x = time_domain_min_x;
     var curr_y = time_domain_min_y;
@@ -254,7 +255,7 @@ function update_billboard() {       // refreshes time domain cylinder
             object_handle[animals_time_curve].colors[black_out_index + B] = 0.0;
             object_handle[animals_time_curve].colors[black_out_index + A] = 1.0;
 
-            black_out_index  += SIZE_DIM_COLORS;
+            black_out_index += SIZE_DIM_COLORS;
         }
 
         // if (! (black_out_index < max_color_index_time_domain)) {
@@ -446,7 +447,7 @@ function pipeline_buffer_for_time_domain_cylinder(given_audio_buffer, given_buff
     // }
 
 }       //      pipeline_buffer_for_time_domain_cylinder
-          
+
 // ---
 
 function update_one_row(given_array) {  // FFT cylinder
@@ -482,7 +483,7 @@ function update_one_row(given_array) {  // FFT cylinder
             min_fft_value_seen = given_array[curr_bucket];
         }
 
-        curr_fft_color_index  += SIZE_DIM_COLORS;
+        curr_fft_color_index += SIZE_DIM_COLORS;
     }
 
     // curr_fft_row++; // advance to next row for followup call to this same function
@@ -519,8 +520,8 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
     var vec3_p1 = vec3.create();
     var vec3_p2 = vec3.create();
 
-    vec3.set(vec3_p1,  0.0, 0.0, 0.0);  // point 1 along center line axis of cylinder of all circles
-    vec3.set(vec3_p2,  cylinder_blob.cyl_height, 0.0, 0.0);  // point 2 along center line axis of cylinder of all circles
+    vec3.set(vec3_p1, 0.0, 0.0, 0.0);  // point 1 along center line axis of cylinder of all circles
+    vec3.set(vec3_p2, cylinder_blob.cyl_height, 0.0, 0.0);  // point 2 along center line axis of cylinder of all circles
 
     // create vector along cylinder axis
 
@@ -604,16 +605,16 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
 
             // ------------
 
-            x = curr_c[X] + 
-                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[X] + 
+            x = curr_c[X] +
+                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[X] +
                 cylinder_blob.radius * Math.sin(curr_angle) * curr_vb[X];
 
-            y = curr_c[Y] + 
-                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[Y] + 
+            y = curr_c[Y] +
+                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[Y] +
                 cylinder_blob.radius * Math.sin(curr_angle) * curr_vb[Y];
 
-            z = curr_c[Z] + 
-                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[Z] + 
+            z = curr_c[Z] +
+                cylinder_blob.radius * Math.cos(curr_angle) * curr_va[Z] +
                 cylinder_blob.radius * Math.sin(curr_angle) * curr_vb[Z];
 
             // -------------  rotate current point about X Y & Z axis if desired --------------  //
@@ -652,7 +653,7 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
             // ---
 
             curr_vertex_index += SIZE_DIM_3D;
-            curr_color_index  += SIZE_DIM_COLORS;
+            curr_color_index += SIZE_DIM_COLORS;
 
             // ---
 
@@ -662,7 +663,7 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
 
             seed_color += seed_incr_color;
         }
-            
+
         curr_spoke++;
     }
 
@@ -684,8 +685,8 @@ function synthesize_cylinder(given_animal_obj, cylinder_blob) {
 
             // -----------
 
-            var corner_0 =   curr_spoke * cylinder_blob.num_rows + curr_bucket;    // remember where we started from
-            var corner_1 =   curr_spoke * cylinder_blob.num_rows + bigger_bucket;
+            var corner_0 = curr_spoke * cylinder_blob.num_rows + curr_bucket;    // remember where we started from
+            var corner_1 = curr_spoke * cylinder_blob.num_rows + bigger_bucket;
             var corner_2 = bigger_spoke * cylinder_blob.num_rows + bigger_bucket;
             var corner_3 = bigger_spoke * cylinder_blob.num_rows + curr_bucket;
 
@@ -750,8 +751,8 @@ function allocate_graphics_N_synth_cyl(gl, given_animal_obj, cylinder_blob) {
     // console.log('total colors     ', total_num_vertices * SIZE_DIM_COLORS);
 
     given_animal_obj.vertices = new Float32Array(total_num_vertices * SIZE_DIM_3D);
-    given_animal_obj.colors   = new Float32Array(total_num_vertices * SIZE_DIM_COLORS);
-    given_animal_obj.indices  = new  Uint16Array(total_num_vertices * num_indices_per_vertex); 
+    given_animal_obj.colors = new Float32Array(total_num_vertices * SIZE_DIM_COLORS);
+    given_animal_obj.indices = new Uint16Array(total_num_vertices * num_indices_per_vertex);
 
     // ---
 
@@ -777,29 +778,29 @@ function allocate_graphics_N_synth_cyl(gl, given_animal_obj, cylinder_blob) {
 
     setup_storage(gl, given_animal_obj, SIZE_DIM_3D, total_num_vertices, SIZE_DIM_COLORS, 1, given_animal_obj.curr_cylinder_index);
 
-/*
-    given_animal_obj.vertex_position_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, given_animal_obj.vertex_position_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal_obj.vertices, gl.STATIC_DRAW);
-    given_animal_obj.vertex_position_buffer.itemSize = SIZE_DIM_3D;
-    given_animal_obj.vertex_position_buffer.numItems = total_num_vertices;
-
-    // ---
-
-    given_animal_obj.vertex_color_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, given_animal_obj.vertex_color_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, given_animal_obj.colors, gl.STATIC_DRAW);
-    given_animal_obj.vertex_color_buffer.itemSize = SIZE_DIM_COLORS;
-    given_animal_obj.vertex_color_buffer.numItems = total_num_vertices;
-
-    // ---
-
-    given_animal_obj.vertex_indices_buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, given_animal_obj.vertex_indices_buffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, given_animal_obj.indices, gl.STATIC_DRAW);
-    given_animal_obj.vertex_indices_buffer.itemSize = 1;
-    given_animal_obj.vertex_indices_buffer.numItems = given_animal_obj.curr_cylinder_index;
-*/
+    /*
+        given_animal_obj.vertex_position_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, given_animal_obj.vertex_position_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, given_animal_obj.vertices, gl.STATIC_DRAW);
+        given_animal_obj.vertex_position_buffer.itemSize = SIZE_DIM_3D;
+        given_animal_obj.vertex_position_buffer.numItems = total_num_vertices;
+    
+        // ---
+    
+        given_animal_obj.vertex_color_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, given_animal_obj.vertex_color_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, given_animal_obj.colors, gl.STATIC_DRAW);
+        given_animal_obj.vertex_color_buffer.itemSize = SIZE_DIM_COLORS;
+        given_animal_obj.vertex_color_buffer.numItems = total_num_vertices;
+    
+        // ---
+    
+        given_animal_obj.vertex_indices_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, given_animal_obj.vertex_indices_buffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, given_animal_obj.indices, gl.STATIC_DRAW);
+        given_animal_obj.vertex_indices_buffer.itemSize = 1;
+        given_animal_obj.vertex_indices_buffer.numItems = given_animal_obj.curr_cylinder_index;
+    */
 
 
 }       //      allocate_graphics_N_synth_cyl
@@ -814,14 +815,14 @@ function allocate_graphics_N_synth_cyl(gl, given_animal_obj, cylinder_blob) {
 //     console.log('NOTICE - just allocated curr buffer to size ', given_buffer_size);
 // }
 
-var set_want_lines = function(given_flag) {
+var set_want_lines = function (given_flag) {
 
     object_handle[animals_audio_vis].want_lines = given_flag;
 }
 
 
-function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_columns_fft_cylinder, 
-                        given_buffer_size, given_sample_depth, given_buffer_size_time_domain) {
+function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_columns_fft_cylinder,
+    given_buffer_size, given_sample_depth, given_buffer_size_time_domain) {
 
     /*
 
@@ -841,7 +842,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     // // var sample_synth_buff_size_multiplier = 20; // size of synth/sampled buff as multiple of source buff size
     // var sample_synth_buff_size_multiplier = 100; // size of synth/sampled buff as multiple of source buff size
-    
+
     // // IMPORTANT - make it a multiple of BUFF_SIZE
     // desired_synth_buff_size = sample_synth_buff_size_multiplier * BUFF_SIZE;
 
@@ -858,8 +859,8 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
     //             ' BUFF_SIZE_TIME_DOMAIN ', BUFF_SIZE_TIME_DOMAIN);
 
     object_handle[animals_audio_vis].vertices = new Float32Array(BUFF_SIZE * SIZE_DIM_3D);
-    object_handle[animals_audio_vis].colors   = new Float32Array(BUFF_SIZE * SIZE_DIM_COLORS);
-    object_handle[animals_audio_vis].indices  = new  Uint16Array(BUFF_SIZE * num_indices_per_time_domain_vertex); 
+    object_handle[animals_audio_vis].colors = new Float32Array(BUFF_SIZE * SIZE_DIM_COLORS);
+    object_handle[animals_audio_vis].indices = new Uint16Array(BUFF_SIZE * num_indices_per_time_domain_vertex);
 
     // ---
 
@@ -896,7 +897,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     // -------------------------------  construct FFT cylinder   --------------------------  //
 
-    MAX_NUM_ROWS_FFT_CYLINDER  = given_max_num_rows_fft_cylinder;
+    MAX_NUM_ROWS_FFT_CYLINDER = given_max_num_rows_fft_cylinder;
     MAX_NUM_COLUMNS_FFT_CYLINDER = given_max_num_columns_fft_cylinder;
 
     var cylinder_blob = {};
@@ -930,7 +931,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
     // ---------------------- now construct time domain cylinder -------------------------- //
 
 
-// console.log('\n\ncw + ss tuesday 3600\n\n');
+    // console.log('\n\ncw + ss tuesday 3600\n\n');
 
 
     // var total_num_samples = 6912;
@@ -952,7 +953,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     // cylinder_blob.num_columns = BUFF_SIZE; // when cylinder is vertical like a coke can its # vertical columns
     cylinder_blob.num_columns = max_num_columns_time_domain_cylinder; // when cylinder is vertical like a coke can its # vertical columns
-    cylinder_blob.num_rows    = max_number_rows_time_domain_cylinder; // resolution of each audio sample in curve height
+    cylinder_blob.num_rows = max_number_rows_time_domain_cylinder; // resolution of each audio sample in curve height
 
     // max_size_buffer_time_domain = BUFF_SIZE;
     // max_size_buffer_time_domain = max_time_bucket_row_depth;
@@ -1002,35 +1003,27 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
 }       //      init_audio_vis
 
-var get_object_handle = function() {
+var get_object_handle = function () {
 
     return object_handle;
 }
 
 
-var get_all_object_labels = function() {
+var get_all_object_labels = function () {
 
     return all_object_labels;
 }
 
-return {    // to make visible to calling reference frame list function here
-
-  init_audio_vis: init_audio_vis,
-  update_one_row: update_one_row,
-  draw_time_domain: draw_time_domain,
-  pipeline_buffer_for_time_domain_cylinder: pipeline_buffer_for_time_domain_cylinder,
-  update_billboard: update_billboard,
-  // object_handle : object_handle,
-  // animals_fft: animals_fft,
-  // animals_time_curve: animals_time_curve,
-  // animals_audio_vis: animals_audio_vis,
-  set_want_lines : set_want_lines,
-  // allocate_local_buffer: allocate_local_buffer
-  get_object_handle : get_object_handle,
-  get_all_object_labels : get_all_object_labels
+export {
+    init_audio_vis,
+    update_one_row,
+    draw_time_domain,
+    pipeline_buffer_for_time_domain_cylinder,
+    update_billboard,
+    set_want_lines,
+    get_object_handle,
+    get_all_object_labels
 };
-
-}();    //  audio_display_obj = function() 
 
 
 // --------------------------------------------------------------------------------- //

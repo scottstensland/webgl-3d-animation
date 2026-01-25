@@ -5,12 +5,11 @@
     },
     "dependencies": {
         "express": "^5.2.1",
-        "gl-matrix": "^3.4.4",
-        "ws": "^8.19.0"
+        "ws": "^8.18.3"
     },
     "description": "Interactive 3D animation using WebGL showing a 2D predator prey ecology on a grid which is real-time mapped onto the surface of a 3D torus. node.js server side gives access to WAV format files which are rendered using Web Audio API",
     "engines": {
-        "node": ">=24.0.0"
+        "node": ">=6.x"
     },
     "homepage": "https://github.com/scottstensland/webgl-3d-animation",
     "keywords": [
@@ -32,14 +31,8 @@
     },
     "scripts": {
         "start": "node src/app.js",
-        "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview",
         "test": "make"
     },
     "subdomain": "webgl-3d-animation",
-    "version": "1.0.6",
-    "devDependencies": {
-        "vite": "^7.3.1"
-    }
+    "version": "1.0.6"
 }
