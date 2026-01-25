@@ -1,4 +1,4 @@
-
+import * as audio_display_obj from './audio_display.js';
 var audio_context;
 
 var BUFF_SIZE;
@@ -187,6 +187,11 @@ function stop_jam_sound() {
 function play_sound(buffer, once_playback_starts_callback, given_mode, stop_callback) {
 
     source_node.buffer = buffer;
+
+    if (audio_context.state === 'suspended') {
+        audio_context.resume();
+    }
+
     source_node.start(0);
 
     console.log("... just called start on source_node");

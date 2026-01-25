@@ -502,9 +502,13 @@ function update_board() {
         object_handle[animals_fish].vertices[local_fish + Y] = target_y * conversion_grid_to_world_y;
         object_handle[animals_fish].vertices[local_fish + Z] = 0.0;
 
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + R] = 0.0;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + G] = 1.0;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + B] = 0.0;
+        // Update torus color for this cell to Green (Fish)
+        let cell_index = (target_x * SIZE_BOARD_Y + target_y) * 6; // 6 vertices per cell
+        for (let k = 0; k < 6; k++) {
+          doughnut_box_colors[(cell_index + k) * 3 + R] = 0.0;
+          doughnut_box_colors[(cell_index + k) * 3 + G] = 1.0;
+          doughnut_box_colors[(cell_index + k) * 3 + B] = 0.0;
+        }
 
         if (playboard.grid_board[source_x][source_y][index_animal] === curr_animal_index) {
           // OK cool
@@ -574,9 +578,13 @@ function update_board() {
           playboard.grid_board[source_x][source_y][index_age] = unused;
           playboard.grid_board[source_x][source_y][index_hunger] = unused;
 
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + R] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + G] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + B] = 1.0;
+          // Update torus color for source cell to Blue (Water)
+          let cell_index = (source_x * SIZE_BOARD_Y + source_y) * 6;
+          for (let k = 0; k < 6; k++) {
+            doughnut_box_colors[(cell_index + k) * 3 + R] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + B] = 1.0;
+          }
         }
 
         found_new_location = true;
@@ -682,9 +690,13 @@ function update_board() {
         object_handle[animals_sharks].vertices[local_shark + Y] = target_y * conversion_grid_to_world_y;
         object_handle[animals_sharks].vertices[local_shark + Z] = 0.0;
 
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + R] = shark_colors.R;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + G] = shark_colors.G;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + B] = shark_colors.B;
+        // Update torus color for this cell to Red (Shark)
+        let cell_index = (target_x * SIZE_BOARD_Y + target_y) * 6;
+        for (let k = 0; k < 6; k++) {
+          doughnut_box_colors[(cell_index + k) * 3 + R] = 1.0;
+          doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+          doughnut_box_colors[(cell_index + k) * 3 + B] = 0.0;
+        }
 
         if (playboard.grid_board[source_x][source_y][index_animal] === curr_animal_index) {
           // OK cool
@@ -724,9 +736,13 @@ function update_board() {
           playboard.grid_board[source_x][source_y][index_animal] = unused;
           playboard.grid_board[source_x][source_y][index_age] = unused;
 
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + R] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + G] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + B] = 1.0;
+          // Update torus color for source cell to Blue (Water)
+          let cell_index = (source_x * SIZE_BOARD_Y + source_y) * 6;
+          for (let k = 0; k < 6; k++) {
+            doughnut_box_colors[(cell_index + k) * 3 + R] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + B] = 1.0;
+          }
         }
 
         found_new_location = true;
@@ -757,9 +773,13 @@ function update_board() {
       object_handle[animals_sharks].vertices[local_shark + Y] = invisible;
       object_handle[animals_sharks].vertices[local_shark + Z] = invisible;
 
-      doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + R] = 0.0;
-      doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + G] = 0.0;
-      doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + B] = 1.0;
+      // Update torus color for source cell to Blue (Water)
+      let cell_index = (source_x * SIZE_BOARD_Y + source_y) * 6;
+      for (let k = 0; k < 6; k++) {
+        doughnut_box_colors[(cell_index + k) * 3 + R] = 0.0;
+        doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+        doughnut_box_colors[(cell_index + k) * 3 + B] = 1.0;
+      }
 
       continue;
     }
@@ -787,9 +807,13 @@ function update_board() {
         object_handle[animals_sharks].vertices[local_shark + Y] = target_y * conversion_grid_to_world_y;
         object_handle[animals_sharks].vertices[local_shark + Z] = 0.0;
 
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + R] = 1.0;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + G] = 0.0;
-        doughnut_box_colors[(target_x * SIZE_BOARD_X + target_y) * 3 + B] = 0.0;
+        // Update torus color for this cell to Red (Shark)
+        let cell_index = (target_x * SIZE_BOARD_Y + target_y) * 6;
+        for (let k = 0; k < 6; k++) {
+          doughnut_box_colors[(cell_index + k) * 3 + R] = 1.0;
+          doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+          doughnut_box_colors[(cell_index + k) * 3 + B] = 0.0;
+        }
 
         if (playboard.grid_board[source_x][source_y][index_animal] === curr_animal_index) {
           // OK cool
@@ -829,9 +853,13 @@ function update_board() {
           playboard.grid_board[source_x][source_y][index_animal] = unused;
           playboard.grid_board[source_x][source_y][index_age] = unused;
 
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + R] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + G] = 0.0;
-          doughnut_box_colors[(source_x * SIZE_BOARD_X + source_y) * 3 + B] = 1.0;
+          // Update torus color for source cell to Blue (Water)
+          let cell_index = (source_x * SIZE_BOARD_Y + source_y) * 6;
+          for (let k = 0; k < 6; k++) {
+            doughnut_box_colors[(cell_index + k) * 3 + R] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + G] = 0.0;
+            doughnut_box_colors[(cell_index + k) * 3 + B] = 1.0;
+          }
         }
 
         found_new_location = true;
@@ -842,6 +870,13 @@ function update_board() {
         curr_random = 0;
       }
     } while (!found_new_location && neighbor_index < 4);
+  }
+
+
+  // IMPORTANT: Re-buffer the modified colors to the GPU
+  if (object_handle[animals_doughnut] && object_handle[animals_doughnut].vertex_color_buffer) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertex_color_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, doughnut_box_colors, gl.DYNAMIC_DRAW);
   }
 
   if (do_output) {
@@ -881,90 +916,406 @@ function update_board() {
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 }
 
+
 function init_torus_buffers() {
 
-  // Torus parameters
-  const toroidal_radius = 5.0; // Distance from center of tube to center of torus
-  const poloidal_radius = 2.0; // Radius of the tube
-
-  let curr_vertex_index = 0;
-  let curr_color_index = 0;
-  let curr_index_index = 0;
-
-  // Use SIZE_BOARD_X and SIZE_BOARD_Y which represent our simulation grid
-  // Map X to the toroidal direction (large ring) and Y to the poloidal direction (small ring)
-
-  const num_steps_toroidal = SIZE_BOARD_X;
-  const num_steps_poloidal = SIZE_BOARD_Y;
-
-  // We need to generate vertices
-  // Note: doughnut_box_vertices was initialized in init_fish_N_sharks, make sure it is large enough
-  // We are generating a grid mesh.
-
-  for (let i = 0; i < num_steps_toroidal; i++) {
-    const u = (i / num_steps_toroidal) * 2 * Math.PI; // Toroidal angle
-
-    for (let j = 0; j < num_steps_poloidal; j++) {
-      const v = (j / num_steps_poloidal) * 2 * Math.PI; // Poloidal angle
-
-      // Torus parametric equation
-      const x = (toroidal_radius + poloidal_radius * Math.cos(v)) * Math.cos(u);
-      const y = (toroidal_radius + poloidal_radius * Math.cos(v)) * Math.sin(u);
-      const z = poloidal_radius * Math.sin(v);
-
-      // Store vertex
-      doughnut_box_vertices[curr_vertex_index++] = x;
-      doughnut_box_vertices[curr_vertex_index++] = y;
-      doughnut_box_vertices[curr_vertex_index++] = z;
-
-      // Colors are already handled by the simulation logic in update_board
-      // which updates doughnut_box_colors array based on grid position [i][j]
-      // We just need to ensure indices match 1:1
-
-      // Generate indices for drawing triangles (mesh)
-      // 2 triangles per grid square
-      const next_i = (i + 1) % num_steps_toroidal;
-      const next_j = (j + 1) % num_steps_poloidal;
-
-      const p1 = i * num_steps_poloidal + j;
-      const p2 = next_i * num_steps_poloidal + j;
-      const p3 = next_i * num_steps_poloidal + next_j;
-      const p4 = i * num_steps_poloidal + next_j;
-
-      // Upper triangle
-      doughnut_indices[curr_index_index++] = p1;
-      doughnut_indices[curr_index_index++] = p2;
-      doughnut_indices[curr_index_index++] = p3;
-
-      // Lower triangle
-      doughnut_indices[curr_index_index++] = p1;
-      doughnut_indices[curr_index_index++] = p3;
-      doughnut_indices[curr_index_index++] = p4;
-    }
-  }
-
   object_handle[animals_doughnut].vertices = doughnut_box_vertices;
+
   object_handle[animals_doughnut].colors = doughnut_box_colors;
+
   object_handle[animals_doughnut].indices = doughnut_indices;
+
+  // ---
 
   object_handle[animals_doughnut].vertex_position_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertex_position_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertices, gl.STATIC_DRAW);
   object_handle[animals_doughnut].vertex_position_buffer.itemSize = 3;
-  object_handle[animals_doughnut].vertex_position_buffer.numItems = curr_vertex_index / 3;
+  object_handle[animals_doughnut].vertex_position_buffer.numItems = curr_doughnut_vertex / 3;
+
+  // gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, object_handle[animals_doughnut].vertex_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+  // ---
 
   object_handle[animals_doughnut].vertex_color_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, object_handle[animals_doughnut].vertex_color_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, object_handle[animals_doughnut].colors, gl.STATIC_DRAW);
   object_handle[animals_doughnut].vertex_color_buffer.itemSize = 3;
-  object_handle[animals_doughnut].vertex_color_buffer.numItems = num_steps_toroidal * num_steps_poloidal;
+  object_handle[animals_doughnut].vertex_color_buffer.numItems = curr_doughnut_color / 3;
 
-  object_handle[animals_doughnut].vertex_index_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_doughnut].vertex_index_buffer);
+  // gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, object_handle[animals_doughnut].vertex_color_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+  // ---
+
+  object_handle[animals_doughnut].vertex_indices_buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_doughnut].vertex_indices_buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, object_handle[animals_doughnut].indices, gl.STATIC_DRAW);
-  object_handle[animals_doughnut].vertex_index_buffer.itemSize = 1;
-  object_handle[animals_doughnut].vertex_index_buffer.numItems = curr_index_index;
-}
+  object_handle[animals_doughnut].vertex_indices_buffer.itemSize = 1;
+  object_handle[animals_doughnut].vertex_indices_buffer.numItems = curr_doughnut_index;
+
+}       //      init_torus_buffers
+
+
+// ---------------------------------------------
+
+function init_doughnut() {
+
+
+  // Correct allocation for torus geometry:
+  // grid size: SIZE_BOARD_X * SIZE_BOARD_X
+  // 2 triangles per grid cell = 6 vertices per grid cell.
+  // Each vertex has 3 components (SIZE_DIM_3D).
+
+  var num_grid_cells = SIZE_BOARD_X * SIZE_BOARD_X;
+  var num_vertices_per_cell = 6;
+  var total_vertices = num_grid_cells * num_vertices_per_cell;
+
+  doughnut_box_vertices = new Float32Array(total_vertices * SIZE_DIM_3D);
+  doughnut_box_colors = new Float32Array(total_vertices * SIZE_DIM_3D); // colors use same size (RGB)
+  doughnut_indices = new Uint16Array(total_vertices); // 1 index per vertex
+
+  var toggle_red_N_green = true;
+
+  // var radius_of_letter_C = 0.16;    // thickness of doughnut
+  var radius_of_letter_C = 0.2;    // thickness of doughnut
+  // var radius_of_letter_C = 0.24;    // thickness of doughnut
+  // var radius_of_letter_C = 1.6;    // thickness of doughnut
+  // var radius_of_letter_C = 0.36;    // thickness of doughnut
+
+  var x_center = -0.3;
+  //  float y_center = 0.5;
+  //  float z_center = 0.5;
+
+  var working_main_radius;      // size of entire doughnut ... influenced by x_center above
+
+  // var two_pi = 2.0 * M_PI;
+  var two_pi = 2.0 * Math.PI;
+
+  var incr_of_circle = 2.0 * Math.PI / SIZE_BOARD_X;
+  //  float outer_curr_x, outer_curr_y, outer_curr_z;
+  var outer_curr_x, outer_curr_z;
+  var inner_curr_x, inner_curr_y, inner_curr_z;
+
+  var doughnut_offset_x = 0.0;
+  var doughnut_offset_y = 0.5;
+  var doughnut_offset_z = 0.5;
+
+  // std::cout << "incr_neck_choaker " << incr_of_circle << std::endl;
+
+  // ------- synthesize a doughnut ---------       https://en.wikipedia.org/wiki/Unit_circle
+
+  // --- first create a circle - lay a doughnut on a table cut through its diameter
+  //                             so you have two C shaped halves - its cross section is this outer circle
+
+  var total_count_outer_dim = (SIZE_BOARD_X * SIZE_BOARD_X);
+
+  // stens TODO - probe with assembly to determine whether below two techniques are same
+  //    malloc2d(& temp_doughnut_box, total_count_outer_dim, num_dimensions_doughnut);
+
+  // float (* temp_doughnut_box)[num_dimensions_doughnut] = (float (*)[3])calloc(total_count_outer_dim,sizeof*temp_doughnut_box);
+
+  var temp_doughnut_box = [];
+
+  //    temp_doughnut_box[5][6] = 15.3;
+  //    printf("retrieved value previously stored is  %f\n", temp_doughnut_box[5][6]);
+
+  var curr_temp_doughnut_box = 0;
+  var outer_facet = 0;
+
+  var min_max = [];   // will hold min/max of x y z
+
+  Common_Utils.init_min_max(min_max);
+
+  object_handle[animals_doughnut].min_max = min_max;
+
+  // console.debug("%o", min_max);
+
+  // console.log('here is min_max X min ', min_max[X][min]);
+
+
+  for (var outer_curr_radian = 0;
+    outer_curr_radian < two_pi;
+    outer_curr_radian += incr_of_circle, outer_facet++) {
+
+    outer_curr_x = doughnut_offset_x + radius_of_letter_C * Math.cos(outer_curr_radian);
+    //      outer_curr_y = doughnut_offset_y;
+    outer_curr_z = doughnut_offset_z + radius_of_letter_C * Math.sin(outer_curr_radian);
+
+    if (do_output) {
+
+      console.log(" outer_curr_x ", outer_curr_x,
+        " outer_curr_y          ",
+        " outer_curr_z ", outer_curr_z
+      );
+    }
+
+    // stens TODO may want to put in wrap around point back to starting point to close circle
+
+    // --- then create the rest of the doughnut by spinning this circle around the doughnut center
+
+    // now just make circles around main doughnut center for each point above
+    // use same Z same Y as above ... just a new X - calculate circles about X & Y
+
+    working_main_radius = outer_curr_x - x_center;
+
+    var inner_facet = 0;
+
+    for (var inner_curr_radian = 0; inner_curr_radian < two_pi; inner_curr_radian += incr_of_circle, inner_facet++) {
+
+      inner_curr_x = x_center + working_main_radius * Math.cos(inner_curr_radian);
+      inner_curr_y = doughnut_offset_y + working_main_radius * Math.sin(inner_curr_radian);
+      inner_curr_z = outer_curr_z;
+
+      Common_Utils.populate_min_max(min_max, inner_curr_x, inner_curr_y, inner_curr_z);
+
+      if (do_output) {
+
+        console.log(" inner_curr_x ", inner_curr_x,
+          " inner_curr_y ", inner_curr_y,
+          " inner_curr_z ", inner_curr_z
+        );
+      }
+
+      temp_doughnut_box[curr_temp_doughnut_box * SIZE_DIM_3D + X] = inner_curr_x;
+      temp_doughnut_box[curr_temp_doughnut_box * SIZE_DIM_3D + Y] = inner_curr_y;
+      temp_doughnut_box[curr_temp_doughnut_box * SIZE_DIM_3D + Z] = inner_curr_z;
+
+      //          fprintf(stdout, "temp_doughnut_box %d %d == %5.2f  %d=%5.2f  %d=%5.2f\n",
+      //                  curr_temp_doughnut_box,
+      //                  X,
+      //                  temp_doughnut_box[curr_temp_doughnut_box][X],
+      //                  Y,
+      //                  temp_doughnut_box[curr_temp_doughnut_box][Y],
+      //                  Z,
+      //                  temp_doughnut_box[curr_temp_doughnut_box][Z]
+      //                  );
+
+      curr_temp_doughnut_box++;
+    }
+
+    //      did_we_already_see_loop_once = true;
+
+    //      std::cout << " ________ next outer loop _________" << std::endl;
+  }
+
+  // console.debug("%o", min_max);
+
+  // console.log('min_max X min ', min_max[X][min]);
+  // console.log('min_max X max ', min_max[X][max]);
+  // console.log('min_max X median ', min_max[X][median]);
+
+  // console.log('min_max Y min ', min_max[Y][min]);
+  // console.log('min_max Y max ', min_max[Y][max]);
+  // console.log('min_max Y median ', min_max[Y][median]);
+
+
+  // console.log('min_max Z min ', min_max[Z][min]);
+  // console.log('min_max Z max ', min_max[Z][max]);
+  // console.log('min_max Z median ', min_max[Z][median]);
+
+
+
+  // ------- now doughnut creation is DONE iterate across to synthesize each of the two triangles per facet
+
+  // var off_x = 1.8;
+  // var off_y = -0.6;
+  // var off_z = -1.5;
+
+
+  // var off_x = -min_max[X][median];
+  // var off_y = -min_max[Y][median];
+  // var off_z = -min_max[Z][median];
+
+
+
+  var off_x = 0;
+  var off_y = 0;
+  var off_z = 0;
+
+
+  for (var i = 0; i < SIZE_BOARD_X; i++) {
+
+    for (var j = 0; j < SIZE_BOARD_X; j++) {
+
+      var bigger_i = i + 1;
+      if (bigger_i == SIZE_BOARD_X) bigger_i = 0;
+
+      var bigger_j = j + 1;
+      if (bigger_j == SIZE_BOARD_X) bigger_j = 0;
+
+      // -----------
+
+      var corner_0 = i * SIZE_BOARD_X + j;    // remember where we started from
+      var corner_1 = bigger_i * SIZE_BOARD_X + j;
+      var corner_2 = bigger_i * SIZE_BOARD_X + bigger_j;
+      var corner_3 = i * SIZE_BOARD_X + bigger_j;
+
+
+      if (do_output) {
+
+        console.log("corner_0 ", corner_0,
+          " corner_1 ", corner_1,
+          " corner_2 ", corner_2,
+          " corner_3 ", corner_3
+        );
+      }
+
+      // -------- cut the first triangle of current facet
+
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_0 * SIZE_DIM_3D + X];    // triangle 1 point 0
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 1 PT 0 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_1 * SIZE_DIM_3D + X];    // triangle 1 point 1
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_1 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_1 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 1 PT 1 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_2 * SIZE_DIM_3D + X];    // triangle 1 point 2
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_2 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_2 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 1 PT 1 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      // -------- craft the second triangle of current facet
+      // left off here
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_2 * SIZE_DIM_3D + X];    // triangle 2 point 2
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_2 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_2 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 2 PT 2 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_3 * SIZE_DIM_3D + X];    // triangle 2 point 3
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_3 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_3 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 2 PT 3 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + X] = off_x + temp_doughnut_box[corner_0 * SIZE_DIM_3D + X];    // triangle 2 point 0
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Y] = off_y + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Y];
+      doughnut_box[curr_doughnut_box * SIZE_DIM_3D + Z] = off_z + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Z];
+
+
+      //          fprintf(stdout, "TRI 2 PT 0 %5.2f  %5.2f  %5.2f\n",
+      //                  doughnut_box[curr_doughnut_box][X],
+      //                  doughnut_box[curr_doughnut_box][Y],
+      //                  doughnut_box[curr_doughnut_box][Z]
+      //                  );
+
+      curr_doughnut_box++;
+
+      // ---------- now populate indexed doughnut vertices and colors
+
+      //          std::cout << "\n---------- now populate indexed doughnut vertices and colors\n" << std::endl;
+
+      var vertex_offset_x = 0.0;  // moved all offsets into draw translate
+      var vertex_offset_y = 0.0;
+      var vertex_offset_z = 0.0;
+
+      doughnut_box_vertices[curr_doughnut_vertex++] = vertex_offset_x + temp_doughnut_box[corner_0 * SIZE_DIM_3D + X];
+      doughnut_box_vertices[curr_doughnut_vertex++] = vertex_offset_y + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Y];
+      doughnut_box_vertices[curr_doughnut_vertex++] = vertex_offset_z + temp_doughnut_box[corner_0 * SIZE_DIM_3D + Z];
+      //          curr_doughnut_box++;
+
+      var animal_red = 1.0;
+      var animal_green = 0.0;
+      var animal_blue = 0.0;
+
+      if (toggle_red_N_green) {
+        toggle_red_N_green = false;
+      } else {
+        toggle_red_N_green = true;
+
+        animal_red = 0.0;
+        animal_green = 1.0;
+        animal_blue = 0.0;
+      }
+
+      doughnut_box_colors[curr_doughnut_color++] = animal_red;    // colors in RGB
+      doughnut_box_colors[curr_doughnut_color++] = animal_green;
+      doughnut_box_colors[curr_doughnut_color++] = animal_blue;
+
+
+      //          fprintf(stdout, "X %5.2f  Y %5.2f  Z %5.2f  RGB %5.2f %5.2f %5.2f\n",
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 6],
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 5],
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 4],
+      //
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 3],
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 2],
+      //                  doughnut_box_vertices[curr_doughnut_vertex - 1]
+      //          );
+
+      // ---- do indices now
+
+      doughnut_indices[curr_doughnut_index++] = corner_0;
+      doughnut_indices[curr_doughnut_index++] = corner_1;
+      doughnut_indices[curr_doughnut_index++] = corner_2;
+
+      doughnut_indices[curr_doughnut_index++] = corner_2;
+      doughnut_indices[curr_doughnut_index++] = corner_3;
+      doughnut_indices[curr_doughnut_index++] = corner_0;
+
+      if (do_output) {
+
+        console.log("index ",
+          doughnut_indices[curr_doughnut_index - 3],
+          doughnut_indices[curr_doughnut_index - 2],
+          doughnut_indices[curr_doughnut_index - 1]
+        );
+      }
+    }
+  }
+
+
+  // free(temp_doughnut_box);     // stens TODO - confirm this array gets released
+
+  // delete [] temp_doughnut_box;
+
+  if (do_output) {
+
+    console.log(" end of doughnut init with curr_doughnut_vertex == ", curr_doughnut_vertex);
+  }
+
+}   //  init_doughnut
 
 function init_fish_N_sharks(given_gl, given_size_board_x, given_size_board_y, given_max_fish, given_max_shark, given_time_for_birthin_fish, given_time_for_birthin_shark, given_time_for_shark_starvation, given_world_min_x, given_world_min_y, given_world_max_x, given_world_max_y, given_do_output, given_do_single_step, given_allow_sharks_to_eat_fish) {
   gl = given_gl;
@@ -992,32 +1343,7 @@ function init_fish_N_sharks(given_gl, given_size_board_x, given_size_board_y, gi
 
   init_buffers(playboard, SIZE_BOARD_X, SIZE_BOARD_Y, given_max_fish, given_max_shark);
 
-  // Initialize doughnut (torus) if needed
-  // Assuming doughnut_box_vertices, colors, indices are defined elsewhere or need initialization
-  const num_doughnut_points = SIZE_BOARD_X * SIZE_BOARD_Y;
-  doughnut_box_colors = new Float32Array(num_doughnut_points * 3);
-  doughnut_box_vertices = new Float32Array(num_doughnut_points * 3);
-  doughnut_indices = new Uint16Array(num_doughnut_points);
-
-  // Initialize colors to blue (water) by default
-  for (let i = 0; i < num_doughnut_points; i++) {
-    doughnut_box_colors[i * 3 + R] = 0.0;
-    doughnut_box_colors[i * 3 + G] = 0.0;
-    doughnut_box_colors[i * 3 + B] = 1.0;
-  }
-
-  // Basic initialization for vertices and indices to avoid other null reference errors
-  // This is a placeholder; actual torus geometry generation might be needed if visual correctness is required
-  for (let i = 0; i < num_doughnut_points; i++) {
-    doughnut_box_vertices[i * 3 + X] = 0.0;
-    doughnut_box_vertices[i * 3 + Y] = 0.0;
-    doughnut_box_vertices[i * 3 + Z] = 0.0;
-    doughnut_indices[i] = i;
-  }
-  curr_doughnut_vertex = num_doughnut_points * 3;
-  curr_doughnut_color = num_doughnut_points * 3;
-  curr_doughnut_index = num_doughnut_points;
-
+  init_doughnut();
   init_torus_buffers();
 }
 
@@ -1028,4 +1354,130 @@ function get_object_handle() {
 function get_all_object_labels() {
   return all_object_labels;
 }
-export { init_fish_N_sharks, get_object_handle, get_all_object_labels, update_board };
+
+function init_f_N_s(given_model, given_world_min_x, given_world_min_y, given_world_max_x, given_world_max_y, given_gl, given_shader) {
+
+  // Default settings
+  let local_size_board_x = 100;
+  let local_size_board_y = 100;
+  let local_max_fish = 2000;
+  let local_max_shark = 2000;
+  let local_time_for_birthin_fish = 1;
+  let local_time_for_birthin_shark = 55;
+  let local_time_for_shark_starvation = 50;
+  let local_do_output = false;
+  let local_do_single_step = false;
+  let local_allow_sharks_to_eat_fish = true;
+
+  // console.log('given_model in fns of ', given_model);
+
+  if (given_model === Common_Utils.model_tiny) {
+
+    // seed_fish   = 1;
+    // seed_sharks = 1;
+
+    local_size_board_x = 4;
+    local_size_board_y = local_size_board_x;
+
+    // local_do_output = true;
+    local_do_output = false;
+    local_do_single_step = true;
+
+    local_time_for_birthin_fish = 1;
+    local_time_for_birthin_shark = 3;
+    local_time_for_shark_starvation = 2;
+
+    desired_point_size = 0.8 * given_gl.viewportWidth / (1.0 * (local_size_board_x + 2));
+
+  } else if (given_model === Common_Utils.model_small) {
+
+    // seed_fish   = 1;
+    // seed_sharks = 1;
+
+    local_size_board_x = 50;
+    local_size_board_y = local_size_board_x;
+
+    local_do_output = false;
+    local_do_single_step = false;
+
+    local_time_for_birthin_fish = 1;
+    local_time_for_birthin_shark = 55;
+    // time_for_birthin_shark = 999999;
+
+    local_time_for_shark_starvation = 50;
+    // time_for_shark_starvation = 999999; 
+
+    desired_point_size = 6.0;
+
+  } else if (given_model === Common_Utils.model_medium) {
+
+    local_size_board_x = 100;
+    local_size_board_y = local_size_board_x;
+
+    local_do_output = false;
+    local_do_single_step = false;
+
+    local_time_for_birthin_fish = 1;
+    local_time_for_birthin_shark = 55;
+    local_time_for_shark_starvation = 50;
+
+    local_max_fish = 20000;
+    local_max_shark = 20000;
+
+    desired_point_size = 3.0;
+
+  } else if (given_model === Common_Utils.model_large) {
+
+    local_size_board_x = 200;
+    local_size_board_y = local_size_board_x;
+
+    local_do_output = false;
+    local_do_single_step = false;
+
+    local_time_for_birthin_fish = 1;
+    local_time_for_birthin_shark = 55;
+    local_time_for_shark_starvation = 50;
+
+    local_max_fish = 20000;
+    local_max_shark = 20000;
+
+    desired_point_size = 3.0;
+
+  } else if (given_model === Common_Utils.model_huge) {
+
+    local_size_board_x = 200;
+    local_size_board_y = local_size_board_x;
+
+    local_do_output = false;
+    local_do_single_step = false;
+
+    local_time_for_birthin_fish = 1;
+    local_time_for_birthin_shark = 55;
+    local_time_for_shark_starvation = 50;
+
+    local_max_fish = 40000;
+    local_max_shark = 40000;
+
+    desired_point_size = 2.0;
+  }
+
+  init_fish_N_sharks(given_gl,
+    local_size_board_x, local_size_board_y,
+    local_max_fish, local_max_shark,
+    local_time_for_birthin_fish, local_time_for_birthin_shark, local_time_for_shark_starvation,
+    given_world_min_x, given_world_min_y, given_world_max_x, given_world_max_y,
+    local_do_output, local_do_single_step, local_allow_sharks_to_eat_fish);
+}
+
+function get_desired_point_size() {
+  return desired_point_size;
+}
+
+
+let external_fft_object = null;
+
+function set_external_fft_object(obj) {
+  external_fft_object = obj;
+}
+
+export { init_fish_N_sharks, init_f_N_s, get_object_handle, get_all_object_labels, update_board, get_desired_point_size, set_external_fft_object };

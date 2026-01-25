@@ -1008,7 +1008,7 @@ function handleMouseScrollWheel(event) {
         mouse_scroll_wheel_delta = -event.detail / 2;
     }
 
-    FoV += - 0.8 * mouse_scroll_wheel_delta;
+    FoV += - 0.004 * mouse_scroll_wheel_delta;
 }
 
 // ------------ handle keyboard navigation
@@ -1115,7 +1115,15 @@ function init_buffers(gl) {
     activity_status['animals_chladni'] = true;
 
     // Initialize landscape
-    landscape_obj.init_landscape(gl);
+    const MAX_LANDSCAPE_ANIMALS = 10000;
+    const landscape_min_x = 5.0;
+    const landscape_max_x = 3.0;
+    const landscape_min_y = -4.0;
+    const landscape_max_y = -2.0;
+    const landscape_min_z = -1.0;
+    const landscape_max_z = 1.0;
+
+    landscape_obj.init_landscape(gl, MAX_LANDSCAPE_ANIMALS, landscape_min_x, landscape_max_x, landscape_min_y, landscape_max_y, landscape_min_z, landscape_max_z);
     const landscape_handle = landscape_obj.get_object_handle();
 
     active_draw_inner.push({
@@ -1179,7 +1187,7 @@ function init_buffers(gl) {
 
     const max_num_rows_fft_cylinder = 512;
     const max_num_columns_fft_cylinder = 120;
-    const buff_size = 16384;
+    const buff_size = 512;
     const sample_depth = 1024;
     const buff_size_time_domain = 512;
 

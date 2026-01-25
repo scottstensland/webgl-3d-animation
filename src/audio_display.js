@@ -2,6 +2,8 @@
 
 import * as Common_Utils from './common/Common_Utils.js';
 import { vec3 } from 'gl-matrix';
+import * as audio_process_obj from './audio_process.js';
+import * as webaudio_tooling_obj from './webaudio_tooling.js';
 
 /*
 
