@@ -964,7 +964,7 @@ function init_audio_vis(gl, given_max_num_rows_fft_cylinder, given_max_num_colum
 
     cylinder_blob.rotate_3D_per_axis = curr_3D_array;
 
-    cylinder_blob.translate_x = 0.0;    // voluntary translation of each of X Y & Z post cylinder synth
+    cylinder_blob.translate_x = 3.0;    // voluntary translation of each of X Y & Z post cylinder synth
     cylinder_blob.translate_y = 0.0;
     cylinder_blob.translate_z = 0.0;
 
