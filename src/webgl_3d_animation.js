@@ -99,8 +99,8 @@ let curr_yaw = 2.9000000000000017;
 let curr_speed = 0;
 
 
-let position_x = 0.6825400916557905;
-let position_y = 0.4093690657292863;
+let position_x = 10.0;
+let position_y = -3.0;
 let position_z = 10.021485672918804;
 
 let curr_key_pressed = null;
@@ -178,8 +178,8 @@ export function set_camera_perspectives() {
     curr_yaw = 5.920000000000003;
     curr_speed = 0.01;
 
-    position_x = 0.2580853494745913;
-    position_y = 0.40885423701597917;
+    position_x = 10.0;
+    position_y = -3.0;
     position_z = 9.181939802075272;
 }
 
@@ -1245,6 +1245,7 @@ export function internal_webGLStart() {
     const canvas = document.getElementById("ecology_simulation");
     initGL(canvas);
     initShaders(gl);
+    set_camera_perspectives();
     init_buffers(gl);
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
