@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 8888;
 
 function socket_server() {
+    app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
     app.use(express.static(__dirname + "/"));
 
     const server = http.createServer(app);
