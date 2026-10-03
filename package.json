@@ -5,7 +5,7 @@
     },
     "dependencies": {
         "express": "^5.2.1",
-        "ws": "^8.18.3"
+        "ws": "^8.22.0"
     },
     "description": "Interactive 3D animation using WebGL showing a 2D predator prey ecology on a grid which is real-time mapped onto the surface of a 3D torus. node.js server side gives access to WAV format files which are rendered using Web Audio API",
     "engines": {
